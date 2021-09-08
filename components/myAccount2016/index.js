@@ -1,0 +1,44 @@
+import React, { useEffect } from "react";
+import { getInventoryPrivacy, getTradePrivacy, getTradeValue } from "../../services/accountSettings";
+import { getUserInfo } from "../../services/users";
+import AuthenticationStore from "../../stores/authentication";
+import AccountInfo from "./components/accountInfo";
+import ModalHandler from "./components/modalHandler";
+import PrivacySettings from "./components/privacySettings";
+import Tabs from "./components/tabs";
+import MyAccountStore from "./stores/myAccountStore";
+
+const MyAccount = props => {
+  const store = MyAccountStore.useContainer();
+  const auth = AuthenticationStore.useContainer();
+  useEffect(() => {
+    if (auth.isPending) return
+    getUserInfo({
+      userId: auth.userId
+    }).then((d) => {
+      store.setDescription(d.description);
+    });
+
+    getTradePrivacy().then(store.setTradePrivacy);
+    getInventoryPrivacy().then(store.setInventoryPrivacy);
+    getTradeValue().then(store.setTradeFilter);
+  }, [auth.userId, auth.isPending]);
+  if (auth.isPending || !auth.userId) return null;
+  return <div className='container'>
+    <ModalHandler></ModalHandler>
+    <div className='row'>
+      <div className='col-12'>
+        <h1 className='mt-0 mb-0'>My Settings</h1>
+      </div>
+      <div className='col-12'>
+        <Tabs></Tabs>
+      </div>
+      <div className='col-12'>
+        {store.tab === 'Account Info' && <AccountInfo></AccountInfo>}
+        {store.tab === 'Privacy' && <PrivacySettings></PrivacySettings>}
+      </div>
+    </div>
+  </div>
+}
+
+export default MyAccount;
