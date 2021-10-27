@@ -45,15 +45,14 @@ const WardrobeEntry = props => {
   const s = useEntryStyles();
   const buttonStyles = useButtonStyles();
   const characterStore = CharacterCustomizationStore.useContainer();
-  if (!characterStore.wearingAssets) {
-    return null;
-  }
+  if (!characterStore.wearingAssets) return null;
+
   const isWearing = characterStore.wearingAssets.find(v => v.assetId === props.assetId) !== undefined;
 
   return <div className='col-3 mt-4'>
     <div className={s.image}>
       <div className={s.wearButtonWrapper}>
-        <ActionButton disabled={characterStore.isRendering} label={isWearing ? 'Remove' : 'Wear'} className={s.wearButton + ' ' + buttonStyles.continueButton} onClick={() => {
+        <ActionButton disabled={characterStore.isRendering} label={isWearing ? 'Remove' : 'Wear'} className={s.wearButton + ' ' + (isWearing ? buttonStyles.cancelButton : buttonStyles.continueButton)} onClick={() => {
           if (isWearing) {
             characterStore.setWearingAssets(characterStore.wearingAssets.filter(v => {
               return v.assetId !== props.assetId;
