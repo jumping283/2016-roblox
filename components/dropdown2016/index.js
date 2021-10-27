@@ -31,7 +31,6 @@ const useStyles = createUseStyles({
   },
   dropdownDots: {
     letterSpacing: '3px',
-    fontFamily: 'fantasy',
     fontWeight: 100,
   },
 });
