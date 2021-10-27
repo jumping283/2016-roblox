@@ -101,7 +101,7 @@ const CatalogPageNavigation = () => {
           },
         },
         {
-          name: 'seperator',
+          name: 'separator',
           clickData: '',
         },
         {

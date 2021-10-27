@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss"
 
 const useDropdownStyles = createUseStyles({
@@ -30,7 +30,7 @@ const useDropdownStyles = createUseStyles({
     fontSize: '12px',
   },
   leftMenu: {
-    position: 'fixed',
+    position: 'absolute',
     backgroundColor: '#efefef',
     border: '1px solid #565655',
     minWidth: '150px',
@@ -46,7 +46,7 @@ const useDropdownStyles = createUseStyles({
     paddingTop: '8px',
     paddingLeft: '4px',
   },
-  seperator: {
+  separator: {
     borderBottom: '1px solid #c3c3c3',
     width: '100%',
   },
@@ -59,6 +59,13 @@ const Dropdown = props => {
   const s = useDropdownStyles();
   const [leftMenu, setLeftMenu] = useState(null);
   const wrapperRef = useRef(null);
+  const leftMenuRef = useRef(null);
+
+  const leftMenuStyles = {
+    marginLeft: (wrapperRef.current?.clientWidth || 0) + 'px',
+    zIndex: 11
+  };
+
   return <div onMouseLeave={() => {
     setLeftMenu(null);
   }}>
@@ -66,9 +73,9 @@ const Dropdown = props => {
       <div className={s.heading}>
         {props.title}
       </div>
-      {leftMenu && <div className={s.leftMenu} style={{ marginLeft: wrapperRef.current.clientWidth + 'px', zIndex: 11 }}>
+      {leftMenu && <div ref={leftMenuRef} className={s.leftMenu} style={leftMenuStyles}>
         <h2 className={s.leftMenuTitle}>{leftMenu.title}</h2>
-        <div className={s.seperator}></div>
+        <div className={s.separator}></div>
         {
           leftMenu.children.map(v => {
             return <div key={v.name} className={s.itemDiv}>
@@ -82,8 +89,8 @@ const Dropdown = props => {
       <div className={s.mainBody}>
         {
           props.items.map((v, i) => {
-            if (v.name === 'seperator') {
-              return <div key={'seperator' + i} className={s.seperator}></div>
+            if (v.name === 'separator') {
+              return <div key={'separator' + i} className={s.separator}></div>
             }
             return <div key={v.name} className={s.itemDiv} onMouseEnter={() => {
               if (v.children) {

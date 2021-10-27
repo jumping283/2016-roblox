@@ -67,7 +67,7 @@ const OutfitEntry = props => {
           },
         },
         {
-          name: 'seperator',
+          name: 'separator',
         },
         {
           name: isRenaming ? 'Close Rename' : 'Rename',

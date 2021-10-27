@@ -85,8 +85,8 @@ const GearDropdown = props => {
     {open && <div className={s.boxDropdown} style={typeof boxDropdownRightAmount !== 'undefined' && { right: boxDropdownRightAmount + 'px' } || undefined}>
       {
         props.options.map((v, i) => {
-          if (v.name === 'seperator') {
-            return <div key={'seperator ' + i} className='divider-top'></div>
+          if (v.name === 'separator') {
+            return <div key={'separator ' + i} className='divider-top'></div>
           }
           return <a key={v.name} href={v.url || '#'} onClick={v.onClick}>
             <p className={`mb-0 ${s.boxDropdownEntry}`}>
