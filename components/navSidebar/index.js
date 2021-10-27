@@ -9,6 +9,7 @@ const useNavSideBarStyles = createUseStyles({
     position: 'fixed',
     top: 0,
     left: 0,
+    zIndex: 999,
   },
   card: {
     width: '175px',
