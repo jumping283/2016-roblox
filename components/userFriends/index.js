@@ -80,7 +80,9 @@ const UserFriends = props => {
   if (!store.userId) return null;
   if (!friends) return null;
 
-  const arrayToUse = (tab === 'Friends' ? friends.slice((page * limit - limit), page * limit) : followEntries && followEntries.data);
+  const arrayToUse = (tab === 'Friends' ? friends.slice((page * limit - limit), page * limit - 1) : followEntries && followEntries.data);
+  const pageCount = Math.ceil((tab === 'Friends' ? friends.length : followCount) / limit);
+
   return <div className='container'>
     <div className='row'>
       <div className='col-12'>
@@ -135,9 +137,16 @@ const UserFriends = props => {
       }
     </div>
     <div className='row mt-2'>
-      {arrayToUse && arrayToUse.length >= limit && <GenericPagination onClick={(nm) => {
+      {arrayToUse && (pageCount > 1) && <GenericPagination onClick={(nm) => {
         return e => {
           e.preventDefault();
+          let newPageNumber = page + nm;
+          if (newPageNumber === 0) return;
+          if (newPageNumber > pageCount) return;
+
+          if (tab === 'Friends') {
+            return setPage(newPageNumber);
+          }
           if (nm === -1) {
             if (!followEntries.previousPageCursor) return
             setPage(page - 1);
@@ -148,7 +157,7 @@ const UserFriends = props => {
             setCursor(followEntries.nextPageCursor);
           }
         }
-      }} page={page} pageCount={Math.ceil((tab === 'Friends' ? friends.length : followCount) / limit)}></GenericPagination>}
+      }} page={page} pageCount={pageCount}></GenericPagination>}
     </div>
   </div>
 }
