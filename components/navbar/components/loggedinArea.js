@@ -11,6 +11,7 @@ const useDropdownStyles = createUseStyles({
     right: '10px',
     boxShadow: '0 -5px 20px rgba(25,25,25,0.15)',
     userSelect: 'none',
+    background: 'white',
   },
   text: {
     padding: '10px',
