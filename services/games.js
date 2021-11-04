@@ -34,7 +34,7 @@ export const launchGame = async ({ placeId }) => {
   const result = await request('GET', getBaseUrl() + '/game/get-join-script?placeId=' + encodeURIComponent(placeId));
   const toClick = result.data.joinUrl;
   const aTag = document.createElement('a');
-  aTag.setAttribute('href', toClick);
+  aTag.setAttribute('href', result.data.prefix + '' + result.data.joinScriptUrl);
   document.body.appendChild(aTag);
   aTag.click();
   // delay before deletion is required on some browsers, not sure why
