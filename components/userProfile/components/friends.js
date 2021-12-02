@@ -11,6 +11,7 @@ const useFriendStyles = createUseStyles({
     width: '12%',
     paddingLeft: 0,
     paddingRight: 0,
+    minWidth: '100px',
   },
   imageWrapper: {
     border: '1px solid #c3c3c3',
