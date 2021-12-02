@@ -1,4 +1,5 @@
 import { createUseStyles } from "react-jss";
+import UserAdvertisement from "../userAdvertisement";
 
 const useStyles = createUseStyles({
   image: {
@@ -14,7 +15,7 @@ const AdSkyscraper = props => {
   const s = useStyles();
   return <div className='row'>
     <div className='col-12'>
-      <img className={s.image} alt='Advertisment' src='/img/Unofficial/AdSkyscraperPlaceholder.png'></img>
+      <UserAdvertisement type={2}></UserAdvertisement>
     </div>
   </div>
 }
