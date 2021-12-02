@@ -57,7 +57,7 @@ const Friends = props => {
     </div>
     <div className='col-12'>
       <div className={cardStyles.card}>
-        <div className={'row pt-3 pb-3 pe-3 ps-3 me-1 ' + s.sideRow}>
+        <div className={'row pt-3 pb-3 pe-3 ps-3 me-0 ms-0 ' + s.sideRow}>
           {
             store.friends.slice(0, 10).map(v => {
               return <div className={`col-1 ${s.friendCol}`} key={v.id}>
