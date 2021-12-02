@@ -17,6 +17,7 @@ const useBadgeStyles = createUseStyles({
     width: '100%',
     height: 'auto',
     overflow: 'hidden',
+    minWidth: '142px',
   },
   buttonWrapper: {
     width: '100px',
