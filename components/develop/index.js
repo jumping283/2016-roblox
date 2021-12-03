@@ -21,7 +21,7 @@ const Develop = props => {
       <OldVerticalTabs options={[
         {
           name: 'My Creations',
-          element: <CreationsTab></CreationsTab>,
+          element: <CreationsTab id={props.id}></CreationsTab>,
         },
         {
           name: 'Library',
