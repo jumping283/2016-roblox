@@ -4,13 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Roblox CSS
 import '../styles/roblox/icons.css';
 import Navbar from '../components/navbar';
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Footer from '../components/footer';
 import dayjs from '../lib/dayjs';
 import LoginModalStore from '../stores/loginModal';
 import AuthenticationStore from '../stores/authentication';
 import NavigationStore from '../stores/navigation';
+import { getTheme, themeType } from '../services/theme';
 
 // @ts-ignore
 if (process.browser) {
@@ -38,6 +39,16 @@ if (process.browser) {
 }
 
 function RobloxApp({ Component, pageProps }) {
+  // set theme:
+  // jss globals apparently don't support parameters/props, so the only way to do a dynamic global style is to either append a <style> element, use setAttribute(), or append a css file.
+  // @ts-ignore
+  const el = process.browser && document.getElementsByTagName('body');
+  if (el && el.length) {
+    const theme = getTheme();
+    const divBackground = theme === themeType.obc2016 ? 'url(/img/Unofficial/obc_theme_2016_bg.png) repeat-x #222224' : '#e3e3e3';
+    el[0].setAttribute('style', 'background: ' + divBackground);
+  }
+
   return <div>
     <Head>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
