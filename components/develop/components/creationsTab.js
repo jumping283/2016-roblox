@@ -4,9 +4,11 @@ import { developerPages } from "../constants";
 import GamesSubPage from "./subPages/games";
 
 const CreationsTab = props => {
+  const selected = developerPages.find(v => v.id === props.id) || developerPages[0];
+
   return <div className='row'>
     <div className='col-2'>
-      <VerticalSelector selected='Games' options={developerPages.map(v => {
+      <VerticalSelector selected={selected.name} options={developerPages.map(v => {
         return {
           name: v.name,
           url: v.url,
@@ -15,7 +17,7 @@ const CreationsTab = props => {
       })}></VerticalSelector>
     </div>
     <div className='col-8 mt-4'>
-      <GamesSubPage></GamesSubPage>
+      {selected.element()}
     </div>
   </div>
 }
