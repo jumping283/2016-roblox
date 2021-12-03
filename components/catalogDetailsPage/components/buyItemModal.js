@@ -156,7 +156,7 @@ const ModalTitle = () => {
 const useStyles = createUseStyles({
   modalBg: {
     background: 'rgba(0,0,0,0.8)',
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     width: '100%',
     height: '100%',
