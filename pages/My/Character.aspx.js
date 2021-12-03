@@ -12,20 +12,27 @@ const useCharacterPageStyles = createUseStyles({
     marginTop: 0,
     fontSize: '30px',
   },
+  characterContainer: {
+    background: '#fff',
+    padding: '4px 8px',
+    overflow: 'hidden',
+  },
 });
 
 const MyCharacterPage = props => {
   const s = useCharacterPageStyles();
   return <div className='container'>
     <AdBanner context='MyCharacterPage'></AdBanner>
-    <div className='row mt-2'>
-      <div className='col-12 ps-4 pe-4'>
-        <h1 className={s.header}>Character Customizer</h1>
+    <div className={s.characterContainer}>
+      <div className='row mt-2'>
+        <div className='col-12 ps-4 pe-4'>
+          <h1 className={s.header}>Character Customizer</h1>
+        </div>
       </div>
+      <CharacterCustomizationStore.Provider>
+        <CharacterPage></CharacterPage>
+      </CharacterCustomizationStore.Provider>
     </div>
-    <CharacterCustomizationStore.Provider>
-      <CharacterPage></CharacterPage>
-    </CharacterCustomizationStore.Provider>
   </div>
 }
 
