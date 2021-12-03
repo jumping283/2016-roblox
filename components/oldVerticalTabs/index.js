@@ -13,8 +13,9 @@ const useStyles = createUseStyles({
   },
   vTabLabel: {
     fontSize: '16px',
-    padding: '10px 5px',
+    padding: '10px 5px 8px 5px',
     marginBottom: 0,
+    fontWeight: 600,
   },
   vTagSelected: {
   },
