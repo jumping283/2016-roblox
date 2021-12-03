@@ -11,6 +11,10 @@ const useStyles = createUseStyles({
   buttonWrapper: {
     float: 'left',
   },
+  createGroupContainer: {
+    background: '#fff',
+    padding: '4px 8px',
+  },
 });
 
 const CreateGroupPage = props => {
@@ -21,7 +25,7 @@ const CreateGroupPage = props => {
   const descRef = useRef(null);
   const iconRef = useRef(null);
   const s = useStyles();
-  return <div className='container'>
+  return <div className={'container ' + s.createGroupContainer}>
     <div className='row'>
       <div className='col-12 col-lg-8'>
         <div className='row'>
