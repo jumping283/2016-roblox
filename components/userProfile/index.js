@@ -15,9 +15,16 @@ import Statistics from "./components/stats";
 import Tabs from "./components/tabs";
 import TabSection from "./components/tabSection";
 import UserProfileStore from "./stores/UserProfileStore";
-import useCardStyles from "./styles/card";
+
+const useStyles = createUseStyles({
+  profileContainer: {
+    background: '#f2f2f2',
+  },
+})
 
 const UserProfile = props => {
+  const s = useStyles();
+
   const store = UserProfileStore.useContainer();
   const auth = AuthenticationStore.useContainer();
   useEffect(() => {
@@ -37,21 +44,23 @@ const UserProfile = props => {
   }
   return <div className='container'>
     <AdBanner></AdBanner>
-    <ProfileHeader></ProfileHeader>
-    <Tabs></Tabs>
-    <TabSection tab="About">
-      <Description></Description>
-      <Avatar userId={store.userId}></Avatar>
-      <Friends></Friends>
-      <Collections userId={store.userId}></Collections>
-      <Groups></Groups>
-      {/* Favorites would go here */}
-      <RobloxBadges userId={store.userId}></RobloxBadges>
-      <Statistics></Statistics>
-    </TabSection>
-    <TabSection tab="Creations">
-      <Creations></Creations>
-    </TabSection>
+    <div className={s.profileContainer}>
+      <ProfileHeader></ProfileHeader>
+      <Tabs></Tabs>
+      <TabSection tab="About">
+        <Description></Description>
+        <Avatar userId={store.userId}></Avatar>
+        <Friends></Friends>
+        <Collections userId={store.userId}></Collections>
+        <Groups></Groups>
+        {/* Favorites would go here */}
+        <RobloxBadges userId={store.userId}></RobloxBadges>
+        <Statistics></Statistics>
+      </TabSection>
+      <TabSection tab="Creations">
+        <Creations></Creations>
+      </TabSection>
+    </div>
   </div>
 }
 
