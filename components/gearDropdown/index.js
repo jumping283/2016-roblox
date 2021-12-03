@@ -50,12 +50,13 @@ const useStyles = createUseStyles({
     border: '1px solid #777777',
   },
   boxDropdownEntry: {
+    fontSize: '12px',
     padding: '3px 6px',
     '&:hover': {
       background: '#d8d8d8',
     },
     color: 'black',
-
+    fontFamily: 'Arial,Helvetica,sans-serif',
   },
 });
 
