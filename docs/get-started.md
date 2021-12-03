@@ -6,7 +6,7 @@
 
 3. Enter the directory of the repository in a terminal and run `npm i`
 
-4. Create a file called `config.json`. You can play with this more later, but the easiest way to get started is to copy the file `config.example.json` and name it `config.json`
+4. Run `node ./util/create_config.js`. This will create a basic config.json file that you can edit later.
 
 5. This step varies depending on your intentions:
 
