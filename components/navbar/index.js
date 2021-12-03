@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { createUseStyles } from "react-jss";
-import { themeType } from "../../services/theme";
+import { getTheme, themeType } from "../../services/theme";
 import AuthenticationStore from "../../stores/authentication";
 import LoginModalStore from "../../stores/loginModal";
 import NavigationStore from "../../stores/navigation";
@@ -35,7 +35,7 @@ const useNavBarStyles = createUseStyles({
 
 const Navbar = () => {
   const s = useNavBarStyles({
-    theme: themeType.obc2016,
+    theme: getTheme(),
   });
   const authStore = AuthenticationStore.useContainer();
   const mainNavBarRef = useRef(null);
