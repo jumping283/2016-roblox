@@ -92,3 +92,11 @@ html div.container {
 .cursor-pointer {
 	cursor: pointer;
 }
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
