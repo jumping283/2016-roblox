@@ -2,6 +2,7 @@ import React from "react";
 import { createUseStyles } from "react-jss"
 import { itemNameToEncodedName } from "../../../services/catalog";
 import GearDropdown from "../../gearDropdown";
+import AssetListCatalogEntry from "./assetListCatalogEntry";
 import AssetListGameEntry from "./assetListGameEntry";
 
 const useStyles = createUseStyles({
@@ -53,6 +54,10 @@ const AssetEntry = props => {
     isPlace && {
       name: 'separator',
     },
+    !isPlace && {
+      name: 'Configure',
+      url: `/catalog/configure?id=${props.assetId}`,
+    },
     {
       name: 'Advertise',
       url: `/user-ads/create?targetId=${props.assetId}&targetType=Asset`,
@@ -76,10 +81,10 @@ const AssetEntry = props => {
     </div>
     <div className='col-4 ps-0'>
       <p className='mb-0'><a href={url}>{props.name}</a></p>
-      {props.assetType === 9 ? <AssetListGameEntry url={assetUrl} startPlaceName={props.name}></AssetListGameEntry> : null}
+      {props.assetType === 9 ? <AssetListGameEntry url={assetUrl} startPlaceName={props.name}></AssetListGameEntry> : <AssetListCatalogEntry created={props.created}></AssetListCatalogEntry>}
     </div>
     <div className='col-6'>
-      <div style={{ float: 'right' }}>
+      <div className='float-right'>
         <GearDropdown boxDropdownRightAmount={0} options={gearOptions.filter(v => !!v)}></GearDropdown>
       </div>
     </div>
