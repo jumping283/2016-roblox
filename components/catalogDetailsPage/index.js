@@ -53,6 +53,11 @@ const useStyles = createUseStyles({
     fontSize: '14px',
     marginTop: '-10px',
   },
+  catalogItemContainer: {
+    background: '#fff',
+    padding: '2px 8px',
+    overflow: 'hidden',
+  },
 })
 
 /**
@@ -102,113 +107,115 @@ const CatalogDetails = props => {
 
   return <div className='container'>
     <AdBanner></AdBanner>
-    <BuyItemModal></BuyItemModal>
-    <SellItemModal></SellItemModal>
-    <DelistItemModal></DelistItemModal>
-    <div className='row mt-4'>
-      <div className='col-12 col-lg-10'>
-        <div className='row'>
-          <div className='col-10'>
-            <h1 className={s.title}>{details.name}</h1>
-            <h3 className={s.subtitle}>{subTitle}</h3>
-          </div>
-          <div className='col-2'>
-            {
-              showGear && <GearDropdown options={[
-                hasItemToDeList && {
-                  name: 'Take Off Sale',
-                  onClick: (e) => {
-                    e.preventDefault();
-                    store.setUnlistModalOpen(true);
-                  },
-                },
-                hasItemToSell && {
-                  name: 'Sell Item',
-                  onClick: (e) => {
-                    e.preventDefault();
-                    store.setResaleModalOpen(true);
-                  },
-                },
-                store.inCollection ? {
-                  name: 'Remove From Collection',
-                  onClick: e => {
-                    e.preventDefault();
-                    store.setInCollection(false);
-                    addOrRemoveFromCollections({
-                      assetId: store.details.id,
-                      addToProfile: false,
-                    });
-                  },
-                } : store.ownedCopies && store.ownedCopies.length > 0 ? {
-                  name: 'Add To Collection',
-                  onClick: e => {
-                    e.preventDefault();
-                    store.setInCollection(true);
-                    addOrRemoveFromCollections({
-                      assetId: store.details.id,
-                      addToProfile: true,
-                    });
-                  },
-                } : null,
-              ].filter(v => !!v)}></GearDropdown>
-            }
-          </div>
-        </div>
-        <div className='col-12'>
+    <div className={s.catalogItemContainer}>
+      <BuyItemModal></BuyItemModal>
+      <SellItemModal></SellItemModal>
+      <DelistItemModal></DelistItemModal>
+      <div className='row mt-4'>
+        <div className='col-12 col-lg-10'>
           <div className='row'>
-            <div className='col-12 col-md-6 col-lg-5'>
-              <ItemImage id={details.id} name={details.name}></ItemImage>
-              {isLimitedUnique && <LimitedUniqueOverlay></LimitedUniqueOverlay> || isLimited && <LimitedOverlay></LimitedOverlay> || null}
+            <div className='col-10'>
+              <h1 className={s.title}>{details.name}</h1>
+              <h3 className={s.subtitle}>{subTitle}</h3>
             </div>
-            <div className='col-12 col-md-6 col-lg-4'>
-              <CreatorDetails id={details.creatorTargetId} name={details.creatorName} type={details.creatorType} createdAt={details.createdAt} updatedAt={details.updatedAt}></CreatorDetails>
-              <p className={s.description}>{filterTextForEmpty(details.description)}</p>
-              <ReportAbuse assetId={details.id}></ReportAbuse>
-              <div className='divider-top mt-2'></div>
-              <Genres genres={details.genres}></Genres>
-            </div>
-            <div className='col-12 col-lg-3'>
-              <BuyButton></BuyButton>
+            <div className='col-2'>
+              {
+                showGear && <GearDropdown options={[
+                  hasItemToDeList && {
+                    name: 'Take Off Sale',
+                    onClick: (e) => {
+                      e.preventDefault();
+                      store.setUnlistModalOpen(true);
+                    },
+                  },
+                  hasItemToSell && {
+                    name: 'Sell Item',
+                    onClick: (e) => {
+                      e.preventDefault();
+                      store.setResaleModalOpen(true);
+                    },
+                  },
+                  store.inCollection ? {
+                    name: 'Remove From Collection',
+                    onClick: e => {
+                      e.preventDefault();
+                      store.setInCollection(false);
+                      addOrRemoveFromCollections({
+                        assetId: store.details.id,
+                        addToProfile: false,
+                      });
+                    },
+                  } : store.ownedCopies && store.ownedCopies.length > 0 ? {
+                    name: 'Add To Collection',
+                    onClick: e => {
+                      e.preventDefault();
+                      store.setInCollection(true);
+                      addOrRemoveFromCollections({
+                        assetId: store.details.id,
+                        addToProfile: true,
+                      });
+                    },
+                  } : null,
+                ].filter(v => !!v)}></GearDropdown>
+              }
             </div>
           </div>
-          {store.isResellable &&
+          <div className='col-12'>
             <div className='row'>
-              <div className='col-12'>
+              <div className='col-12 col-md-6 col-lg-5'>
+                <ItemImage id={details.id} name={details.name}></ItemImage>
+                {isLimitedUnique && <LimitedUniqueOverlay></LimitedUniqueOverlay> || isLimited && <LimitedOverlay></LimitedOverlay> || null}
+              </div>
+              <div className='col-12 col-md-6 col-lg-4'>
+                <CreatorDetails id={details.creatorTargetId} name={details.creatorName} type={details.creatorType} createdAt={details.createdAt} updatedAt={details.updatedAt}></CreatorDetails>
+                <p className={s.description}>{filterTextForEmpty(details.description)}</p>
+                <ReportAbuse assetId={details.id}></ReportAbuse>
                 <div className='divider-top mt-2'></div>
+                <Genres genres={details.genres}></Genres>
               </div>
-              <div className='col-6'>
-                <Resellers></Resellers>
-              </div>
-              <div className='col-6'>
-                <SaleHistory></SaleHistory>
+              <div className='col-12 col-lg-3'>
+                <BuyButton></BuyButton>
               </div>
             </div>
-          }
-          <div className='row'>
-            <div className='col-12 mt-4'>
-              <OldVerticalTabs options={[
-                {
-                  name: 'Recommendations',
-                  element: <Recommendations assetId={details.id} assetType={details.assetType}></Recommendations>,
-                },
-                {
-                  name: 'Commentary',
-                  element: <Comments assetId={details.id}></Comments>
-                },
-                (isLimited || isLimitedUnique) && getFlag('catalogDetailsPageOwnersTabEnabled', false) && {
-                  name: 'Owners',
-                  element: <Owners assetId={details.id}></Owners>,
-                },
-              ].filter(v => !!v)}></OldVerticalTabs>
+            {store.isResellable &&
+              <div className='row'>
+                <div className='col-12'>
+                  <div className='divider-top mt-2'></div>
+                </div>
+                <div className='col-6'>
+                  <Resellers></Resellers>
+                </div>
+                <div className='col-6'>
+                  <SaleHistory></SaleHistory>
+                </div>
+              </div>
+            }
+            <div className='row'>
+              <div className='col-12 mt-4'>
+                <OldVerticalTabs options={[
+                  {
+                    name: 'Recommendations',
+                    element: <Recommendations assetId={details.id} assetType={details.assetType}></Recommendations>,
+                  },
+                  {
+                    name: 'Commentary',
+                    element: <Comments assetId={details.id}></Comments>
+                  },
+                  (isLimited || isLimitedUnique) && getFlag('catalogDetailsPageOwnersTabEnabled', false) && {
+                    name: 'Owners',
+                    element: <Owners assetId={details.id}></Owners>,
+                  },
+                ].filter(v => !!v)}></OldVerticalTabs>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className='col-12 col-lg-2'>
-        <AdSkyscraper></AdSkyscraper>
+        <div className='col-12 col-lg-2'>
+          <AdSkyscraper></AdSkyscraper>
+        </div>
       </div>
     </div>
-  </div>;
+  </div>
 }
 
 export default CatalogDetails;
