@@ -16,6 +16,10 @@ const useStyles = createUseStyles({
     marginBottom: '12px',
     color: '#343434',
   },
+  catalogContainer: {
+    backgroundColor: '#fff',
+    padding: '2px 4px',
+  },
 })
 
 const CatalogPage = props => {
@@ -24,26 +28,28 @@ const CatalogPage = props => {
     <CatalogPageStore.Provider>
       <div className='container mt-4'>
         <AdBanner></AdBanner>
-        <div className='row mt-2'>
-          <div className='col-12 col-md-4 col-lg-2'>
-            <h1 className={s.title}>Catalog</h1>
-          </div>
-          <div className='col-12 col-md-8 col-lg-10'>
-            <CatalogPageInput></CatalogPageInput>
-          </div>
-        </div>
-        <div className='row'>
-          <div className='col-12 col-md-4 col-lg-2'>
-            <div className='divider-right'>
-              <div className='pe-2'>
-                <CatalogPageNavigation></CatalogPageNavigation>
-                <CatalogFilters></CatalogFilters>
-                <CatalogLegend></CatalogLegend>
-              </div>
+        <div className={s.catalogContainer}>
+          <div className='row mt-2'>
+            <div className='col-12 col-md-4 col-lg-2'>
+              <h1 className={s.title}>Catalog</h1>
+            </div>
+            <div className='col-12 col-md-8 col-lg-10'>
+              <CatalogPageInput></CatalogPageInput>
             </div>
           </div>
-          <div className='col-12 col-md-8 col-lg-10'>
-            <CatalogPageResults></CatalogPageResults>
+          <div className='row'>
+            <div className='col-12 col-md-4 col-lg-2'>
+              <div className='divider-right'>
+                <div className='pe-2'>
+                  <CatalogPageNavigation></CatalogPageNavigation>
+                  <CatalogFilters></CatalogFilters>
+                  <CatalogLegend></CatalogLegend>
+                </div>
+              </div>
+            </div>
+            <div className='col-12 col-md-8 col-lg-10'>
+              <CatalogPageResults></CatalogPageResults>
+            </div>
           </div>
         </div>
       </div>
