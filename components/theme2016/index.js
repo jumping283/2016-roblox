@@ -10,7 +10,10 @@ const useStyles = createUseStyles({
 
 const Theme2016 = props => {
   const s = useStyles();
-  return props.children
+  return <>
+    <div id='theme-2016-enabled'></div>
+    {props.children}
+  </>
 }
 
 export default Theme2016;
