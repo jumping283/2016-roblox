@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { createUseStyles } from "react-jss";
+import getFlag from "../../../lib/getFlag";
 import { setUserDescription } from "../../../services/accountInformation";
+import { getTheme, setTheme } from "../../../services/theme";
 import AuthenticationStore from "../../../stores/authentication";
-import Dropdown2016 from "../../dropdown2016";
-import Selector from "../../selector";
 import useCardStyles from "../../userProfile/styles/card";
 import MyAccountStore from "../stores/myAccountStore"
 import Subtitle from "./subtitle";
@@ -168,6 +168,27 @@ const AccountInfo = props => {
         <div className='mt-4 mb-4'>&emsp;</div>
       </div>
     </div>
+    {getFlag('settingsPageThemeSelectorEnabled', false) &&
+      <div className='col-12 mt-2'>
+        <Subtitle>Extensions</Subtitle>
+        <div className={cardStyles.card + ' p-3'}>
+          <div className='row mt-1'>
+            <div className='col pe-0'>
+              <input className={'form-control ' + s.select + ' ' + s.disabled} value='Website Theme' readOnly={true} type='text'></input>
+            </div>
+            <div className='col ps-0 pe-0'>
+              <select className={'form-control ' + s.select} value={getTheme()} onChange={(ev) => {
+                setTheme(ev.currentTarget.value);
+                window.location.reload();
+              }}>
+                <option value='light'>Default</option>
+                <option value='obc2016'>OBC Theme</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
   </div>
 }
 
