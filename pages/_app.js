@@ -45,7 +45,7 @@ function RobloxApp({ Component, pageProps }) {
   const el = process.browser && document.getElementsByTagName('body');
   if (el && el.length) {
     const theme = getTheme();
-    const divBackground = theme === themeType.obc2016 ? 'url(/img/Unofficial/obc_theme_2016_bg.png) repeat-x #222224' : '#e3e3e3';
+    const divBackground = theme === themeType.obc2016 ? 'url(/img/Unofficial/obc_theme_2016_bg.png) repeat-x #222224' : document.getElementById('theme-2016-enabled') ? '#e3e3e3' : '#fff';
     el[0].setAttribute('style', 'background: ' + divBackground);
   }
 
