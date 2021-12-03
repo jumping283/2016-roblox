@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { createUseStyles } from "react-jss";
 import { getInfo, getRoles, getUserGroups } from "../../services/groups";
 import AuthenticationStore from "../../stores/authentication";
 import AdSkyscraper from "../ad/adSkyscraper";
@@ -11,7 +12,16 @@ import SideBar from "./components/sidebar";
 import GroupPageStore from "./stores/groupPageStore";
 import MyGroupsStore from "./stores/myGroupsStore";
 
+const useStyles = createUseStyles({
+  groupsContainer: {
+    background: '#f2f2f2',
+    padding: '10px 12px',
+  }
+})
+
 const MyGroups = props => {
+  const s = useStyles();
+
   const store = MyGroupsStore.useContainer();
   const auth = AuthenticationStore.useContainer();
   const groupPageStore = GroupPageStore.useContainer();
@@ -53,7 +63,7 @@ const MyGroups = props => {
 
   const groupCol = auth.isAuthenticated ? 'col-7 ps-0' : 'col-10';
 
-  return <div className='container'>
+  return <div className={'container ' + s.groupsContainer}>
     <div className='row'>
       <div className='col-12 col-md-3'>
         <SideBar></SideBar>
