@@ -18,7 +18,7 @@ import UserProfileStore from "./stores/UserProfileStore";
 
 const useStyles = createUseStyles({
   profileContainer: {
-    background: '#f2f2f2',
+    background: '#e3e3e3',
   },
 })
 

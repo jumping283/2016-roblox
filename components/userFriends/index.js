@@ -22,7 +22,7 @@ const useStyles = createUseStyles({
     color: '#000',
   },
   friendsContainer: {
-    background: '#f2f2f2',
+    background: '#e3e3e3',
     padding: '4px 8px',
   },
 })
