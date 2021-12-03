@@ -5,7 +5,7 @@ const useLogoStyles = createUseStyles({
   imgDesktop: {
     width: '118px',
     height: '30px',
-    backgroundImage: `url('/img/roblox_logo.svg')`,
+    backgroundImage: `url(/img/roblox_logo.svg)`,
     backgroundSize: '118px 30px',
     display: 'none',
     '@media(min-width: 1301px)': {
@@ -13,7 +13,7 @@ const useLogoStyles = createUseStyles({
     },
   },
   imgMobile: {
-    backgroundImage: `url('/img/logo_R.svg')`,
+    backgroundImage: `url(/img/logo_R.svg)`,
     width: '30px',
     height: '30px',
     display: 'block',
@@ -35,7 +35,7 @@ const useLogoStyles = createUseStyles({
       float: 'left',
       height: '30px',
       width: '30px',
-      background: `url('/img/Unofficial/hamburger.png')`,
+      background: `url(/img/Unofficial/hamburger.png)`,
       cursor: 'pointer',
     },
   },
