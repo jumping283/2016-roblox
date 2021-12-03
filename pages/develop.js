@@ -1,15 +1,18 @@
+import { useRouter } from "next/dist/client/router";
 import Develop from "../components/develop";
+import t from "../lib/t";
 
 const DevelopPage = props => {
-  return <Develop></Develop>
+  const router = useRouter();
+  const id = t.string(router.query['View']);
+
+  return <Develop id={parseInt(id, 10) || 0}></Develop>
+}
+
+DevelopPage.getInitialProps = () => {
+  return {
+    title: 'Develop - ROBLOX',
+  }
 }
 
 export default DevelopPage;
-
-export const getStaticProps = () => {
-  return {
-    props: {
-      title: 'Develop - ROBLOX',
-    },
-  }
-}
