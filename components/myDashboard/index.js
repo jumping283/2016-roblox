@@ -48,7 +48,7 @@ const useStyles = createUseStyles({
     overflow: 'auto',
   },
   mainBody: {
-    background: '#f2f2f2',
+    background: '#e3e3e3',
   },
 });
 
