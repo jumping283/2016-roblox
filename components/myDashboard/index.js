@@ -46,7 +46,10 @@ const useStyles = createUseStyles({
     flexFlow: 'row',
     marginRight: '-7px',
     overflow: 'auto',
-  }
+  },
+  mainBody: {
+    background: '#f2f2f2',
+  },
 });
 
 const MyDashboard = props => {
@@ -104,7 +107,7 @@ const MyDashboard = props => {
   return <div className={'container ' + s.container}>
     <div className='row'>
       <div className='d-none d-lg-flex col-2'><AdSkyscraper context='dashboard-left'></AdSkyscraper></div>
-      <div className='col-12 col-lg-8'>
+      <div className={'col-12 col-lg-8 ' + s.mainBody}>
         <div className='row'>
           <div className='col-3'>
             <div className={s.headshotWrapper}>
