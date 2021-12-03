@@ -21,6 +21,10 @@ const useStyles = createUseStyles({
   username: {
     color: '#000',
   },
+  friendsContainer: {
+    background: '#f2f2f2',
+    padding: '4px 8px',
+  },
 })
 
 const UserFriends = props => {
@@ -83,7 +87,7 @@ const UserFriends = props => {
   const arrayToUse = (tab === 'Friends' ? friends.slice((page * limit - limit), page * limit - 1) : followEntries && followEntries.data);
   const pageCount = Math.ceil((tab === 'Friends' ? friends.length : followCount) / limit);
 
-  return <div className='container'>
+  return <div className={'container ' + s.friendsContainer}>
     <div className='row'>
       <div className='col-12'>
         <h3 className={'mb-0 fw-300 ' + s.title}>
