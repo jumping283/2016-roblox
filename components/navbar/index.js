@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { createUseStyles } from "react-jss";
+import { themeType } from "../../services/theme";
 import AuthenticationStore from "../../stores/authentication";
 import LoginModalStore from "../../stores/loginModal";
 import NavigationStore from "../../stores/navigation";
@@ -12,7 +13,7 @@ import Search from "./components/search";
 
 const useNavBarStyles = createUseStyles({
   navbar: {
-    backgroundColor: '#0074BD',
+    backgroundColor: p => p.theme === themeType.obc2016 ? '#393939' : '#0074BD',
     paddingTop: '6px',
     paddingBottom: '3px',
   },
@@ -33,7 +34,9 @@ const useNavBarStyles = createUseStyles({
 });
 
 const Navbar = () => {
-  const s = useNavBarStyles();
+  const s = useNavBarStyles({
+    theme: themeType.obc2016,
+  });
   const authStore = AuthenticationStore.useContainer();
   const mainNavBarRef = useRef(null);
 
