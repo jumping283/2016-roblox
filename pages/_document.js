@@ -1,6 +1,7 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 import React from 'react'
 import { SheetsRegistry, JssProvider, createGenerateId } from 'react-jss'
+import { getTheme, themeType } from '../services/theme'
 
 export default class JssDocument extends Document {
   static async getInitialProps(ctx) {
@@ -27,17 +28,5 @@ export default class JssDocument extends Document {
         </>
       ),
     }
-  }
-
-  render() {
-    return (
-      <Html>
-        <Head />
-        <body style={{ background: 'url(/img/Unofficial/obc_theme_2016_bg.png) repeat-x #222224' }}>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
   }
 }
