@@ -24,6 +24,9 @@ const useStyles = createUseStyles({
     width: '100px',
     float: 'right',
   },
+  messagesContainer: {
+    backgroundColor: '#fff',
+  },
 });
 
 const ComposeMessagePage = props => {
@@ -46,7 +49,7 @@ const ComposeMessagePage = props => {
   const bodyRef = useRef(null);
 
   if (!userInfo) return null;
-  return <div className='container'>
+  return <div className={'container ' + s.messagesContainer}>
     <div className='row'>
       <div className='col-12'>
         <Header>New Message</Header>
