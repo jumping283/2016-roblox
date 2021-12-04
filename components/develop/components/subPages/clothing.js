@@ -12,18 +12,28 @@ const detailsMap = {
     namePlural: 'T-Shirts',
     title: 'a T-Shirt',
     templateUrl: '',
+    fileLabel: 'image',
   },
   11: {
     name: 'Shirt',
     namePlural: 'Shirts',
     title: 'a Shirt',
     templateUrl: `${getFullUrl('rbxcdn', `/static/images/Template-Shirts-R15_07262019.png`)}`,
+    fileLabel: 'image',
   },
   12: {
     name: 'Pants',
     namePlural: 'pants',
     title: 'Pants',
     templateUrl: `${getFullUrl('rbxcdn', `/static/images/Template-Shirts-R15_07262019.png`)}`,
+    fileLabel: 'image',
+  },
+  3: {
+    name: 'Audio',
+    namePlural: 'audio',
+    title: 'Audio',
+    fileLabel: '.mp3 or .ogg file',
+    subtext: `Audio uploads cost 350 Robux regardless of size, however this will change in the future. Audio uploads must be less than 7 minutes and smaller than 19.5 MB.`,
   },
 }
 
@@ -93,13 +103,16 @@ const Clothing = props => {
   if (!details) return null;
   return <div className='row'>
     <div className='col-12'>
-      <h2>Create {details.title} <span className={s.subtext}>Don't know how? <a href='https://developer.roblox.com/articles/How-to-Make-Shirts-and-Pants-for-Roblox-Characters'>Click Here</a></span>
+      <h2>Create {details.title} {!details.subtext ? <span className={s.subtext}>Don't know how? <a href='https://developer.roblox.com/articles/How-to-Make-Shirts-and-Pants-for-Roblox-Characters'>Click Here</a></span> : null}
+
       </h2>
+
+      {details.subtext ? <p>{details.subtext}</p> : null}
     </div>
     <div className='col-12'>
       <div className='ms-4 me-4 mt-4'>
         {details.templateUrl ? <p>Did you use the template? If not, <a href={details.templateUrl}>download it here</a>.</p> : null}
-        <p>Find your image: <input ref={fileRef} type='file'></input> {feedback && <span className='text-danger'>{feedback}</span>}</p>
+        <p>Find your {details.fileLabel}: <input ref={fileRef} type='file'></input> {feedback && <span className='text-danger'>{feedback}</span>}</p>
         <p>{details.name} Name: <input ref={nameRef} type='text' className={s.inputItemName}></input></p>
         <div className='float-left'>
           <ActionButton disabled={locked} label='Upload' onClick={onSubmit}></ActionButton>
