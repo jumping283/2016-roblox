@@ -43,6 +43,8 @@ const developerPages = [
     id: 3,
     name: 'Audio',
     url: '/develop?View=3',
+    element: () => <Clothing id={3}></Clothing>,
+
   },
   {
     id: 24,
