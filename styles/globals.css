@@ -43,12 +43,17 @@ input.form-control::placeholder {
 html a,
 p > a,
 a,
-a:active,
+/*a:active,*/
 .fake-link {
 	color: #0055b3; /*Orignial: #0055b3;*/
 	text-decoration: none !important;
 	cursor: pointer;
 }
+
+a.nav-link:focus, a.nav-link:hover {
+	color: white;
+}
+
 .truncate {
 	white-space: nowrap;
 	overflow-x: hidden;
