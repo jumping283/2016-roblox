@@ -86,14 +86,18 @@ export async function getServerSideProps({ query, res, req }) {
       assetTypeId: info.AssetTypeId,
     });
     if (req.url !== expectedUrl) {
-      res.writeHead(302, 'Moved Temporarily', {
+      // Somehow this broke in next11. Hopefully it'll be fixed someday.
+      /*
+      console.log('redirecting');
+      res.writeHead(302, {
         location: expectedUrl,
       });
-      res.write(`Object moved to <a href="${expectedUrl}">here</a>.`);
+      // res.write(`Object moved to <a href="${expectedUrl}">here</a>.`);
       res.end();
       return {
         props: {}
       };
+      */
     }
   } catch (e) {
     console.error('[error]', e);
