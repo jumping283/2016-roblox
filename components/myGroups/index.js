@@ -14,7 +14,7 @@ import MyGroupsStore from "./stores/myGroupsStore";
 
 const useStyles = createUseStyles({
   groupsContainer: {
-    background: '#e3e3e3',
+    background: '#fff',
     padding: '10px 12px',
   }
 })
