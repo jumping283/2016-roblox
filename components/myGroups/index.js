@@ -38,15 +38,14 @@ const MyGroups = props => {
     if (props.id) {
       // TODO: get group
       groupPageStore.setGroupId(parseInt(props.id, 10));
+      getInfo({
+        groupId: props.id,
+      }).then(groupPageStore.setInfo);
       // check if exists
       let inCache = store.groups.find(v => v.group.id == props.id);
       if (inCache) {
-        groupPageStore.setInfo(inCache.group);
         groupPageStore.setRank(inCache.role);
       } else {
-        getInfo({
-          groupId: props.id,
-        }).then(groupPageStore.setInfo);
         getRoles({
           groupId: props.id
         }).then((d) => {
