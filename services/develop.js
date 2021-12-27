@@ -18,8 +18,8 @@ export const getCreatedItems = ({ assetType, limit, cursor }) => {
   return request('GET', getFullUrl('itemconfiguration', '/v1/creations/get-assets?assetType=' + assetType + '&limit=' + limit + '&cursor=' + encodeURIComponent(cursor))).then(assets => {
     console.log(assets.data.data)
     if (assets.data.data.length !== 0) {
-      return getCreatedAssetDetails(assets.data.data.map(v => v.id)).then(d => {
-        assets.data.data = d.data.sort((a, b) => a.id > b.id ? -1 : 1)
+      return getCreatedAssetDetails(assets.data.data.map(v => v.assetId)).then(d => {
+        assets.data.data = d.data.sort((a, b) => a.assetId > b.assetId ? -1 : 1)
         return assets.data;
       })
     }
