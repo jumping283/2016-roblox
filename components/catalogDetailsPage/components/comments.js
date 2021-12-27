@@ -8,6 +8,7 @@ import ActionButton from "../../actionButton";
 import CreatorLink from "../../creatorLink";
 import ReportAbuse from "../../reportAbuse";
 import PlayerImage from "../../playerImage";
+import getFlag from "../../../lib/getFlag";
 
 const useCreateCommentStyles = createUseStyles({
   createCommentTextArea: {
@@ -154,6 +155,7 @@ const Comments = (props) => {
   const [offset, setOffset] = useState(0);
   const [locked, setLocked] = useState(false);
   const [areMoreAvailable, setAreMoreAvailable] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const s = useCommentStyles();
 
   useEffect(() => {
@@ -164,6 +166,10 @@ const Comments = (props) => {
       assetId: props.assetId,
       offset,
     }).then(data => {
+      if (getFlag('commentsEndpointHasAreCommentsDisabledProp', false) && data.AreCommentsDisabled) {
+        setDisabled(true);
+        return;
+      }
       setAreMoreAvailable(data.Comments.length >= data.MaxRows)
       if (comments) {
         comments.Comments.reverse().forEach(v => {
@@ -173,6 +179,14 @@ const Comments = (props) => {
       setComments(data);
     })
   }, [props, offset]);
+
+  if (disabled) {
+    return <div className='row'>
+      <div className='col-12'>
+        <p className='mt-4 fw-600'>Comments are disabled for this item.</p>
+      </div>
+    </div>
+  }
 
   return <div className='row'>
     <div className='col-12 col-lg-9'>
