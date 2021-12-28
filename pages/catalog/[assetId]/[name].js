@@ -7,11 +7,10 @@ const Redirect = props => {
 export async function getServerSideProps({ query, res, req }) {
   const assetId = query['assetId'];
 
-  res.writeHead(302, 'Moved Temporarily', {
-    location: '/unnamed-item?id=' + assetId,
-  });
-  res.end();
   return {
+    redirect: {
+      destination: '/unnamed-item?id=' + assetId
+    },
     props: {}
   };
 

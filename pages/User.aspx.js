@@ -7,11 +7,10 @@ const UserPage = props => {
 
 export async function getServerSideProps({ query, res, req }) {
   const userId = query['ID'];
-  res.writeHead(302, 'Moved Temporarily', {
-    location: `/users/${userId}/profile`,
-  });
-  res.end();
   return {
+    redirect: {
+      destination: `/users/${userId}/profile`,
+    },
     props: {}
   };
 }

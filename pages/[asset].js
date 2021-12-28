@@ -87,17 +87,12 @@ export async function getServerSideProps({ query, res, req }) {
     });
     if (req.url !== expectedUrl) {
       // Somehow this broke in next11. Hopefully it'll be fixed someday.
-      /*
-      console.log('redirecting');
-      res.writeHead(302, {
-        location: expectedUrl,
-      });
-      // res.write(`Object moved to <a href="${expectedUrl}">here</a>.`);
-      res.end();
       return {
-        props: {}
+        redirect: {
+          destination: expectedUrl,
+        },
+        props: {},
       };
-      */
     }
   } catch (e) {
     console.error('[error]', e);
