@@ -9,6 +9,10 @@ export const login = ({ username, password }) => {
   });
 }
 
+export const logout = () => {
+  return request('POST', getFullUrl('auth', '/v2/logout'), {});
+}
+
 export const changePassword = ({ existingPassword, newPassword }) => {
   return request('POST', getFullUrl('auth', `/v2/user/passwords/change`), {
     currentPassword: existingPassword,
