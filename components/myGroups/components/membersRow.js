@@ -71,10 +71,10 @@ const MembersRow = props => {
       <div className='row'>
         {
           members && members.data && members.data.map(v => {
-            return <div className='col-2' key={v.user.userId}>
-              <a href={`/users/${v.user.userId}/profile`}>
-                <PlayerImage id={v.user.userId} name={v.user.username}></PlayerImage>
-                <p className='mb-0 text-left font-size-14'>{v.user.username}</p>
+            return <div className='col-2' key={v.userId}>
+              <a href={`/users/${v.userId}/profile`}>
+                <PlayerImage id={v.userId} name={v.username}></PlayerImage>
+                <p className='mb-0 text-left font-size-14'>{v.username}</p>
               </a>
             </div>
           })
