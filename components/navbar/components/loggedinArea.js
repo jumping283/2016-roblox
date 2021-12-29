@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
 import { abbreviateNumber } from "../../../lib/numberUtils";
+import { logout } from "../../../services/auth";
 import AuthenticationStore from "../../../stores/authentication";
 
 const useDropdownStyles = createUseStyles({
@@ -40,7 +41,9 @@ const SettingsDropdown = props => {
     <p className={`${s.text}`}>
       <a onClick={(e) => {
         e.preventDefault();
-        alert('Not implemented'); // TODO
+        logout().then(() => {
+          window.location.reload();
+        })
       }} className='text-dark'>Logout</a>
     </p>
   </div>
