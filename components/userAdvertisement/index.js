@@ -1,5 +1,13 @@
+import { createUseStyles } from "react-jss";
 import { getBaseUrl } from "../../lib/request";
 import { adTypes } from "./constants";
+
+const useStyles = createUseStyles({
+  frameWrapper: {
+    width: '100%',
+    height: 'auto',
+  },
+})
 
 /**
  * User advertisement iframe
@@ -8,7 +16,11 @@ import { adTypes } from "./constants";
 const UserAdvertisement = props => {
   const info = adTypes[props.type];
   if (!info) throw new Error(`unexpected adType: ${props.type}`);
-  return <iframe name='RobloxUserAdvertisement' allowTransparency={true} scrolling='no' src={`${getBaseUrl()}/user-sponsorship/${props.type}`} width={info.width} height={info.height} frameBorder={0}></iframe>
+
+  const s = useStyles();
+  return <div className={s.frameWrapper} style={{ height: info.height }}>
+    <iframe name='RobloxUserAdvertisement' scrolling='no' src={`${getBaseUrl()}/user-sponsorship/${props.type}`} frameBorder={0}></iframe>
+  </div>
 }
 
 export default UserAdvertisement;
