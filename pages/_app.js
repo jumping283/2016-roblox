@@ -12,6 +12,7 @@ import LoginModalStore from '../stores/loginModal';
 import AuthenticationStore from '../stores/authentication';
 import NavigationStore from '../stores/navigation';
 import { getTheme, themeType } from '../services/theme';
+import MainWrapper from '../components/mainWrapper';
 
 // @ts-ignore
 if (process.browser) {
@@ -63,7 +64,9 @@ function RobloxApp({ Component, pageProps }) {
           <Navbar></Navbar>
         </NavigationStore.Provider>
       </LoginModalStore.Provider>
-      <Component {...pageProps} />
+      <MainWrapper>
+        <Component {...pageProps} />
+      </MainWrapper>
       <Footer></Footer>
     </AuthenticationStore.Provider>
   </div>
