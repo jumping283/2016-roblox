@@ -30,6 +30,8 @@ const useNavBarStyles = createUseStyles({
   },
   wrapper: {
     marginBottom: '100px',
+    maxWidth: '100vw',
+    overflow: 'auto',
   },
 });
 
