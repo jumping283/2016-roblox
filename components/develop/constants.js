@@ -1,4 +1,5 @@
 import React from "react";
+import Ads from "./components/subPages/ads";
 import Clothing from "./components/subPages/clothing";
 import GamesSubPage from "./components/subPages/games";
 
@@ -61,8 +62,8 @@ const developerPages = [
   {
     id: 101,
     name: 'User Ads',
-    url: '/develop?view=101',
-    disabled: true,
+    url: '/develop?View=101',
+    element: () => <Ads></Ads>,
   },
   {
     id: 102,
