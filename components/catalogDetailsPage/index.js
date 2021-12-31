@@ -97,8 +97,10 @@ const CatalogDetails = props => {
 
   const hasItemToDeList = store.isResellable && store.allResellers && store.allResellers.find(v => v.seller.id === authStore.userId) !== undefined;
   const hasItemToSell = store.isResellable && store.ownedCopies && store.ownedCopies.filter(v => v.price === null || v.price === 0).length > 0;
+  const isCreator = store.details && store.details.creatorType == 'User' && store.details.creatorTargetId == authStore.userId; // todo: group support
   const showGear = hasItemToDeList ||
     hasItemToSell ||
+    isCreator ||
     (store.ownedCopies && store.ownedCopies.length > 0) // Collection stuff
 
   if (!store.details) return null;
@@ -134,6 +136,10 @@ const CatalogDetails = props => {
                       e.preventDefault();
                       store.setResaleModalOpen(true);
                     },
+                  },
+                  isCreator && {
+                    name: 'Advertise',
+                    url: 'My/CreateUserAd.aspx?targetId=' + props.details.id + '&targetType=asset',
                   },
                   store.inCollection ? {
                     name: 'Remove From Collection',
