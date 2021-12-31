@@ -32,7 +32,7 @@ const ActionButton = props => {
   const s = useBuyButtonStyles();
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  return <div>
+  return <div className={props.divClassName}>
     <button
       disabled={props.disabled}
       className={s.btn + ' ' + (props.className || s.defaultBg)}
