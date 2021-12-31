@@ -7,6 +7,9 @@ const useStyles = createUseStyles({
     width: '100%',
     height: 'auto',
   },
+  iframe: {
+    width: '100%',
+  },
 })
 
 /**
@@ -19,7 +22,7 @@ const UserAdvertisement = props => {
 
   const s = useStyles();
   return <div className={s.frameWrapper} style={{ height: info.height }}>
-    <iframe name='RobloxUserAdvertisement' scrolling='no' src={`${getBaseUrl()}/user-sponsorship/${props.type}`} frameBorder={0}></iframe>
+    <iframe className={s.iframe} name='RobloxUserAdvertisement' scrolling='no' src={`${getBaseUrl()}/user-sponsorship/${props.type}`} frameBorder={0}></iframe>
   </div>
 }
 
