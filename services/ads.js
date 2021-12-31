@@ -12,3 +12,10 @@ export const uploadAdvertisement = ({ file, name, targetId }) => {
 export const getAds = ({ creatorId }) => {
   return request('GET', getFullUrl('ads', '/v1/user-ads/User/' + creatorId)).then(d => d.data);
 }
+
+// Note: Endpoint is temporary until Roblox adds an ads.roblox.com "buy ads" endpoint
+export const bidOnAd = ({ adId, robux }) => {
+  return request('POST', getFullUrl('ads', '/v1/user-ads/' + adId + '/run'), {
+    robux,
+  })
+}
