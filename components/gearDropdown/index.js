@@ -43,11 +43,12 @@ const useStyles = createUseStyles({
   },
   boxDropdown: {
     background: 'rgb(224,224,224)',
-    position: 'relative',
+    position: 'absolute',
     width: '100px',
     top: '24px',
     right: '-13px',
     border: '1px solid #777777',
+    zIndex: 99,
   },
   boxDropdownEntry: {
     fontSize: '12px',
@@ -57,6 +58,9 @@ const useStyles = createUseStyles({
     },
     color: 'black',
     fontFamily: 'Arial,Helvetica,sans-serif',
+  },
+  container: {
+    position: 'relative',
   },
 });
 
@@ -70,7 +74,7 @@ const GearDropdown = props => {
   const s = useStyles();
   const [open, setOpen] = useState(false);
 
-  return <div>
+  return <div className={s.container}>
     <div className={s.box + ' ' + (open ? s.boxOpen : '')} onClick={() => {
       setOpen(!open);
     }}>
