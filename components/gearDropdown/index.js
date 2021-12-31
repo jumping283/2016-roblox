@@ -70,7 +70,8 @@ const useStyles = createUseStyles({
  * @returns 
  */
 const GearDropdown = props => {
-  const { boxDropdownRightAmount } = props;
+  // const { boxDropdownRightAmount } = props;
+  const boxDropdownRightAmount = 0;
   const s = useStyles();
   const [open, setOpen] = useState(false);
 
