@@ -69,7 +69,7 @@ const AssetEntry = props => {
     },
     !isAd && {
       name: 'Advertise',
-      url: `/user-ads/create?targetId=${props.assetId}&targetType=Asset`,
+      url: `/My/CreateUserAd.aspx?targetId=${props.assetId}&targetType=asset`,
     },
     isAd && {
       name: 'Run',
