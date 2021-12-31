@@ -1508,3 +1508,20 @@ div.GamesInfoIcon.RPG {
 .icon-online {
 	background-position: 0 -56px;
 }
+
+span.game-privacy-symbol {
+  padding-left: 18px;
+  font-size: 12px;
+  background-image: url("/img/ico-game_privacy.png");
+  background-repeat: no-repeat;
+  display: inline;
+  height: 15px;
+}
+
+span.game-privacy-symbol.gps-inactive {
+	background-position: 0 -45px;
+}
+
+span.game-privacy-symbol.gps-active {
+	background-position: 0 0;
+}
