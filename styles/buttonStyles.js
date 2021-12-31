@@ -10,6 +10,9 @@ const useButtonStyles = createUseStyles({
       background: 'linear-gradient(0deg, rgba(71,232,71,1) 0%, rgba(71,232,71,1) 100%)', // 47e847 02a101
     },
   },
+  normal: {
+    width: 'auto!important',
+  },
   cancelButton: {
     width: '100%',
     paddingTop: '5px',
