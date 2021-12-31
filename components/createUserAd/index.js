@@ -19,6 +19,9 @@ const useStyles = createUseStyles({
   inputLabel: {
     fontWeight: 600,
   },
+  createUserAdContainer: {
+    background: '#fff',
+  },
 });
 
 const templates = {
@@ -43,7 +46,7 @@ const CreateUserAd = props => {
   }
 
   if (props.targetType !== 'asset') return <p>TargetType is not supported</p>
-  return <div className='container'>
+  return <div className={'container ' + s.createUserAdContainer}>
     <div className='row'>
       <div className='col-12'>
         <h1 className={s.heading + ' ps-4'}>Create a User Ad</h1>
