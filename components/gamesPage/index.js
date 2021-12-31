@@ -102,7 +102,7 @@ const Games = props => {
               }
               existingGames[v.token] = true;
               let games = store.games && store.games[v.token] || null;
-              return <GameRow key={'row ' + v.token} title={v.displayName} games={games} icons={store.icons}></GameRow>
+              return <GameRow ads={true} key={'row ' + v.token} title={v.displayName} games={games} icons={store.icons}></GameRow>
             })}
           </div>
         </div>
