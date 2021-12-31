@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import SmallGameCard from "../../smallGameCard";
+import UserAdvertisement from "../../userAdvertisement";
 
 const useStyles = createUseStyles({
   title: {
@@ -66,7 +67,7 @@ const useStyles = createUseStyles({
 
 /**
  * A game row
- * @param {{title: string; games: any[]; icons: any}} props 
+ * @param {{title: string; games: any[]; icons: any; ads?: boolean;}} props 
  */
 const GameRow = props => {
   const s = useStyles();
@@ -92,7 +93,7 @@ const GameRow = props => {
     <div className='col-12'>
       <h3 className={s.title}>{props.title.toUpperCase()}</h3>
     </div>
-    <div className='col-12 col-lg-10'>
+    <div className='col-12 col-lg-9'>
       {offset !== 0 && <div className={s.goBack + ' ' + s.pagerButton} onClick={() => {
         setOffset(offset - limit);
       }}>
@@ -124,6 +125,7 @@ const GameRow = props => {
         }
       </div>
     </div>
+    {props.ads ? <div className='col-12 col-lg-3'><UserAdvertisement type={3}></UserAdvertisement></div> : null}
   </div>
 }
 
