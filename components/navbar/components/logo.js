@@ -35,7 +35,6 @@ const useLogoStyles = createUseStyles({
       float: 'left',
       height: '30px',
       width: '30px',
-      background: `url(/img/Unofficial/hamburger.png)`,
       cursor: 'pointer',
     },
   },
@@ -45,7 +44,7 @@ const Logo = () => {
   const navStore = NavigationStore.useContainer();
 
   return <div className={`${s.col} col-2 col-lg-2`}>
-    <div className={s.openSideNavMobile} onClick={() => {
+    <div className={s.openSideNavMobile + ' icon-menu'} onClick={() => {
       navStore.setIsSidebarOpen(!navStore.isSidebarOpen);
     }}></div>
     <div className={s.imgDesktop}></div>
