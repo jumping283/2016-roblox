@@ -2,7 +2,7 @@ const adTypes = {
   1: {
     name: 'Banner',
     width: 728,
-    height: 110,
+    height: 90,
   },
   2: {
     name: 'SkyScraper',
