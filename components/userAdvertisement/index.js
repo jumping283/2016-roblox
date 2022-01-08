@@ -29,6 +29,7 @@ const UserAdvertisement = props => {
   const [imageUrl, setImageUrl] = useState(null);
   const [link, setLink] = useState(null);
   const [title, setTitle] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const s = useStyles();
 
   // I HATE IFRAMES I HATE IFRAMES I HATE IFRAMES I HATE IFRAMES
@@ -56,13 +57,14 @@ const UserAdvertisement = props => {
     })
   }, []);
 
+  // TODO: calculate correct height of ad when current screen width is smaller than ad width. The height is way too big on mobile.
   if (!info) throw new Error(`unexpected adType: ${props.type}`);
   if (!imageUrl) {
     return <div style={{ width: '100%', height: info.height }}></div>
   }
-  return <div className={s.adWrapper}>
+  return <div className={s.adWrapper} style={imageLoaded ? undefined : { height: info.height, width: '100%' }}>
     <a href={link} title={title}>
-      <img src={imageUrl} className={s.adImage} style={{ maxWidth: info.width, maxHeight: info.height }}></img>
+      <img onLoad={() => { setImageLoaded(true) }} src={imageUrl} className={s.adImage} style={{ maxWidth: info.width, maxHeight: info.height }}></img>
     </a>
   </div>
 }
