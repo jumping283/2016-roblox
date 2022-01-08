@@ -15,9 +15,8 @@ export const getUserStatus = ({ userId }) => {
   return request('GET', baseUrl + '/v1/users/' + userId + '/status').then(d => d.data)
 }
 
-// 404? use this: https://users.roblox.com/docs#!/UserStatus/patch_v1_users_userId_status
-export const updateStatus = ({ newStatus }) => {
-  return request('POST', getBaseUrl() + '/home/updatestatus', {
+export const updateStatus = ({ newStatus, userId }) => {
+  return request('PATCH', getFullUrl('users', '/v1/users/' + userId + '/status'), {
     status: newStatus,
   }).then(d => d.data)
 }

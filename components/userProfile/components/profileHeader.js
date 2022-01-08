@@ -200,6 +200,7 @@ const ProfileHeader = props => {
                     setEditStatus(false);
                     updateStatus({
                       newStatus: v,
+                      userId: auth.userId,
                     })
                   }}>Update Status</p>
                 </div> : !store.status.status ? null : <p className={s.userStatus}>&quot;{store.status.status}&quot;</p>
