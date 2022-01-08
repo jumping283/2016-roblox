@@ -5,7 +5,7 @@ import { abbreviateNumber } from "../../../lib/numberUtils";
 import { followUser, unfollowUser } from "../../../services/friends";
 import { getGameUrl } from "../../../services/games";
 import { multiGetPresence } from "../../../services/presence";
-import { updateStatus } from "../../../services/users";
+import { getPreviousUsernames, updateStatus } from "../../../services/users";
 import AuthenticationStore from "../../../stores/authentication";
 import Dropdown2016 from "../../dropdown2016";
 import PlayerHeadshot from "../../playerHeadshot";
@@ -108,7 +108,6 @@ const ProfileHeader = props => {
 
   const [dropdownOptions, setDropdownOptions] = useState(null);
   const [editStatus, setEditStatus] = useState(false);
-
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
@@ -116,6 +115,7 @@ const ProfileHeader = props => {
     multiGetPresence({ userIds: [store.userId] }).then((d) => {
       setStatus(d[0]);
     })
+    getPreviousUsernames({ userId: store.userId }).then(store.setPreviousNames);
     const arr = [];
     const isOwnProfile = auth.userId == store.userId;
     if (isOwnProfile) {
