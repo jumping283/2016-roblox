@@ -3,6 +3,7 @@ import { createUseStyles } from "react-jss";
 import ReportAbuse from "../../reportAbuse";
 import UserProfileStore from "../stores/UserProfileStore";
 import useCardStyles from "../styles/card";
+import PreviousUsernames from "./previousUsernames";
 import Subtitle from "./subtitle";
 
 const useStyles = createUseStyles({
@@ -32,9 +33,16 @@ const Description = props => {
           {store.userInfo && store.userInfo.description}
         </p>
         <div className='divider-top me-4 ms-4'></div>
-        <div className={s.report + ' me-4'}>
-          <div className={s.reportWrapper}>
-            <ReportAbuse type='UserProfile' id={store.userId}></ReportAbuse>
+        <div className='row'>
+          <div className='col-6'>
+            <PreviousUsernames></PreviousUsernames>
+          </div>
+          <div className='col-6'>
+            <div className={s.report + ' me-4'}>
+              <div className={s.reportWrapper}>
+                <ReportAbuse type='UserProfile' id={store.userId}></ReportAbuse>
+              </div>
+            </div>
           </div>
         </div>
       </div>
