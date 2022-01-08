@@ -3,7 +3,7 @@ import { createContainer } from "unstated-next";
 import { getFollowersCount, getFollowingsCount, getFriends, getFriendStatus, isAuthenticatedUserFollowingUserId } from "../../../services/friends";
 import { getUserGames } from "../../../services/games";
 import { getUserGroups } from "../../../services/groups";
-import { getUserInfo, getUserStatus } from "../../../services/users";
+import { getPreviousUsernames, getUserInfo, getUserStatus } from "../../../services/users";
 
 const UserProfileStore = createContainer(() => {
   const [userId, setUserId] = useState(null);
@@ -29,7 +29,7 @@ const UserProfileStore = createContainer(() => {
     }).catch(e => {
       setLastError('InvalidUserId');
     });
-    // TODO: get previous names
+    getPreviousUsernames({ userId: userId }).then(setPreviousNames);
     getUserStatus({ userId }).then(setStatus);
     getFollowersCount({ userId }).then(setFollowersCount);
     getFollowingsCount({ userId }).then(setFollowingsCount);
