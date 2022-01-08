@@ -86,6 +86,7 @@ export async function getServerSideProps({ query, res, req }) {
       assetTypeId: info.AssetTypeId,
     });
     if (req.url !== expectedUrl) {
+      console.log('[info] asset redirect from', req.url, 'to', expectedUrl);
       // Somehow this broke in next11. Hopefully it'll be fixed someday.
       return {
         redirect: {
