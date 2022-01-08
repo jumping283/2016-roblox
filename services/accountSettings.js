@@ -4,6 +4,10 @@ export const getMySettingsJson = () => {
   return request('GET', getBaseUrl() + '/my/settings/json').then(d => d.data);
 }
 
+export const getMyEmail = () => {
+  return request('GET', getFullUrl('accountsettings', '/v1/email')).then(d => d.data);
+}
+
 export const getInventoryPrivacy = () => {
   return request('GET', getFullUrl('accountsettings', '/v1/inventory-privacy')).then(d => d.data.inventoryPrivacy);
 }
