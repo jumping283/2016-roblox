@@ -57,6 +57,8 @@ const UserProfileStore = createContainer(() => {
     setStatus,
 
     previousNames,
+    setPreviousNames,
+
     followersCount,
     setFollowersCount,
     followingsCount,
