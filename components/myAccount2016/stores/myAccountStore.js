@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createContainer } from "unstated-next";
-import { getMySettingsJson } from "../../../services/accountSettings";
+import { getMyEmail, getMySettingsJson } from "../../../services/accountSettings";
 
 /**
  * @type {null | 'CHANGE_EMAIL' | 'CHANGE_PASSWORD' | 'CHANGE_USERNAME' | 'MODAL_OK'}
@@ -23,9 +23,9 @@ const MyAccountStore = createContainer(() => {
   const [modalMessage, setModalMessage] = useState(null);
 
   useEffect(() => {
-    getMySettingsJson().then(d => {
-      setEmail(d.UserEmail);
-      if (d.UserEmailVerified) {
+    getMyEmail().then(d => {
+      setEmail(d.emailAddress);
+      if (d.verified) {
         setEmailVerified(2);
       } else {
         setEmailVerified(1);
