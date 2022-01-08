@@ -16,6 +16,7 @@ const useStyles = createUseStyles({
   groupsContainer: {
     background: '#fff',
     padding: '10px 12px',
+    minWidth: '970px',
   }
 })
 
@@ -64,7 +65,7 @@ const MyGroups = props => {
 
   return <div className={'container ' + s.groupsContainer}>
     <div className='row'>
-      <div className='col-12 col-md-3'>
+      <div className='col-3'>
         <SideBar></SideBar>
       </div>
       <div className={groupCol}>
