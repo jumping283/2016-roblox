@@ -32,9 +32,9 @@ const UserProfile = props => {
   }, [props]);
 
   useEffect(() => {
-    if (auth.isPending || !auth.userId) return;
+    if (auth.isPending || !auth.userId || !store.userId) return;
     store.getFriendStatus(auth.userId);
-  }, [store.userId, auth.userId]);
+  }, [store.userId, auth.userId, auth.isPending]);
 
   if (!store.userId || !store.userInfo || auth.isPending) {
     return null;
