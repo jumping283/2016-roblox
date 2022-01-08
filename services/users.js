@@ -20,3 +20,14 @@ export const updateStatus = ({ newStatus, userId }) => {
     status: newStatus,
   }).then(d => d.data)
 }
+
+export const getPreviousUsernames = async ({ userId }) => {
+  let cursor = '';
+  let names = [];
+  do {
+    let results = await request('GET', getFullUrl('users', '/v1/users/' + userId + '/username-history?limit=100&cursor=' + encodeURIComponent(cursor)));
+    results.data.data.forEach(v => names.push(v.name));
+    cursor = results.data.nextPageCursor;
+  } while (cursor !== null);
+  return names;
+}
