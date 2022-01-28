@@ -1,7 +1,34 @@
 const axios = require('axios').default;
 import getConfig from 'next/config';
+import { fromUrl, parseDomain, ParseResultType } from 'parse-domain';
+import { getBaseUrl } from '../../lib/request';
+const UrlUtilities = (() => {
+  const getDomainFromUrl = (url) => {
+    const baseDomainParsed = parseDomain(fromUrl(url));
+    if (baseDomainParsed.type === ParseResultType.Listed) {
+      return baseDomainParsed.domain + '.' + baseDomainParsed.topLevelDomains.join('.');
+    } else if (baseDomainParsed.type === ParseResultType.Ip) {
+      return baseDomainParsed.hostname;
+    } else {
+      throw new Error('Unsupported domain type: ' + baseDomainParsed.type);
+    }
+  }
+  const baseWithDomainAndTld = getDomainFromUrl(getBaseUrl()).toLowerCase();
+
+  return {
+    isSafe: (rawUrl) => {
+      const parsedWithDomainAndTld = getDomainFromUrl(rawUrl).toLowerCase();
+      return parsedWithDomainAndTld === baseWithDomainAndTld;
+    },
+  }
+})();
 
 const actualHandler = async (req, res) => {
+  const fullUrl = req.query.url;
+  // Right now we just validate the URL. 
+  // A safer approach might be to just send the parts of the URL (query params, path, api site) to this handler, then construct the correct URL here.
+  const isUrlSafe = UrlUtilities.isSafe(fullUrl);// typeof fullUrl === 'string' && fullUrl.toLowerCase().startsWith(getBaseUrl())
+
   if (getConfig().publicRuntimeConfig.backend.proxyEnabled !== true) {
     return res.status(500).json({
       success: false,
@@ -21,16 +48,14 @@ const actualHandler = async (req, res) => {
       }
       requestHeaders[key] = req.headers[key];
     }
-    console.log('[info] send request');
     const result = await axios.request({
       method: req.method,
-      url: req.query.url,
+      url: fullUrl,
       data: req.body,
       maxRedirects: 0,
       headers: requestHeaders,
       validateStatus: () => true,
     });
-    console.log('[info] request sent')
     for (const item of Object.getOwnPropertyNames(result.headers)) {
       let value = result.headers[item];
       if (item === 'set-cookie') {
@@ -58,13 +83,15 @@ const actualHandler = async (req, res) => {
 }
 
 export default function handler(req, res) {
-  let chunks = []
-  req.on('data', function (chunk) {
-    chunks.push(chunk);
-  })
-  req.on('end', function () {
-    req.body = Buffer.concat(chunks);
-    actualHandler(req, res);
+  return new Promise((resolve, reject) => {
+    let chunks = []
+    req.on('data', function (chunk) {
+      chunks.push(chunk);
+    })
+    req.on('end', function () {
+      req.body = Buffer.concat(chunks);
+      actualHandler(req, res).then(() => resolve()).catch(e => reject(e));
+    })
   })
 
 }
