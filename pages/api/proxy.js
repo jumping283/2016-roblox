@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 const axios = require('axios').default;
 import getConfig from 'next/config';
 
@@ -15,6 +14,7 @@ const actualHandler = async (req, res) => {
       'x-csrf-token': req.headers['x-csrf-token'] || '',
       'user-agent': req.headers['user-agent'],
     }
+    // TODO: whitelisted headers might be safer...
     for (const key in req.headers) {
       if (key === 'host' || key === 'conneciton' || key === 'accept-encoding' || key === 'host') {
         continue;
@@ -46,7 +46,7 @@ const actualHandler = async (req, res) => {
       res.setHeader(item, value);
     }
     res.status(result.status);
-    res.json(result.data);
+    res.send(result.data);
     res.end();
   } catch (e) {
     console.error(e);
