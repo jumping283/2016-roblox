@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { logger } from "../../../lib/logger";
+import { getUrlWithProxy } from "../../../lib/request";
 import { getBaseUrl } from "../../../lib/request";
 
 const css = `
@@ -49,11 +51,13 @@ li.list-item {
 
 const MyFeed = props => {
   const [height, setHeight] = useState('auto');
+  // TODO: would a flag be better? I guess automatically guessing is more convenient...
+  const shouldProxyRequest = getBaseUrl().startsWith(window.location.protocol + '//' + window.location.hostname) === false;
+  const feedFrameUrl = shouldProxyRequest ? (getUrlWithProxy(getBaseUrl() + '/Feeds/GetUserFeed')) : getBaseUrl() + '/Feeds/GetUserFeed';
 
-  if (getBaseUrl().startsWith(window.location.protocol + '//' + window.location.hostname) === false) return null;
   return <div>
-    <iframe id='homepage-iframe-feed' height='100%' scrolling='no' style={{ width: '100%', height: height, overflow: 'hidden' }} src={getBaseUrl() + '/Feeds/GetUserFeed'} onLoad={() => {
-      console.log('[info] feed iframe loaded');
+    <iframe id='homepage-iframe-feed' height='100%' scrolling='no' style={{ width: '100%', height: height, overflow: 'hidden' }} src={feedFrameUrl} onLoad={() => {
+      logger.info('feed', 'feed iframe loaded');
       // @ts-ignore
       const current = document.getElementById('homepage-iframe-feed');
       // @ts-ignore
