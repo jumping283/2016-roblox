@@ -4,6 +4,8 @@ import CatalogDetailsPage from "../components/catalogDetailsPage/stores/catalogD
 import CatalogDetailsPageModal from "../components/catalogDetailsPage/stores/catalogDetailsPageModal";
 import GameDetails from "../components/gameDetails";
 import GameDetailsStore from "../components/gameDetails/stores/gameDetailsStore";
+import getFlag from "../lib/getFlag";
+import { logger } from "../lib/logger";
 import redirectIfNotEqual from "../lib/redirectIfNotEqual";
 import { getItemDetails, getProductInfoLegacy, itemNameToEncodedName } from "../services/catalog";
 import { getGameUrl } from "../services/games";
@@ -79,27 +81,31 @@ export async function getServerSideProps({ query, res, req }) {
   let info;
   try {
     info = await getProductInfoLegacy(assetId);
-
-    const expectedUrl = getUrlForAssetType({
-      assetId: info.AssetId,
-      name: info.Name,
-      assetTypeId: info.AssetTypeId,
-    });
-    if (req.url !== expectedUrl) {
-      console.log('[info] asset redirect from', req.url, 'to', expectedUrl);
-      // Somehow this broke in next11. Hopefully it'll be fixed someday.
-      return {
-        redirect: {
-          destination: expectedUrl,
-        },
-        props: {},
-      };
+    // Redirection seems to break every few nextjs updates but I can't figure out why.
+    if (getFlag('assetRedirectsEnabled', true)) {
+      const expectedUrl = getUrlForAssetType({
+        assetId: info.AssetId,
+        name: info.Name,
+        assetTypeId: info.AssetTypeId,
+      });
+      if (req.url !== expectedUrl) {
+        logger.info('redirects', 'asset redirect from', req.url, 'to', expectedUrl);
+        return {
+          redirect: {
+            destination: expectedUrl,
+          },
+          props: {},
+        };
+      }
     }
   } catch (e) {
-    console.error('[error]', e);
-    return {
-      notFound: true,
+    if (e.response && (e.response.status === 404 || e.response.status === 400)) {
+      return {
+        notFound: true,
+      }
     }
+    // todo: we need a better error handling mechanism...
+    throw e;
   }
   return {
     props: {
