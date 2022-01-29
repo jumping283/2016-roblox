@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+import axios from 'axios';
 import getConfig from 'next/config';
 import { fromUrl, parseDomain, ParseResultType } from 'parse-domain';
 import { getBaseUrl } from '../../lib/request';
@@ -103,4 +103,8 @@ export const config = {
   api: {
     bodyParser: false,
   },
+}
+
+export {
+  UrlUtilities,
 }
