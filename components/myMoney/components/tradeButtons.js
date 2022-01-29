@@ -31,6 +31,7 @@ const TradeButtons = props => {
   const canDecline = canAccept || trade.user.id === auth.userId;
   const canCounter = canAccept;
   const canOk = !canAccept;
+  const labelDecline = canAccept ? 'Decline' : 'Cancel';
 
   return <div className='row mt-4'>
     <div className='col-8 offset-2'>
@@ -59,7 +60,7 @@ const TradeButtons = props => {
           }}></ActionButton>
         </div>}
         {canDecline && <div className={'col-4 mx-auto'}>
-          <ActionButton label='Decline' className={buttonStyles.cancelButton + ' ' + s.acceptButton} onClick={() => {
+          <ActionButton label={labelDecline} className={buttonStyles.cancelButton + ' ' + s.acceptButton} onClick={() => {
             tradeStore.setFeedback(null);
             tradeStore.setSelectedTrade(null);
             declineTrade({
