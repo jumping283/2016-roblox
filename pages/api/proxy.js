@@ -36,11 +36,14 @@ const actualHandler = async (req, res) => {
   }
   try {
     let requestHeaders = {
-      authorization: getConfig().serverRuntimeConfig.backend.authorization,
       cookie: req.headers['cookie'] || '',
       'x-csrf-token': req.headers['x-csrf-token'] || '',
       'user-agent': req.headers['user-agent'],
     }
+    const authHeaderValue = getConfig().serverRuntimeConfig.backend.authorization;
+    if (typeof authHeaderValue === 'string')
+      requestHeaders[config.serverRuntimeConfig.backend.authorizationHeader || 'authorization'] = authHeaderValue;
+
     // TODO: whitelisted headers might be safer...
     for (const key in req.headers) {
       if (key === 'host' || key === 'conneciton' || key === 'accept-encoding' || key === 'host') {
