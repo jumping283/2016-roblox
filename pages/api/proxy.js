@@ -29,7 +29,7 @@ const actualHandler = async (req, res) => {
   // A safer approach might be to just send the parts of the URL (query params, path, api site) to this handler, then construct the correct URL here.
   const isUrlSafe = UrlUtilities.isSafe(fullUrl);// typeof fullUrl === 'string' && fullUrl.toLowerCase().startsWith(getBaseUrl())
 
-  if (getConfig().publicRuntimeConfig.backend.proxyEnabled !== true) {
+  if (getConfig().publicRuntimeConfig.backend.proxyEnabled !== true || !isUrlSafe) {
     return res.status(500).json({
       success: false,
     });
