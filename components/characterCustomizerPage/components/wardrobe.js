@@ -17,6 +17,104 @@ const creatableAssets = [
   12, // Pants
 ];
 
+const wardrobeItems = [
+  {
+    label: null,
+    categories: [
+      {
+        id: 17,
+        name: 'Heads',
+      },
+      {
+        id: 18,
+        name: 'Faces',
+      },
+      {
+        id: 2,
+        name: 'T-Shirts',
+      },
+      {
+        id: 11,
+        name: 'Shirts',
+      },
+      {
+        id: 12,
+        name: 'Pants',
+      },
+      {
+        id: 19,
+        name: 'Gear',
+      },
+    ]
+  },
+  {
+    label: 'Accessories',
+    categories: [
+      {
+        id: 8,
+        name: 'Hats',
+      },
+      {
+        id: 41,
+        name: 'Hair',
+      },
+      {
+        id: 42,
+        name: 'Face',
+      },
+      {
+        id: 43,
+        name: 'Neck',
+      },
+      {
+        id: 44,
+        name: 'Shoulder',
+      },
+      {
+        id: 45,
+        name: 'Front',
+      },
+      {
+        id: 46,
+        name: 'Back',
+      },
+      {
+        id: 47,
+        name: 'Waist',
+      }
+    ],
+  },
+  {
+    label: null,
+    categories: [
+      {
+        id: 27,
+        name: 'Torsos',
+      },
+      {
+        id: 29,
+        name: 'L Arms',
+      },
+      {
+        id: 28,
+        name: 'R Arms',
+      },
+      {
+        id: 30,
+        name: 'L Legs',
+      },
+      {
+        id: 31,
+        name: 'R Legs',
+      },
+      {
+        id: 32,
+        name: 'Packages',
+      }
+    ]
+  }
+];
+
 
 const useWardrobeStyles = createUseStyles({
   categoryEntry: {
@@ -88,38 +186,22 @@ const Wardrobe = props => {
     }).finally(() => {
       setLocked(false);
     })
-  }, [cursor, category])
+  }, [cursor, category]);
 
   return <div className='row'>
     <div className='col-12'>
       <div className={s.categoryWrapper}>
-        <p className={s.categoryEntry}>
-          <Category id={17}>Heads</Category>
-          <Category id={18}>Faces</Category>
-          <Category id={2}>T-Shirts</Category>
-          <Category id={11}>Shirts</Category>
-          <Category id={12}>Pants</Category>
-          <Category id={19} last={true}>Gear</Category>
-        </p>
-        <p className={s.categoryEntry}>
-          <span>Accessories: </span>
-          <Category id={8}>Hats</Category>
-          <Category id={41}>Hair</Category>
-          <Category id={42}>Face</Category>
-          <Category id={43}>Neck</Category>
-          <Category id={44}>Shoulder</Category>
-          <Category id={45}>Front</Category>
-          <Category id={46}>Back</Category>
-          <Category id={47} last={true}>Waist</Category>
-        </p>
-        <p className={s.categoryEntry}>
-          <Category id={27}>Torsos</Category>
-          <Category id={29}>L Arms</Category>
-          <Category id={28}>R Arms</Category>
-          <Category id={30}>L Legs</Category>
-          <Category id={31}>R Legs</Category>
-          <Category id={32} last={true}>Packages</Category>
-        </p>
+        {wardrobeItems.map(entry => {
+          return <p className={s.categoryEntry}>
+            {entry.label ? <span className={s.categoryEntry}>{entry.label}</span> : null}
+            {
+              entry.categories.map((cat, idx, arr) => {
+                let isLast = idx === (cat.length - 1);
+                return <Category key={cat} id={cat.id} last={isLast}>{cat.name}</Category>
+              })
+            }
+          </p>
+        })}
         <p className={s.categoryEntry}>
           <a href='/catalog'>Shop</a>
           {creatableAssets.includes(category.id) && <span>| <a href='/test'>Create</a></span>}
