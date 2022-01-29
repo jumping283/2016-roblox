@@ -6,6 +6,8 @@ import { getTheme, setTheme } from "../../../services/theme";
 import AuthenticationStore from "../../../stores/authentication";
 import useCardStyles from "../../userProfile/styles/card";
 import MyAccountStore from "../stores/myAccountStore"
+import useFormStyles from "../styles/forms";
+import GenderSelection from "./genderSelection";
 import Subtitle from "./subtitle";
 
 const useEditButtonStyles = createUseStyles({
@@ -21,62 +23,13 @@ const EditButton = (props) => {
   return <span className={s.editButton} onClick={props.onClick}>Edit</span>
 }
 
-const useStyles = createUseStyles({
-  accountInfoLabel: {
-    marginBottom: '6px',
-    color: '#c3c3c3',
-    fontSize: '15px',
-  },
-  accountInfoValue: {
-    color: '#666',
-  },
-  descInput: {
-    width: '100%',
-    borderRadius: '4px',
-    padding: '6px 8px',
-    border: '1px solid #c3c3c3',
-  },
-  select: {
-    borderRadius: '2px',
-    fontSize: '16px',
-  },
-  disabled: {
-    background: 'white!important',
-    color: '#c3c3c3',
-    '&:focus': {
-      color: '#c3c3c3',
-      boxShadow: 'none',
-    },
-  },
-  fakeInput: {
-    height: '100%',
-    overflow: 'hidden',
-  },
-  saveButtonWrapper: {
-    float: 'right',
-    marginTop: '16px',
-  },
-  saveButton: {
-    background: 'white',
-    border: '1px solid #c3c3c3',
-    borderRadius: '4px',
-    fontSize: '16px',
-    padding: '4px 8px',
-    cursor: 'pointer',
-  },
-  genderUnselected: {
-    color: '#c3c3c3',
-    cursor: 'pointer',
-  },
-});
-
 const AccountInfo = props => {
   const store = MyAccountStore.useContainer();
   const auth = AuthenticationStore.useContainer();
   const descRef = useRef(null);
 
   const cardStyles = useCardStyles();
-  const s = useStyles();
+  const s = useFormStyles();
   return <div className='row'>
     <div className='col-12 mt-2'>
       <Subtitle>Account Info</Subtitle>
@@ -139,20 +92,8 @@ const AccountInfo = props => {
             <div className='col pe-0'>
               <input className={'form-control ' + s.select + ' ' + s.disabled} value='Gender' readOnly={true} type='text'></input>
             </div>
-            <div className='col ps-0 pe-0'>
-              <div className={'card ' + s.fakeInput}>
-                <p className={'text-center mb-2 mt-2 ' + (store.gender !== 2 ? s.genderUnselected : '')} onClick={() => {
-                  store.setGender(2);
-                }}>Male</p>
-              </div>
-            </div>
-            <div className='col ps-0'>
-              <div className={'card ' + s.fakeInput}>
-                <p className={'text-center mb-2 mt-2 ' + (store.gender !== 3 ? s.genderUnselected : '')} onClick={() => {
-                  store.setGender(3);
-                }}>Female</p>
-              </div>
-            </div>
+            <GenderSelection id={2} displayName='Male'></GenderSelection>
+            <GenderSelection id={3} displayName='Female'></GenderSelection>
           </div>
         </div>
         <div className='mt-1 mb-4'>
