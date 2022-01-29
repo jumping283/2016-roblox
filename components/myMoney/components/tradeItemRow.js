@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createUseStyles } from "react-jss";
 import { itemNameToEncodedName } from "../../../services/catalog";
+import Robux from '../../robux';
 import ItemImage from "../../itemImage";
 
 const useTradeItemStyles = createUseStyles({
@@ -14,14 +15,14 @@ const useTradeItemStyles = createUseStyles({
   },
   expandedCol: {
     transform: 'scale(1.3)',
-    height: '150px',
+    height: '125px',
     zIndex: 200,
     background: 'white',
     marginBottom: '-50px',
   },
   itemName: {
-    height: '29px',
-    lineHeight: '1.1',
+    height: 'auto',
+    lineHeight: '1',
     overflow: 'hidden',
     fontSize: '12px',
     textAlign: 'center',
@@ -29,6 +30,15 @@ const useTradeItemStyles = createUseStyles({
   expandedItemName: {
     fontSize: '9px',
   },
+  imageWrapper: {
+    width: '80px',
+    height: '80px',
+    margin: '0 auto',
+    display: 'block',
+  },
+})
+
+const useTradeLabelStyles = createUseStyles({
   rapText: {
     fontSize: '8px',
     fontWeight: 700,
@@ -41,16 +51,29 @@ const useTradeItemStyles = createUseStyles({
     color: '#060',
     letterSpacing: -0.1,
   },
-  imageWrapper: {
-    width: '80px',
-    height: '80px',
-    margin: '0 auto',
-    display: 'block',
+  robuxWrapper: {
+    display: 'inline',
   },
-})
+  robuxIcon: {
+    height: '8px',
+    width: '12px',
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    margin: '0 0 0 4px',
+  },
+  serialText: {
+    marginTop: '-14px',
+  },
+});
+
+const TradeLabelWithRobux = props => {
+  const s = useTradeLabelStyles();
+  return <p className={s.rapText}>{props.name} <img className={s.robuxIcon} src='/img/img-robux.png' /> {props.amount || '-'}</p>;
+}
 
 const TradeItem = props => {
   const s = useTradeItemStyles();
+  const labelStyles = useTradeLabelStyles();
   const [expanded, setExpanded] = useState(null);
 
   return <div className={expanded ? s.expandedCol + ' ' + s.col : s.col} onMouseEnter={() => {
@@ -59,7 +82,7 @@ const TradeItem = props => {
   }} onMouseLeave={() => {
     setExpanded(false);
   }}>
-    {props.name && <p className={`${s.itemName} ${expanded ? s.expandedItemName : ''} mb-0 ps-1 pe-1`}>
+    {props.name && <p className={`text-truncate ${s.itemName} ${expanded ? s.expandedItemName : ''} mb-0 ps-1 pe-1`}>
       <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.assetId}`}>
         {props.name}
       </a>
@@ -69,9 +92,9 @@ const TradeItem = props => {
       {props.robux && <img src='/img/test.png' alt='Robux Image'></img>}
       {props.assetId && <ItemImage className='pt-1' id={props.assetId}></ItemImage>}
     </div>
-    {expanded && props.serialNumber && <p className={s.rapText}>#{props.serialNumber}/{props.assetStock || '-'}</p>}
-    {expanded && <p className={s.rapText}>Avg. Price: <span className={s.robux}>${props.recentAveragePrice}</span></p>}
-    {expanded && <p className={s.rapText}>Orig. Price: <span className={s.robux}>${props.originalPrice || '-'}</span></p>}
+    {expanded && props.serialNumber && <p className={labelStyles.rapText + ' ' + labelStyles.serialText}>#{props.serialNumber}/{props.assetStock || '-'}</p>}
+    {expanded && <TradeLabelWithRobux name='Avg. Price: ' amount={props.recentAveragePrice}></TradeLabelWithRobux>}
+    {expanded && <TradeLabelWithRobux name='Orig. Price: ' amount={props.originalPrice}></TradeLabelWithRobux>}
   </div>
 }
 
