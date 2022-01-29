@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { createUseStyles } from "react-jss";
 import { getGameUrl } from "../../../services/games";
 import PlayerImage from "../../playerImage";
+import Activity from "../../userActivity";
 import DashboardStore from "../stores/dashboardStore";
 
 const useStyles = createUseStyles({
@@ -33,6 +34,12 @@ const useStyles = createUseStyles({
     fontWeight: 500,
     color: '#4a4a4a',
   },
+  activityWrapper: {
+    float: 'right',
+    marginTop: '-26px',
+    zIndex: 2,
+    position: 'relative',
+  },
 });
 const FriendEntry = props => {
   const store = DashboardStore.useContainer();
@@ -43,45 +50,10 @@ const FriendEntry = props => {
       <div className={s.thumbnailWrapper}>
         <PlayerImage id={props.id} name={props.name}></PlayerImage>
       </div>
-      {onlineStatus && <Activity {...onlineStatus}></Activity>}
+      {onlineStatus && <div className={s.activityWrapper}><Activity {...onlineStatus}></Activity></div>}
       <p className={s.username}>{props.name}</p>
     </a>
   </div>
-}
-
-const useActivityStyles = createUseStyles({
-  activity: {
-    position: 'relative',
-    marginTop: '-25px',
-    marginLeft: '55px',
-    zIndex: 99,
-  },
-});
-
-const Activity = props => {
-  const s = useActivityStyles();
-  const activity = props.lastLocation;
-  const online = dayjs(props.lastOnline).isAfter(dayjs().subtract(5, 'minutes'));
-  if (!online) return null;
-  if (activity === 'Playing') {
-    return <div className={s.activity}>
-      <a href={getGameUrl({
-        placeId: props.placeId,
-        name: '-',
-      })}>
-        <span className='avatar-status friend-status icon-game' title='Playing'></span>
-      </a>
-    </div>
-  } else if (activity === 'Website') {
-    return <div className={s.activity}>
-      <span className='avatar-status friend-status icon-online' title='Website'></span>
-    </div>
-  } else if (activity === 'Studio') {
-    return <div className={s.activity}>
-      <span className='avatar-status friend-status icon-studio' title='Developing'></span>
-    </div>
-  }
-  return null;
 }
 
 export default FriendEntry;

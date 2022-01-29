@@ -10,45 +10,12 @@ import AuthenticationStore from "../../../stores/authentication";
 import Dropdown2016 from "../../dropdown2016";
 import PlayerHeadshot from "../../playerHeadshot";
 import PlayerImage from "../../playerImage";
+import Activity from "../../userActivity";
 import UserProfileStore from "../stores/UserProfileStore";
 import useCardStyles from "../styles/card";
 import FriendButton from "./friendButton";
 import MessageButton from "./messageButton";
 import RelationshipStatistics from "./relationshipStatistics";
-
-const useActivityStyles = createUseStyles({
-  activity: {
-    position: 'absolute',
-    marginTop: '-22px',
-    marginLeft: '85px',
-  },
-});
-
-const Activity = props => {
-  const s = useActivityStyles();
-  const activity = props.lastLocation;
-  const online = dayjs(props.lastOnline).isAfter(dayjs().subtract(5, 'minutes'));
-  if (!online) return null;
-  if (activity === 'Playing') {
-    return <div className={s.activity}>
-      <a href={getGameUrl({
-        placeId: props.placeId,
-        name: '-',
-      })}>
-        <span className='avatar-status friend-status icon-game' title='Playing'></span>
-      </a>
-    </div>
-  } else if (activity === 'Website') {
-    return <div className={s.activity}>
-      <span className='avatar-status friend-status icon-online' title='Website'></span>
-    </div>
-  } else if (activity === 'Studio') {
-    return <div className={s.activity}>
-      <span className='avatar-status friend-status icon-studio' title='Developing'></span>
-    </div>
-  }
-  return null;
-}
 
 const useHeaderStyles = createUseStyles({
   iconWrapper: {
@@ -79,6 +46,12 @@ const useHeaderStyles = createUseStyles({
     cursor: 'pointer',
     marginTop: '2px',
     fontSize: '12px',
+  },
+  activityWrapper: {
+    position: "relative",
+    float: 'right',
+    marginRight: '-10px',
+    marginTop: '-18px',
   },
 });
 
@@ -163,7 +136,7 @@ const ProfileHeader = props => {
             <div className='col-12 col-lg-2 pe-0'>
               <div className={s.iconWrapper}>
                 <PlayerHeadshot id={store.userId} name={store.username}></PlayerHeadshot>
-                {status && <Activity {...status}></Activity>}
+                {status && <div className={s.activityWrapper}><Activity relative={false} {...status}></Activity></div>}
               </div>
             </div>
             <div className='col-12 col-lg-10 ps-0'>
