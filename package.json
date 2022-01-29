@@ -10,6 +10,14 @@
     "lint": "next lint"
   },
   "jest": {
+    "transform": {
+      "\\.js$": [
+        "babel-jest",
+        {
+          "configFile": "./babel.config-test.js"
+        }
+      ]
+    },
     "setupFilesAfterEnv": [
       "./setupTests.js"
     ],
