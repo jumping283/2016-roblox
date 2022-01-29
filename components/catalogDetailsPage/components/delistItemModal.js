@@ -6,6 +6,7 @@ import ActionButton from '../../actionButton';
 import OldModal from '../../oldModal';
 import CatalogDetailsPage from '../stores/catalogDetailsPage';
 import ItemImage from '../../itemImage';
+import SelectUserAsset from './selectUserAsset';
 
 const useModalStyles = createUseStyles({
   inlineSelect: {
@@ -37,20 +38,7 @@ const DelistItemModal = props => {
       </div>
       <div className='col-9 mt-4'>
         {delistable.length > 1 &&
-          <div className={s.inlineRow}>
-            <div className={s.inlineSelect}>
-              <p className='mb-0'>Serial Number:</p>
-            </div>
-            <div className={s.inlineSelect}>
-              <select disabled={locked} className={s.select} value={toSell || delistable[0].userAssetId} onChange={(nv) => {
-                setToSell(parseInt(nv.currentTarget.value, 10));
-              }}>
-                {delistable.map(v => {
-                  return <option key={v.userAssetId} value={v.userAssetId}>{v.serialNumber || 'N/A'}</option>
-                })}
-              </select>
-            </div>
-          </div>
+          <SelectUserAsset selected={toSell} setSelected={setToSell} userAssets={delistable} locked={locked}></SelectUserAsset>
         }
         <p className='mb-0'>Are you sure you want to take this item off sale?</p>
       </div>
