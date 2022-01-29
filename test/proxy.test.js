@@ -1,6 +1,3 @@
-import rt from 'regenerator-runtime/runtime';
-global.regeneratorRuntime = rt;
-
 import { expect } from "chai";
 jest.mock('next/config', () => () => ({
   publicRuntimeConfig: {
