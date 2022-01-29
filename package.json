@@ -6,7 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "./node_modules/.bin/jest",
     "lint": "next lint"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./setupTests.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!parse-domain)/"
+    ]
   },
   "dependencies": {
     "axios": "^0.21.4",
@@ -22,6 +31,23 @@
     "unstated-next": "^1.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.12",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/register": "^7.16.9",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "chai": "^4.3.6",
+    "cross-env": "^7.0.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "jest": "^27.4.7",
+    "regenerator-runtime": "^0.13.9",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.8",
+    "@types/jest": "^27.4.0",
+    "babel": "^6.23.0",
+    "babel-jest": "^27.4.6",
     "eslint": "7.32.0",
     "eslint-config-next": "11.0.1",
     "expose-loader": "^3.0.0"
