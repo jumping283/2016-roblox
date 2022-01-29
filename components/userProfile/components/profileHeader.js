@@ -14,6 +14,7 @@ import UserProfileStore from "../stores/UserProfileStore";
 import useCardStyles from "../styles/card";
 import FriendButton from "./friendButton";
 import MessageButton from "./messageButton";
+import RelationshipStatistics from "./relationshipStatistics";
 
 const useActivityStyles = createUseStyles({
   activity: {
@@ -62,25 +63,6 @@ const useHeaderStyles = createUseStyles({
   userStatus: {
     fontSize: '16px',
     fontWeight: 300,
-  },
-  statHeader: {
-    color: '#c3c3c3',
-    fontWeight: 400,
-    marginBottom: 0,
-    textAlign: 'center',
-    fontSize: '18px',
-  },
-  statValue: {
-    fontWeight: 300,
-    marginBottom: 0,
-    textAlign: 'center',
-    fontSize: '20px',
-    '&> a': {
-      color: '#00A2FF',
-      '&:hover': {
-        textDecoration: 'underline!important',
-      }
-    }
   },
   dropdown: {
     float: 'right',
@@ -205,30 +187,9 @@ const ProfileHeader = props => {
                 </div> : !store.status.status ? null : <p className={s.userStatus}>&quot;{store.status.status}&quot;</p>
               ) || <p>&emsp;</p>}
               <div className='row'>
-                <div className='col-6 col-lg-2'>
-                  <p className={s.statHeader}>Friends</p>
-                  <p className={s.statValue}>
-                    <a href={`/users/${store.userId}/friends`}>
-                      {store.friends !== null ? store.friends.length : '...'}
-                    </a>
-                  </p>
-                </div>
-                <div className='col-6 col-lg-2'>
-                  <p className={s.statHeader}>Followers</p>
-                  <p className={s.statValue}>
-                    <a href={`/users/${store.userId}/friends#!followers`}>
-                      {store.followersCount !== null ? abbreviateNumber(store.followersCount) : '...'}
-                    </a>
-                  </p>
-                </div>
-                <div className='col-12 col-lg-2'>
-                  <p className={s.statHeader}>Following</p>
-                  <p className={s.statValue}>
-                    <a href={`/users/${store.userId}/friends#!followings`}>
-                      {store.followingsCount !== null ? abbreviateNumber(store.followingsCount) : '...'}
-                    </a>
-                  </p>
-                </div>
+                <RelationshipStatistics id='friends' label='Friends' value={store.friends?.length} userId={store.userId}></RelationshipStatistics>
+                <RelationshipStatistics id='followers' label='Followers' value={store.followersCount} userId={store.userId}></RelationshipStatistics>
+                <RelationshipStatistics id='followings' label='Following' value={store.followingsCount} userId={store.userId}></RelationshipStatistics>
                 {
                   showButtons && <>
                     <div className='col-6 col-lg-2 offset-lg-2 pe-1'>
