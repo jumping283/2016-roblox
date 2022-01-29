@@ -46,7 +46,7 @@ const actualHandler = async (req, res) => {
 
     // TODO: whitelisted headers might be safer...
     for (const key in req.headers) {
-      if (key === 'host' || key === 'conneciton' || key === 'accept-encoding' || key === 'host') {
+      if (key === 'host' || key === 'connection' || key === 'accept-encoding' || key === 'host') {
         continue;
       }
       requestHeaders[key] = req.headers[key];
