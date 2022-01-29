@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { createContainer } from "unstated-next";
 import { getResellableCopies, getResellers } from "../../../services/economy";
 import { getOwnedCopies } from "../../../services/inventory";
-import AuthenticationStore from "../../../stores/authentication";
 
 const subCatIdToName = id => {
   return {
@@ -50,6 +49,18 @@ const subCatIdToName = id => {
   }[id];
 }
 
+const isLimited = details => {
+  if (!details.itemRestrictions.includes('Limited') && !details.itemRestrictions.includes('LimitedUnique')) {
+    return false;
+  }
+  return true;
+}
+
+const isResellable = details => {
+  return isLimited(details) && !details.isForSale;
+}
+
+
 const CatalogDetailsPage = createContainer(() => {
   /**
    * @type {[AssetDetailsEntry, import('react').Dispatch<AssetDetailsEntry>]}
@@ -60,29 +71,16 @@ const CatalogDetailsPage = createContainer(() => {
   const [resellersPage, setResellersPage] = useState(1);
   const [resellersCount, setResellersCount] = useState(0);
   const [saleCount, setSaleCount] = useState(0);
-  const [historyChart, setHistoryChart] = useState(null);
   const [ownedCopies, setOwnedCopies] = useState(null);
   const [resaleModalOpen, setResaleModalOpen] = useState(false);
   const [unlistModalOpen, setUnlistModalOpen] = useState(false);
   const [inCollection, setInCollection] = useState(false);
-  const isLimited = details => {
-    if (!details.itemRestrictions.includes('Limited') && !details.itemRestrictions.includes('LimitedUnique')) {
-      return false;
-    }
-    return true;
-  }
-
-  const isResellable = details => {
-    return isLimited(details) && !details.isForSale;
-  }
 
   const getPurchaseDetails = (specificUaid = undefined) => {
     if (isResellable(details)) {
       // Get lowest seller
       const seller = specificUaid ? resellers.find(v => v.userAssetId === specificUaid) : resellers && resellers[0];
-      if (!seller) {
-        return null;
-      }
+      if (!seller) return null;
       return {
         assetId: details.id,
         sellerName: seller.seller.name,
@@ -102,9 +100,8 @@ const CatalogDetailsPage = createContainer(() => {
         productId: details.productId || details.id,
         currency: details.currency || 1,
       }
-    } else {
-      return null;
     }
+    return null;
   }
 
   useEffect(() => {
