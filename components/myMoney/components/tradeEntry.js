@@ -3,6 +3,7 @@ import { createUseStyles } from "react-jss";
 import { getStatusText } from "../lib/getStatusText";
 import PlayerHeadshot from "../../playerHeadshot";
 import TradeStore from "../stores/tradeStore";
+import AuthenticationStore from "../../../stores/authentication";
 
 const useStyles = createUseStyles({
   row: {},
@@ -37,6 +38,7 @@ const useStyles = createUseStyles({
 
 const TradeEntry = props => {
   const trades = TradeStore.useContainer();
+  const auth = AuthenticationStore.useContainer();
   const s = useStyles();
   const sender = props.user;
 
@@ -58,7 +60,7 @@ const TradeEntry = props => {
       </div>
     </td>
     <td className={s.td}>
-      {getStatusText(props.status)}
+      {getStatusText(props, trades.tradeType, auth.userId)}
     </td>
     <td className={s.td}>
       <p className={`mb-0 ${s.viewDetails}`} onClick={() => {
