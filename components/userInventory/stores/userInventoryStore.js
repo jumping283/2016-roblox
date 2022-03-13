@@ -4,7 +4,7 @@ import {getUserInfo} from "../../../services/users";
 import {getInventory} from "../../../services/inventory";
 
 const UserInventoryStore = createContainer(() => {
-  const limit = 12;
+  const limit = 24;
   const [userId, setUserId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [category, setCategory] = useState({name: 'Hats',
