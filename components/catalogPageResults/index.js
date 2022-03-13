@@ -132,9 +132,11 @@ const CatalogPageResults = props => {
     const currentOffset = Math.trunc(store.page / store.limit + 1) || 0;
     const limit = store.limit < store.results.data.length ? store.limit : store.results.data.length;
 
+    const moreAvailable = store.nextCursor !== null;
+
     return <>
       <h1 className={s.pageTitleAlt}>{title.toUpperCase()}</h1>
-      <p className={s.subtitleText}>Showing {currentOffset.toLocaleString()} - {limit.toLocaleString()} of {(store.total || store.results.data.length).toLocaleString()} results</p>
+      <p className={s.subtitleText}>Showing {store.results.data.length === 0 ? '0' : currentOffset.toLocaleString()} {moreAvailable ? '- '+limit.toLocaleString() : ''} of {(typeof store.total === 'number' ? store.total : 'many').toLocaleString()} results</p>
     </>
   }
 
