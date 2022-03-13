@@ -10,6 +10,9 @@ const useStyles = createUseStyles({
     fontSize: '48px',
     fontWeight: 300,
     color: 'rgb(25,25,25)',
+  },
+  container: {
+    background: '#e3e3e3',
   }
 })
 
@@ -19,7 +22,7 @@ const Container = props => {
   useEffect(() => {
     store.setUserId(props.userId);
   }, [props]);
-  return <div className='container'>
+  return <div className={'container ' + s.container}>
     <div className='row'>
       <div className='col-12'>
         <h1 className={s.title}>{store.userInfo?.name}'s Inventory</h1>
