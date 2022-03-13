@@ -97,10 +97,14 @@ const CatalogPageStore = createContainer(() => {
     })
       .then(result => {
         response = result;
+        if (response.data.length === 0) {
+          return [];
+        }
         return getItemDetails(result.data.map(v => v.id));
       })
       .then(assetDetails => {
         let arr = [];
+        // do it this way to preserve sort
         for (const item of response.data) {
           let details = assetDetails.data.data.find(v => v.id === item.id);
           if (details) arr.push(details);

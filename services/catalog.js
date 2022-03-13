@@ -27,6 +27,7 @@ export const getProductInfoLegacy = async (assetId) => {
 }
 
 export const getItemDetails = async (assetIdArray) => {
+  if (assetIdArray.length === 0) return [];
   while (true) {
     try {
       const res = await request('POST', getFullUrl('catalog', '/v1/catalog/items/details'), {
