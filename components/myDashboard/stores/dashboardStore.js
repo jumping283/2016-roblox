@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { createContainer } from "unstated-next";
 import { multiGetPresence } from "../../../services/presence";
+import dayjs from "dayjs";
 
 const DashboardStore = createContainer(() => {
   const [friends, setFriends] = useState(null);
   const [friendStatus, setFriendStatus] = useState(null);
 
   useEffect(() => {
-    if (!friends) {
+    if (!friends || friendStatus) {
       return
     }
-    console.log('[info] run multiGetPresence')
     multiGetPresence({
       userIds: friends.map(v => v.id),
     }).then(d => {
@@ -19,10 +19,16 @@ const DashboardStore = createContainer(() => {
         obj[user.userId] = user;
       }
       setFriendStatus(obj);
+      let sortedFriends = friends.sort((a,b) => {
+        const onlineA = dayjs(obj[a.id].lastOnline);
+        const onlineB = dayjs(obj[b.id].lastOnline);
+        return onlineA.isAfter(onlineB) ? -1 : onlineA.isSame(onlineB) ? 0 : 1;
+      });
+      setFriends([...sortedFriends]);
     }).catch(e => {
       console.error('[error] friends err', e);
     })
-  }, [friends]);
+  }, [friends, friendStatus]);
   return {
     friends,
     setFriends,
