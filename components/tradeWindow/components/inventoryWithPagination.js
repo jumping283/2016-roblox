@@ -28,7 +28,7 @@ const ItemEntry = props => {
     setOpen(false);
   }}>
     <div className={s.itemCard}>
-      <p className={'mb-0 font-size-12 text-center ' + s.itemName + ' ' + (open ? s.itemNameOpen : '')}>
+      <p className={'mb-0 font-size-12 text-center ' + (open ? s.itemNameOpen : s.itemName )}>
         <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.assetId}`}>
           {props.name}
         </a>
@@ -85,6 +85,7 @@ const useStyles = createUseStyles({
   itemCard: {
     border: '1px solid #c3c3c3',
     padding: '0 4px',
+    width: '100%',
   },
   inlineRowRight: {
     float: 'right',
@@ -93,12 +94,19 @@ const useStyles = createUseStyles({
     display: 'inline-block',
     textAlign: 'right',
   },
+  categorySelector: {
+    display: 'inline-block',
+    textAlign: 'left',
+    fontSize: '12px',
+  },
   itemOpenEntry: {
     transform: 'scale(1.25)',
     height: '125px',
     marginTop: '-30px',
     zIndex: 99,
-    background: 'white'
+    background: 'white',
+    position: 'relative',
+    bottom: '-20px',
   },
   itemImageWrapperOpen: {
     maxWidth: '50px',
@@ -106,6 +114,7 @@ const useStyles = createUseStyles({
   },
   itemNameOpen: {
     fontSize: '10px',
+    height: '24px',
   },
   statEntry: {
     marginBottom: 0,
@@ -155,6 +164,7 @@ const InventoryWithPagination = props => {
   }, [cursor, assetType]);
 
   const s = useStyles();
+  const items = response && t.array(response.data);
 
   return <div className='row'>
     <div className='col-6'>
@@ -163,7 +173,7 @@ const InventoryWithPagination = props => {
     <div className='col-6'>
       <div className={s.inlineRowRight}>
         <p className={s.inline + ' mb-0 font-size-12 pe-1'}>Category:</p>
-        <select className={s.inline + ' font-size-12'} value={assetType} onChange={(e) => {
+        <select className={s.categorySelector} value={assetType} onChange={(e) => {
           setCursor(null);
           setAssetType(e.currentTarget.value);
         }}>
@@ -185,26 +195,26 @@ const InventoryWithPagination = props => {
       {feedback && <p className='text-danger mt-4 mb-4 text-center'>{feedback}</p>}
       <div className={s.itemRow}>
         {
-          response && t.array(response.data).map(v => {
-            return <ItemEntry key={v.userAssetId} mode={props.mode} {...v}></ItemEntry>
-          })
+          items ? (items.length ? t.array(response.data).map(v => {
+            return <ItemEntry key={v.userAssetId} mode={props.mode} {...v}/>
+          }) : <p className='col-12 text-center mt-4'>User does not have any items in this category.</p>) : null
         }
       </div>
     </div>
     <div className='col-3 mx-auto mt-4'>
       <GenericPagination page={page} onClick={(m) => {
-        return (e) => {
-          if (m === 1) {
-            if (!response.nextPageCursor) return;
-            setCursor(response.nextPageCursor);
-            setPage(page + 1);
-          } else {
-            if (!response.previousPageCursor) return;
-            setCursor(response.previousPageCursor);
-            setPage(page - 1);
-          }
-        }
-      }}></GenericPagination>
+  return (e) => {
+    if (m === 1) {
+      if (!response.nextPageCursor) return;
+      setCursor(response.nextPageCursor);
+      setPage(page + 1);
+    } else {
+      if (!response.previousPageCursor) return;
+      setCursor(response.previousPageCursor);
+      setPage(page - 1);
+    }
+  }
+}}/>
     </div>
   </div>
 }
