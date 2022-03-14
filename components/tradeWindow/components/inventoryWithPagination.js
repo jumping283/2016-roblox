@@ -28,7 +28,7 @@ const ItemEntry = props => {
     setOpen(false);
   }}>
     <div className={s.itemCard}>
-      <p className={'mb-0 font-size-12 text-center ' + (open ? s.itemNameOpen : '')}>
+      <p className={'mb-0 font-size-12 text-center ' + s.itemName + ' ' + (open ? s.itemNameOpen : '')}>
         <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.assetId}`}>
           {props.name}
         </a>
@@ -114,6 +114,11 @@ const useStyles = createUseStyles({
   },
   robux: {
     color: '#060',
+  },
+  itemName: {
+    height: '31px',
+    overflow: 'hidden',
+    display: 'inline-block',
   },
 })
 
