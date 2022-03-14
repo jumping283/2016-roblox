@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
 
 /**
  * Generic pagination component
- * @param {{onClick: (mode) => (e: any) => void; pageCount?: number; page: number;}} props
+ * @param {{onClick: (mode: number) => (e: any) => void; pageCount?: number; page: number;}} props
  */
 const GenericPagination = props => {
   const { pageCount, page } = props;
