@@ -89,7 +89,7 @@ const CatalogDetails = props => {
       userId: authStore.userId,
     }).then(col => {
       let inCollection = col.find(v => {
-        return t.string(v.AssetSeoUrl).match(new RegExp('/catalog/' + store.details.id + '/', 'gi'));
+        return v.Id === store.details.id;
       });
       store.setInCollection(inCollection !== undefined);
     })
