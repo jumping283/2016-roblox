@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import getFlag from "../../lib/getFlag";
-import { getFollowers, getFollowersCount, getFollowings, getFollowingsCount, getFriends } from "../../services/friends";
+import {
+  acceptFriendRequest,
+  declineFriendRequest,
+  getFollowers,
+  getFollowersCount,
+  getFollowings,
+  getFollowingsCount,
+  getFriendRequestCount, getFriendRequests,
+  getFriends
+} from "../../services/friends";
 import { getUserInfo } from "../../services/users";
 import AuthenticationStore from "../../stores/authentication";
 import GenericPagination from "../genericPagination";
@@ -25,6 +34,43 @@ const useStyles = createUseStyles({
     background: '#e3e3e3',
     padding: '4px 8px',
   },
+  manageRequestCard: {
+    background: '#f2f2f2',
+    width: '100%',
+    borderLeft: '1px solid #e6e6e6',
+    borderRight: '1px solid #e6e6e6',
+    borderBottom: '1px solid #e6e6e6',
+    position: 'relative',
+  },
+  friendCard: {
+
+  },
+  friendCardWrapper: {
+    boxShadow: '0 1px 4px 0 rgb(25 25 25 / 30%)',
+  },
+  buttonShared: {
+    fontSize: '16px',
+    marginLeft: '1rem',
+    marginRight: '1rem',
+    paddingTop: '0.25rem',
+    paddingBottom: '0.25rem',
+    marginTop: '0.5rem',
+    textAlign: 'center',
+    borderRadius: '3px',
+    cursor: 'pointer',
+    '&:hover': {
+      boxShadow: '0 1px 4px 0 rgb(25 25 25 / 30%)',
+    },
+  },
+  ignoreButton: {
+    background: '#fff',
+    border: '1px solid #a8a4a2',
+    color: 'rgb(40,40,40)',
+  },
+  acceptButton: {
+    background: 'rgb(0, 162, 255)',
+    color: '#fff',
+  },
 })
 
 const UserFriends = props => {
@@ -32,13 +78,18 @@ const UserFriends = props => {
   const auth = AuthenticationStore.useContainer();
 
   const [name, setName] = useState(null);
-  const [tab, setTab] = useState('Friends');
+  const [tab, setTab] = useState(null);
+  useEffect(() => {
+    setTab(store.userId === auth.userId ? 'Friend Requests'  : 'Friends');
+  }, [store.userId, auth.userId]);
 
   const [friends, setFriends] = useState(null);
   const [followEntries, setFollowEntries] = useState(null);
   const [followCount, setFollowCount] = useState(null);
+  const [hasNoFriendRequests, setHasNoFriendRequests] = useState(true);
+
   const [page, setPage] = useState(1);
-  const [cursor, setCursor] = useState(null);
+  const [cursor, setCursor] = useState('');
   const limit = getFlag('friendsPageLimit', 15);
 
   useEffect(() => {
@@ -55,28 +106,58 @@ const UserFriends = props => {
     }).then(setFriends)
   }, [props]);
 
-  useEffect(() => {
+  const refreshUserCount = () => {
     if (tab === 'Friends') return
     if (tab === 'Followers') {
       getFollowersCount({
         userId: store.userId,
       }).then(setFollowCount);
+    } else if (tab === 'Followings') {
+      getFollowingsCount({
+        userId: store.userId,
+      }).then(setFollowCount);
+    }else if (tab === 'Friend Requests') {
+      getFriendRequestCount().then(d => {
+        setFollowCount(d);
+      });
+    }
+  }
+
+  const refreshUsersList = () => {
+    if (tab === 'Friends') return
+    if (tab === 'Followers') {
       getFollowers({
         userId: store.userId,
         cursor,
         limit,
       }).then(setFollowEntries);
     } else if (tab === 'Followings') {
-      getFollowingsCount({
-        userId: store.userId,
-      }).then(setFollowCount);
       getFollowings({
         userId: store.userId,
         cursor,
         limit,
       }).then(setFollowEntries);
+    }else if (tab === 'Friend Requests') {
+      getFriendRequests({cursor, limit}).then(data => {
+        setFollowEntries(data);
+        if (data.data.length !== 0) {
+          setHasNoFriendRequests(false);
+        }
+      })
     }
+  }
+
+  useEffect(() => {
+    refreshUserCount();
+    refreshUsersList();
   }, [cursor, tab]);
+
+  useEffect(() => {
+    if (!hasNoFriendRequests && tab === 'Friend Requests' && followEntries && followEntries.length === 0) {
+      setFollowCount(followCount-1);
+      refreshUsersList();
+    }
+  }, [followEntries, hasNoFriendRequests]);
 
   const s = useStyles();
   const cardStyles = useCardStyles();
@@ -86,6 +167,10 @@ const UserFriends = props => {
 
   const arrayToUse = (tab === 'Friends' ? friends.slice((page * limit - limit), page * limit - 1) : followEntries && followEntries.data);
   const pageCount = Math.ceil((tab === 'Friends' ? friends.length : followCount) / limit);
+  const options = ['Friends', 'Followers', 'Followings'];
+  if (store.userId === auth.userId) {
+    options.unshift('Friend Requests');
+  }
 
   return <div className={'container ' + s.friendsContainer}>
     <div className='row'>
@@ -97,13 +182,13 @@ const UserFriends = props => {
     </div>
     <div className='row mt-4'>
       <div className='col-12'>
-        <Tabs2016 options={['Friends', 'Followers', 'Followings']} onChange={e => {
+        <Tabs2016 options={options} onChange={e => {
           setTab(e);
           setFollowCount(null);
           setFollowEntries(null);
           setPage(1);
-          setCursor(null);
-        }}></Tabs2016>
+          setCursor('');
+        }} />
       </div>
     </div>
     <div className='row mt-2'>
@@ -121,20 +206,44 @@ const UserFriends = props => {
     <div className='row mt-2'>
       {
         arrayToUse && arrayToUse.map(v => {
-          return <div className='col-6 col-lg-4 mb-4' key={v.id}>
-            <div className={'card ' + cardStyles.card}>
-              <a href={`/users/${v.id}/profile`}>
-                <div className='row p-2'>
-                  <div className='col-4'>
-                    <div className={s.imageWrapper}>
-                      <PlayerImage id={v.id} name={v.name}></PlayerImage>
+          return <div className={'col-6 col-lg-4 mb-4'} key={v.id}>
+            <div className={s.friendCardWrapper}>
+              <div className={'card ' + s.friendCard}>
+                <a href={`/users/${v.id}/profile`}>
+                  <div className='row p-2'>
+                    <div className='col-4'>
+                      <div className={s.imageWrapper}>
+                        <PlayerImage id={v.id} name={v.name} />
+                      </div>
+                    </div>
+                    <div className='col-8'>
+                      <p className={'mb-0 font-size-18 ' + s.username}>{v.name}</p>
                     </div>
                   </div>
-                  <div className='col-8'>
-                    <p className={'mb-0 font-size-18 ' + s.username}>{v.name}</p>
+                </a>
+              </div>
+              {
+                tab === 'Friend Requests' ? <div className={s.manageRequestCard}>
+                  <div className='row'>
+                    <div className='col-6 pe-0'>
+                      <p className={s.buttonShared + ' ' + s.ignoreButton} onClick={(e) => {
+                        declineFriendRequest({userId: v.id})
+                        followEntries.data = followEntries.data.filter(c => c.id !== v.id)
+                        setFollowEntries({...followEntries});
+                        setFollowCount(followCount-1);
+                      }}>Ignore</p>
+                    </div>
+                    <div className='col-6 ps-0'>
+                      <p className={s.buttonShared + ' ' + s.acceptButton} onClick={() =>{
+                        acceptFriendRequest({userId: v.id});
+                        followEntries.data = followEntries.data.filter(c => c.id !== v.id)
+                        setFollowEntries({...followEntries});
+                        setFollowCount(followCount-1);
+                      }}>Accept</p>
+                    </div>
                   </div>
-                </div>
-              </a>
+                </div> : null
+              }
             </div>
           </div>
         })
@@ -161,7 +270,7 @@ const UserFriends = props => {
             setCursor(followEntries.nextPageCursor);
           }
         }
-      }} page={page} pageCount={pageCount}></GenericPagination>}
+      }} page={page} pageCount={pageCount} />}
     </div>
   </div>
 }

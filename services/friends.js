@@ -39,6 +39,10 @@ export const getFriendStatus = ({ authenticatedUserId, userId }) => {
   return request('GET', getFullUrl('friends', `/v1/users/${authenticatedUserId}/friends/statuses?userIds=${userId}`)).then(d => d.data.data[0].status);
 }
 
+export const getFriendRequests = ({cursor, limit}) => {
+  return request('GET', getFullUrl('friends', `/v1/my/friends/requests?limit=${limit}&cursor=${cursor}`)).then(d => d.data);
+}
+
 export const unfriendUser = ({ userId }) => {
   return request('POST', getFullUrl('friends', `/v1/users/${userId}/unfriend`));
 }
