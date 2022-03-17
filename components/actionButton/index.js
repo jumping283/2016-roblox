@@ -30,7 +30,6 @@ const useBuyButtonStyles = createUseStyles({
 
 const ActionButton = props => {
   const s = useBuyButtonStyles();
-  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   return <div className={props.divClassName}>
     <button
