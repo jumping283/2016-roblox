@@ -33,7 +33,7 @@ const PlayerImage = (props) => {
     })
     setRetryCount(retryCount + 1);
     setImage('/img/empty.png')
-  }}></img>
+  }} />
 }
 
 export default PlayerImage;
