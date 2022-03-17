@@ -106,12 +106,12 @@ const MyDashboard = props => {
   if (!auth.userId) return null;
   return <div className={'container ' + s.container}>
     <div className='row'>
-      <div className='d-none d-lg-flex col-2'><AdSkyscraper context='dashboard-left'></AdSkyscraper></div>
+      <div className='d-none d-lg-flex col-2'><AdSkyscraper context='dashboard-left' /></div>
       <div className={'col-12 col-lg-8 ' + s.mainBody}>
         <div className='row'>
           <div className='col-3'>
             <div className={s.headshotWrapper}>
-              <PlayerHeadshot id={auth.userId} name={auth.username}></PlayerHeadshot>
+              <PlayerHeadshot id={auth.userId} name={auth.username} />
             </div>
           </div>
           <div className='col-9'>
@@ -125,7 +125,7 @@ const MyDashboard = props => {
               <div className={'row ' + s.friendRow}>
                 {
                   friends.map(v => {
-                    return <FriendEntry key={v.id} {...v}></FriendEntry>
+                    return <FriendEntry key={v.id} {...v} />
                   })
                 }
               </div>
@@ -135,7 +135,7 @@ const MyDashboard = props => {
         }
         {
           gameSorts && gameSorts.map(v => {
-            return <GameRow key={v.token} title={v.displayName} games={v.games} icons={icons}></GameRow>
+            return <GameRow key={v.token} title={v.displayName} games={v.games} icons={icons} />
           })
         }
         <div className='row mt-4'>

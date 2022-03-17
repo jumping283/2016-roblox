@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { createUseStyles } from "react-jss";
 import SmallGameCard from "../../smallGameCard";
 import UserAdvertisement from "../../userAdvertisement";
@@ -73,41 +73,61 @@ const GameRow = props => {
   const s = useStyles();
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(0);
+  const [offsetComp, setOffsetComp] = useState(0);
+  const rowRef = useRef(null);
+  const [dimensions, setDimensions] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth
+  })
   useEffect(() => {
+    window.addEventListener('resize', () => {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
+    });
+  }, []);
+  useEffect(() => {
+    if (!rowRef.current)
+      return;
     // width = 170px
-    let windowWidth = window.innerWidth;
+    let windowWidth = rowRef.current.clientWidth;
     // breakpoints: 992, 1300 for side nav
-    if (windowWidth >= 1300) {
-      windowWidth -= (170 * 2);
-    }
-    if (windowWidth >= 992) {
-      windowWidth -= 170; // lose a card
-    }
-    let newLimit = Math.floor(windowWidth / 170);
+    let offsetNotRounded = windowWidth / 170;
+    let newLimit = Math.floor(offsetNotRounded);
+
     // console.log('usable limit', newLimit);
     setLimit(newLimit);
-  }, []);
+    if (offsetNotRounded !== newLimit) {
+      setOffsetComp(1);
+    }else{
+      setOffsetComp(0);
+    }
+  }, [rowRef, dimensions]);
 
+  const remainingGames = props.games.length - (offset-offsetComp);
+  const showForward = remainingGames >= limit;
   if (!props.games) return null;
   return <div className='row'>
     <div className='col-12'>
       <h3 className={s.title}>{props.title.toUpperCase()}</h3>
     </div>
-    <div className='col-12 col-lg-9'>
+    <div className={props.ads ? 'col-12 col-lg-9' : 'col-12'} ref={rowRef}>
       {offset !== 0 && <div className={s.goBack + ' ' + s.pagerButton} onClick={() => {
-        setOffset(offset - limit);
+        setOffset((offset - limit));
       }}>
         <p className={s.pagerCaret}><span className={s.caretRight}>^</span></p>
       </div>}
-      {offset < (props.games.length - limit) && <div className={s.goForward + ' ' + s.pagerButton} onClick={() => {
-        setOffset(offset + limit);
+      {showForward ? <div className={s.goForward + ' ' + s.pagerButton} onClick={() => {
+        let newOffset = ((offset) + (limit));
+        setOffset(newOffset);
       }}>
         <p className={s.pagerCaret}><span className={s.caretLeft}>^</span></p>
-      </div>
+      </div> : null
       }
       <div className={'row ' + s.gameRow}>
         {
-          props.games.slice(offset, offset + limit).map((v, i) => {
+          props.games.slice(offset, offset+100).map((v, i) => {
             return <SmallGameCard
               key={i}
               className={s.gameCard}
@@ -120,12 +140,12 @@ const GameRow = props => {
               dislikes={v.totalDownvotes}
               name={v.name}
               playerCount={v.playerCount}
-            ></SmallGameCard>
+            />
           })
         }
       </div>
     </div>
-    {props.ads ? <div className='col-12 col-lg-3'><UserAdvertisement type={3}></UserAdvertisement></div> : null}
+    {props.ads ? <div className='col-12 col-lg-3'><UserAdvertisement type={3} /></div> : null}
   </div>
 }
 
