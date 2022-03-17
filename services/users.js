@@ -31,3 +31,7 @@ export const getPreviousUsernames = async ({ userId }) => {
   } while (cursor !== null);
   return names;
 }
+
+export const searchUsers = async ({keyword, limit, offset}) => {
+  return await request('GET', getBaseUrl() + '/search/users/results?keyword=' + keyword + '&maxRows='+limit+'&startIndex='+offset).then(d => d.data);
+}
