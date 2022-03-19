@@ -73,8 +73,8 @@ const MembersRow = props => {
           members && members.data && members.data.map(v => {
             return <div className='col-2' key={v.userId}>
               <a href={`/users/${v.userId}/profile`}>
-                <PlayerImage id={v.userId} name={v.username}></PlayerImage>
-                <p className='mb-0 text-left font-size-14'>{v.username}</p>
+                <PlayerImage id={v.userId} name={v.username} />
+                <p className='mb-0 text-left font-size-14 text-truncate'>{v.username}</p>
               </a>
             </div>
           })
@@ -88,12 +88,14 @@ const MembersRow = props => {
               if (mode === 1) {
                 if (!members.nextPageCursor) return;
                 loadMembers(asyncRoleId.current.id, members.nextPageCursor);
+                setPage(page + 1);
               } else if (mode === -1) {
                 if (!members.previousPageCursor) return;
                 loadMembers(asyncRoleId.current.id, members.previousPageCursor);
+                setPage(page - 1);
               }
             }
-          }}></GenericPagination>
+          }} />
         </div>
       </div>
     </div>
