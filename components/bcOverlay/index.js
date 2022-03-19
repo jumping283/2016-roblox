@@ -11,7 +11,7 @@ const useStyles = createUseStyles({
 
 const BcOverlay = props => {
   const s = useStyles();
-  return <img className={s.overlay} src={`/img/overlay_obcOnly.png`}></img>
+  return <img className={s.overlay} src={`/img/overlay_obcOnly.png`} />
 }
 
 export default BcOverlay;
