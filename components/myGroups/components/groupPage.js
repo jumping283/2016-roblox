@@ -136,7 +136,8 @@ const GroupPage = props => {
           </div>
           <div className='mt-2 ms-4'>
             <p className='mb-0'>
-              <CreatorLink id={store.info.shout.poster.userId} name={store.info.shout.poster.username} type='User' /> <span className='font-size-12 lighten-3'>{dayjs(store.info.shout.created).format('M/D/YYYY h:mm:ss A')}</span>
+              <span className='fst-italic me-1'><CreatorLink id={store.info.shout.poster.userId} name={store.info.shout.poster.username} type='User' /></span>
+              <span className='font-size-12 lighten-3'>{dayjs(store.info.shout.created).format('M/D/YYYY h:mm:ss A')}</span>
             </p>
           </div>
         </div>
