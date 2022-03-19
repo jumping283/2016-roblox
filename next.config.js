@@ -17,6 +17,16 @@ module.exports = {
         destination: '/catalog',
         permanent: true,
       },
+      {
+        source: '/catalog/:id/:name',
+        destination: '/redirect-item?id=:id',
+        permanent: false,
+      },
+      {
+        source: '/groups/:id/:name',
+        destination: '/My/Groups.aspx?gid=:id',
+        permanent: false,
+      },
     ]
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
