@@ -42,6 +42,9 @@ const useStyles = createUseStyles({
   description: {
     minHeight: '100px',
   },
+  groupShoutButton: {
+    marginTop: '0',
+  },
 })
 
 const GroupPage = props => {
@@ -97,9 +100,9 @@ const GroupPage = props => {
   return <div className='row mt-4 me-2 ms-2'>
     <div className='col-3'>
       <div className={s.iconWrapper}>
-        <img className={s.icon} src={icon}></img>
+        <img className={s.icon} src={icon}/>
       </div>
-      <p className={'mb-0 mt-2 ' + s.statEntry}>Owned By: {store.info.owner ? <CreatorLink id={store.info.owner.userId} name={store.info.owner.username} type='User'></CreatorLink> : 'Nobody!'}</p>
+      <p className={'mb-0 mt-2 ' + s.statEntry}>Owned By: {store.info.owner ? <CreatorLink id={store.info.owner.userId} name={store.info.owner.username} type='User'/> : 'Nobody!'}</p>
       <p className={'mb-0 ' + s.statEntry}>Members: {store.info.memberCount.toLocaleString()}</p>
       {store.rank && store.rank.rank !== 0 && <p className={'mb-0 mt-3 ' + s.statEntry}>My Rank: <span className={s.rankText}>{store.rank.name}</span></p>}
       {
@@ -109,7 +112,7 @@ const GroupPage = props => {
           }).then(() => {
             window.location.reload();
           })
-        }}></ActionButton></div>
+        }}/></div>
       }
       {
         store.rank && store.rank.rank !== 0 && !store.info.owner && <div className='mt-4'>
@@ -119,7 +122,7 @@ const GroupPage = props => {
             }).then(() => {
               window.location.reload();
             })
-          }}></ActionButton>
+          }} />
         </div>
       }
     </div>
@@ -133,7 +136,7 @@ const GroupPage = props => {
           </div>
           <div className='mt-2 ms-4'>
             <p className='mb-0'>
-              <CreatorLink id={store.info.shout.poster.userId} name={store.info.shout.poster.username} type='User'></CreatorLink> <span className='font-size-12 lighten-3'>{dayjs(store.info.shout.created).format('M/D/YYYY h:mm:ss A')}</span>
+              <CreatorLink id={store.info.shout.poster.userId} name={store.info.shout.poster.username} type='User' /> <span className='font-size-12 lighten-3'>{dayjs(store.info.shout.created).format('M/D/YYYY h:mm:ss A')}</span>
             </p>
           </div>
         </div>
@@ -142,10 +145,10 @@ const GroupPage = props => {
         <div className='col-10 mt-4'>
           <div className='row'>
             <div className='col-8 pe-0'>
-              <input ref={shoutRef} type='text' placeholder='Enter your shout' className={s.input} maxLength={255}></input>
+              <input ref={shoutRef} type='text' placeholder='Enter your shout' className={s.input} maxLength={255} />
             </div>
             <div className='col-4 ps-1'>
-              <Button onClick={(e) => {
+              <Button className={s.groupShoutButton} onClick={(e) => {
                 setStatus({
                   groupId: store.groupId,
                   message: shoutRef.current.value,
@@ -174,11 +177,11 @@ const GroupPage = props => {
           name: 'Store',
           element: null,
         }
-      ].filter(v => !!v)}></OldVerticalTabs>
+      ].filter(v => !!v)} />
     </div>
-    <div className='divider-top mt-2'></div>
+    <div className='divider-top mt-2' />
     <div className='col-12 mt-2'>
-      <GroupWall groupId={store.groupId} canView={store.permissions['viewWall']} canPost={store.permissions['postToWall']} canDelete={store.permissions['deleteFromWall']}></GroupWall>
+      <GroupWall groupId={store.groupId} canView={store.permissions['viewWall']} canPost={store.permissions['postToWall']} canDelete={store.permissions['deleteFromWall']} />
     </div>
   </div>
 }
