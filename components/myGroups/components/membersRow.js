@@ -59,6 +59,9 @@ const MembersRow = props => {
 
   const s = useStyles();
 
+  // conditionals
+  const canPaginate = members && (members.nextPageCursor || members.previousPageCursor);
+
   if (!roles) return null;
   return <div className='row'>
     <div className='col-12 pe-0'>
@@ -86,7 +89,7 @@ const MembersRow = props => {
       </div>
       <div className='row'>
         <div className='col-12 col-lg-6 mx-auto mt-4'>
-          <GenericPagination page={page} onClick={(mode) => {
+          {canPaginate ? <GenericPagination page={page} onClick={(mode) => {
             return e => {
               e.preventDefault();
               if (mode === 1) {
@@ -99,7 +102,7 @@ const MembersRow = props => {
                 setPage(page - 1);
               }
             }
-          }} />
+          }} /> : null}
         </div>
       </div>
     </div>
