@@ -9,7 +9,10 @@ import PlayerImage from "../../playerImage";
 const useStyles = createUseStyles({
   select: {
     float: 'right',
-  }
+  },
+  membersRow: {
+    minHeight: '174px',
+  },
 })
 
 const MembersRow = props => {
@@ -27,6 +30,7 @@ const MembersRow = props => {
       roleSetId: id,
       cursor: cursor,
       limit,
+      sortOrder: 'desc',
     }).then(d => {
       if (asyncRoleId.current.id !== id) return
       setMembers(d);
@@ -68,7 +72,7 @@ const MembersRow = props => {
       </select>
     </div>
     <div className='col-12'>
-      <div className='row'>
+      <div className={'row ' + s.membersRow}>
         {
           members && members.data && members.data.map(v => {
             return <div className='col-2' key={v.userId}>
