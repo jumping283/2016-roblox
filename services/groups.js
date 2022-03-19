@@ -35,8 +35,8 @@ export const getRoles = ({ groupId }) => {
   return request('GET', getFullUrl('groups', `/v1/groups/${groupId}/roles`)).then(d => d.data.roles);
 }
 
-export const getRolesetMembers = ({ groupId, roleSetId, cursor, limit = 10 }) => {
-  return request('GET', getFullUrl('groups', `/v1/groups/${groupId}/roles/${roleSetId}/users?cursor=${encodeURIComponent(cursor || '')}&limit=${limit}`)).then(d => d.data);
+export const getRolesetMembers = ({ groupId, roleSetId, cursor, limit = 10, sortOrder }) => {
+  return request('GET', getFullUrl('groups', `/v1/groups/${groupId}/roles/${roleSetId}/users?cursor=${encodeURIComponent(cursor || '')}&limit=${limit}&sortOrder=${sortOrder}`)).then(d => d.data);
 }
 
 export const getWall = ({ groupId, cursor, sort, limit }) => {
