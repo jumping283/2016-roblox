@@ -66,7 +66,7 @@ const MyGroups = props => {
   return <div className={'container ' + s.groupsContainer}>
     <div className='row'>
       <div className='col-3'>
-        <SideBar></SideBar>
+        <SideBar />
       </div>
       <div className={groupCol}>
         <SearchGroups></SearchGroups>
