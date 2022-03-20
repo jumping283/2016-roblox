@@ -41,6 +41,7 @@ const useStyles = createUseStyles({
   },
   description: {
     minHeight: '100px',
+    whiteSpace: 'break-spaces',
   },
   groupShoutButton: {
     marginTop: '0',
