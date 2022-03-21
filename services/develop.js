@@ -26,3 +26,23 @@ export const getCreatedItems = ({ assetType, limit, cursor }) => {
     return assets.data;
   })
 }
+
+export const updateAsset = async ({assetId, name, description, genres, isCopyingAllowed, enableComments}) => {
+  return await request('PATCH', getFullUrl('develop', `/v1/assets/${assetId}`), {
+    name,
+    description,
+    genres,
+    isCopyingAllowed,
+    enableComments,
+  });
+}
+
+export const setPriceRobux = async ({assetId, priceInRobux}) => {
+  return await request('POST', getFullUrl('itemconfiguration', `/v1/assets/${assetId}/update-price`), {
+    priceInRobux,
+  })
+}
+
+export const getAllGenres = async () => {
+  return (await request('GET', getFullUrl('develop', '/v1/assets/genres'))).data.data;
+}
