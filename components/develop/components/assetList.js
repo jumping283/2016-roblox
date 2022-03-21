@@ -65,7 +65,7 @@ const AssetEntry = props => {
     },
     !isAd && !isPlace && {
       name: 'Configure',
-      url: `/catalog/configure?id=${props.assetId}`,
+      url: `/My/Item.aspx?id=${props.assetId}`,
     },
     !isAd && {
       name: 'Advertise',
