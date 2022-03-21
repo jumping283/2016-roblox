@@ -2,6 +2,7 @@ const assetTypes = {
   17: 'Head',
   18: 'Face',
   8: 'Hat', // todo: accessories
+  9: 'Place',
   2: 'T-Shirt',
   11: 'Shirt',
   12: 'Pants',
