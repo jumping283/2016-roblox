@@ -48,6 +48,7 @@ const CreateComment = props => {
     if (text.length > 200) {
       return setError('Your comment is too long! It must be under 200 characters.');
     }
+    setLocked(true);
     createComment({
       assetId: props.assetId,
       comment: text,
@@ -68,26 +69,28 @@ const CreateComment = props => {
           case 'Moderated':
             return 'Your comment was moderated. Try again.';
           default:
-            return 'An unknown error ocurred posting your comment. Error: ' + e.message;
+            return 'An unknown error occurred posting your comment. Error: ' + e.message;
         }
       })();
       setError(errorMessage);
+    }).finally(() => {
+      setLocked(false);
     });
   }
 
   return <div className='row mt-4 mb-4'>
     <div className='col-3 pe-4'>
-      <PlayerImage id={authStore.userId}></PlayerImage>
+      <PlayerImage id={authStore.userId}/>
     </div>
     <div className='col-9'>
       {error && <p className='text-danger mb-0'>{error}</p>}
-      <textarea disabled={locked} maxLength={200} rows={8} className={s.createCommentTextArea} ref={textAreaRef}></textarea>
+      <textarea disabled={locked} maxLength={200} rows={8} className={s.createCommentTextArea} ref={textAreaRef}/>
       <div className={s.buttonWrapper}>
-        <ActionButton onClick={onClick} disabled={locked} className={buttonStyles.continueButton + ' ' + s.continueButton} label="Continue"></ActionButton>
+        <ActionButton onClick={onClick} disabled={locked} className={buttonStyles.continueButton + ' ' + s.continueButton} label="Continue"/>
       </div>
     </div>
     <div className='col-12'>
-      <div className='divider-top-thick divider-light mt-3'></div>
+      <div className='divider-top-thick divider-light mt-3'/>
     </div>
   </div>
 }
@@ -120,18 +123,18 @@ const CommentEntry = props => {
 
   return <div className='row mt-3'>
     <div className='col-3 pe-4'>
-      <PlayerImage id={props.AuthorId}></PlayerImage>
+      <PlayerImage id={props.AuthorId}/>
     </div>
     <div className='col-9'>
       <div className={s.commentEntryDiv}>
         <div className={s.commentText}>
           <div className='row'>
             <div className='col-7'>
-              <p className={s.commentCreatedAt}>Posted {createdAt} by <CreatorLink type='User' id={props.AuthorId} name={props.AuthorName}></CreatorLink></p>
+              <p className={s.commentCreatedAt}>Posted {createdAt} by <CreatorLink type='User' id={props.AuthorId} name={props.AuthorName}/></p>
             </div>
             <div className='col-5'>
               <div className={s.report}>
-                <ReportAbuse id={props.Id} type='comment'></ReportAbuse>
+                <ReportAbuse id={props.Id} type='comment'/>
               </div>
             </div>
           </div>
@@ -190,10 +193,10 @@ const Comments = (props) => {
 
   return <div className='row'>
     <div className='col-12 col-lg-9'>
-      {authStore.isAuthenticated && <CreateComment assetId={props.assetId}></CreateComment>}
+      {authStore.isAuthenticated && <CreateComment assetId={props.assetId}/>}
       {
         comments && comments.length === 0 ? <p>No comments.</p> : comments && comments.Comments.map(v => {
-          return <CommentEntry key={v.Id} {...v}></CommentEntry>
+          return <CommentEntry key={v.Id} {...v}/>
         })
       }
     </div>
