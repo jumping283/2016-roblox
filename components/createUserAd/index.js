@@ -100,7 +100,8 @@ const CreateUserAd = props => {
           uploadAdvertisement({
             file: fileRef.current.files[0],
             name: nameRef.current.value,
-            targetId: props.targetId
+            targetId: props.targetId,
+            type: props.targetType,
           }).then(() => {
             window.location.href = '/develop?View=8';
           }).catch(e => {

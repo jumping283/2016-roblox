@@ -1,10 +1,10 @@
 import request, { getBaseUrl, getFullUrl } from "../lib/request"
 
-export const uploadAdvertisement = ({ file, name, targetId }) => {
+export const uploadAdvertisement = ({ file, name, targetId, type }) => {
   let formData = new FormData();
   formData.append('name', name);
   formData.append('files', file);
-  return request('POST', getFullUrl('ads', '/v1/user-ads/assets/create?assetId=' + targetId), formData);
+  return request('POST', getFullUrl('ads', '/v1/user-ads/'+type+'/create?assetId=' + targetId), formData);
 }
 
 
