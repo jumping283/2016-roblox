@@ -21,7 +21,6 @@ import AdBanner from "../ad/adBanner";
 import AdSkyscraper from "../ad/adSkyscraper";
 import { addOrRemoveFromCollections } from "../../services/catalog";
 import { getCollections } from "../../services/inventory";
-import t from "../../lib/t";
 import getFlag from "../../lib/getFlag";
 import Owners from "./components/owners";
 
@@ -36,7 +35,6 @@ const filterTextForEmpty = str => {
   }
   return str;
 }
-
 
 const useStyles = createUseStyles({
   title: {
@@ -97,7 +95,7 @@ const CatalogDetails = props => {
 
   const hasItemToDeList = store.isResellable && store.allResellers && store.allResellers.find(v => v.seller.id === authStore.userId) !== undefined;
   const hasItemToSell = store.isResellable && store.ownedCopies && store.ownedCopies.filter(v => v.price === null || v.price === 0).length > 0;
-  const isCreator = store.details && store.details.creatorType == 'User' && store.details.creatorTargetId == authStore.userId; // todo: group support
+  const isCreator = store.details && store.details.creatorType === 'User' && store.details.creatorTargetId == authStore.userId; // todo: group support
   const showGear = hasItemToDeList ||
     hasItemToSell ||
     isCreator ||
@@ -110,9 +108,9 @@ const CatalogDetails = props => {
   return <div className='container'>
     <AdBanner></AdBanner>
     <div className={s.catalogItemContainer}>
-      <BuyItemModal></BuyItemModal>
-      <SellItemModal></SellItemModal>
-      <DelistItemModal></DelistItemModal>
+      <BuyItemModal/>
+      <SellItemModal/>
+      <DelistItemModal/>
       <div className='row mt-4'>
         <div className='col-12 col-lg-10'>
           <div className='row'>
@@ -162,37 +160,37 @@ const CatalogDetails = props => {
                       });
                     },
                   } : null,
-                ].filter(v => !!v)}></GearDropdown>
+                ].filter(v => !!v)} />
               }
             </div>
           </div>
           <div className='col-12'>
             <div className='row'>
               <div className='col-12 col-md-6 col-lg-5'>
-                <ItemImage id={details.id} name={details.name}></ItemImage>
-                {isLimitedUnique && <LimitedUniqueOverlay></LimitedUniqueOverlay> || isLimited && <LimitedOverlay></LimitedOverlay> || null}
+                <ItemImage id={details.id} name={details.name}/>
+                {isLimitedUnique && <LimitedUniqueOverlay/> || isLimited && <LimitedOverlay/> || null}
               </div>
               <div className='col-12 col-md-6 col-lg-4'>
-                <CreatorDetails id={details.creatorTargetId} name={details.creatorName} type={details.creatorType} createdAt={details.createdAt} updatedAt={details.updatedAt}></CreatorDetails>
+                <CreatorDetails id={details.creatorTargetId} name={details.creatorName} type={details.creatorType} createdAt={details.createdAt} updatedAt={details.updatedAt}/>
                 <p className={s.description}>{filterTextForEmpty(details.description)}</p>
-                <ReportAbuse assetId={details.id}></ReportAbuse>
-                <div className='divider-top mt-2'></div>
-                <Genres genres={details.genres}></Genres>
+                <ReportAbuse assetId={details.id}/>
+                <div className='divider-top mt-2'/>
+                <Genres genres={details.genres}/>
               </div>
               <div className='col-12 col-lg-3'>
-                <BuyButton></BuyButton>
+                <BuyButton/>
               </div>
             </div>
             {store.isResellable &&
               <div className='row'>
                 <div className='col-12'>
-                  <div className='divider-top mt-2'></div>
+                  <div className='divider-top mt-2'/>
                 </div>
                 <div className='col-6'>
-                  <Resellers></Resellers>
+                  <Resellers/>
                 </div>
                 <div className='col-6'>
-                  <SaleHistory></SaleHistory>
+                  <SaleHistory/>
                 </div>
               </div>
             }
@@ -201,23 +199,23 @@ const CatalogDetails = props => {
                 <OldVerticalTabs options={[
                   {
                     name: 'Recommendations',
-                    element: <Recommendations assetId={details.id} assetType={details.assetType}></Recommendations>,
+                    element: <Recommendations assetId={details.id} assetType={details.assetType}/>,
                   },
                   {
                     name: 'Commentary',
-                    element: <Comments assetId={details.id}></Comments>
+                    element: <Comments assetId={details.id}/>
                   },
                   (isLimited || isLimitedUnique) && getFlag('catalogDetailsPageOwnersTabEnabled', false) && {
                     name: 'Owners',
-                    element: <Owners assetId={details.id}></Owners>,
+                    element: <Owners assetId={details.id}/>,
                   },
-                ].filter(v => !!v)}></OldVerticalTabs>
+                ].filter(v => !!v)} />
               </div>
             </div>
           </div>
         </div>
         <div className='col-12 col-lg-2'>
-          <AdSkyscraper></AdSkyscraper>
+          <AdSkyscraper/>
         </div>
       </div>
     </div>
