@@ -45,7 +45,7 @@ const CreateUserAd = props => {
     }
   }
 
-  if (props.targetType !== 'asset') return <p>TargetType is not supported</p>
+  if (props.targetType !== 'asset' && props.targetType !== 'group') return <p>TargetType is not supported</p>
   return <div className={'container ' + s.createUserAdContainer}>
     <div className='row'>
       <div className='col-12'>
@@ -57,13 +57,13 @@ const CreateUserAd = props => {
         <p>Download, Edit, and Upload one of the following templates:</p>
         <ul className={s.buttonList}>
           <li className='mb-2'>
-            728 x 90 Banner <ActionButton onClick={clicker(templates.banner)} className={btnStyles.continueButton + ' ' + btnStyles.normal + ' ' + s.downloadButton} label='Download'></ActionButton>
+            728 x 90 Banner <ActionButton onClick={clicker(templates.banner)} className={btnStyles.continueButton + ' ' + btnStyles.normal + ' ' + s.downloadButton} label='Download'/>
           </li>
           <li className='mb-2'>
-            160 x 600 Skyscraper <ActionButton onClick={clicker(templates.skyScraper)} className={btnStyles.continueButton + ' ' + btnStyles.normal + ' ' + s.downloadButton} label='Download'></ActionButton>
+            160 x 600 Skyscraper <ActionButton onClick={clicker(templates.skyScraper)} className={btnStyles.continueButton + ' ' + btnStyles.normal + ' ' + s.downloadButton} label='Download'/>
           </li>
           <li>
-            300 x 250 Rectangle <ActionButton onClick={clicker(templates.rectangle)} className={btnStyles.continueButton + ' ' + btnStyles.normal + ' ' + s.downloadButton} label='Download'></ActionButton>
+            300 x 250 Rectangle <ActionButton onClick={clicker(templates.rectangle)} className={btnStyles.continueButton + ' ' + btnStyles.normal + ' ' + s.downloadButton} label='Download'/>
           </li>
         </ul>
         <p>For tips and ticks, read the tutorial: <a href='https://developer.roblox.com/en-us/articles/Promoting-Your-Roblox-Game'>How to Design an Effective Ad</a>.</p>
@@ -76,7 +76,7 @@ const CreateUserAd = props => {
             <p className={s.inputLabel}>Upload an Ad</p>
           </div>
           <div className='col-6'>
-            <input ref={fileRef} type='file'></input>
+            <input disabled={locked} ref={fileRef} type='file'/>
           </div>
         </div>
         <div className='row'>
@@ -84,7 +84,7 @@ const CreateUserAd = props => {
             <p className={s.inputLabel}>Name Your Ad</p>
           </div>
           <div className='col-6'>
-            <input ref={nameRef} type='text' className='pt-1 pb-1 pe-0 ps-0'></input>
+            <input disabled={locked} ref={nameRef} type='text' className='pt-1 pb-1 pe-0 ps-0'/>
           </div>
         </div>
       </div>
@@ -94,16 +94,20 @@ const CreateUserAd = props => {
         {feedback && <p className='text-danger'>{feedback}</p>}
       </div>
       <div className='col-12'>
-        <ActionButton className={btnStyles.buyButton + ' float-left ' + btnStyles.normal} label='Upload' onClick={() => {
+        <ActionButton disabled={locked} className={btnStyles.buyButton + ' float-left ' + btnStyles.normal} label='Upload' onClick={() => {
           setLocked(true);
           setFeedback(null);
-          uploadAdvertisement({ file: fileRef.current.files[0], name: nameRef.current.value, targetId: props.targetId }).then(() => {
+          uploadAdvertisement({
+            file: fileRef.current.files[0],
+            name: nameRef.current.value,
+            targetId: props.targetId
+          }).then(() => {
             window.location.href = '/develop?View=8';
           }).catch(e => {
             setLocked(false);
             setFeedback('Could not upload advertisement. ' + (!e.response ? 'If you have an ad blocker enabled, you may have to temporarily disable it.' : 'Error Message: ' + (e.response.data?.errors[0]?.message || e.message)));
           })
-        }}></ActionButton>
+        }} />
       </div>
     </div>
     <p className='text-muted mt-2'>The ad needs to be approved by a Moderator before it can be launched from your Ad page.</p>
