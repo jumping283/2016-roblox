@@ -53,6 +53,7 @@ const MembersRow = props => {
         roleSetId: r[1].id,
         limit,
         cursor: null,
+        sortOrder: 'desc',
       }).then(setMembers)
     })
   }, [groupId]);
