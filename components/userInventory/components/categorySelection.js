@@ -174,9 +174,9 @@ const CategorySelection = props => {
   return <div className='col-12 col-lg-2'>
     <div className='d-block d-lg-none'>
       <h2 className={s.categoryTitle}>CATEGORY</h2>
-      <Selector options={options} onChange={onChange} value={getFlag('accessoriesEnabled', false) ? 'Accessories' : 'Hats'} />
+      <Selector options={options} onChange={onChange} value={getFlag('accessoriesEnabled', false) ? 'Accessories' : 'Hat'} />
       {
-        selected && selected.children ? <>
+        selected && getFlag('accessoriesEnabled', false) && selected.children ? <>
           <h2 className={s.categoryTitle}>SUBCATEGORY</h2>
           <Selector options={selected.children} onChange={onChangeSubCategory} value='Hat' /> 
         </> : null
