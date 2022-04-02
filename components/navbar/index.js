@@ -29,9 +29,12 @@ const useNavBarStyles = createUseStyles({
     width: '100%',
   },
   wrapper: {
-    marginBottom: '100px',
+    marginBottom: '40px',
     maxWidth: '100vw',
     overflow: 'auto',
+    '@media(max-width: 991px)': {
+      marginBottom: '98px',
+    }
   },
 });
 
