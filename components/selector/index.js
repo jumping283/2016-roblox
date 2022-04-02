@@ -32,6 +32,7 @@ const useSelectorStyles = createUseStyles({
     position: 'absolute',
     width: '100%',
     background: 'white',
+    zIndex: 3,
   },
   selectOption: {
     padding: '10px 15px',
