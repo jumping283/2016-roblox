@@ -14,7 +14,7 @@ const CreationsTab = props => {
           url: v.url,
           disabled: v.disabled,
         }
-      })}></VerticalSelector>
+      })} />
     </div>
     <div className='col-8 mt-4'>
       {selected.element()}

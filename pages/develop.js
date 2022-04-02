@@ -6,7 +6,7 @@ const DevelopPage = props => {
   const router = useRouter();
   const id = t.string(router.query['View']);
 
-  return <Develop id={parseInt(id, 10) || 0}></Develop>
+  return <Develop id={parseInt(id, 10) || 0}/>
 }
 
 DevelopPage.getInitialProps = () => {

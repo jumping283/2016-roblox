@@ -16,23 +16,23 @@ const useStyles = createUseStyles({
 const Develop = props => {
   const s = useStyles();
   return <div className='container'>
-    <AdBanner></AdBanner>
+    <AdBanner/>
     <div className={s.developerContainer}>
       <OldVerticalTabs options={[
         {
           name: 'My Creations',
-          element: <CreationsTab id={props.id}></CreationsTab>,
+          element: <CreationsTab id={props.id} />,
         },
         {
           name: 'Library',
-          element: <NotAvailable></NotAvailable>,
+          element: <NotAvailable />,
         },
         {
           name: 'Developer Exchange',
-          element: <NotAvailable></NotAvailable>,
+          element: <NotAvailable />,
         },
 
-      ]}></OldVerticalTabs>
+      ]} />
     </div>
   </div>
 }
