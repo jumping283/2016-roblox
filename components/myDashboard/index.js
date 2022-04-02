@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
+import getFlag from "../../lib/getFlag";
 import { getFriends } from "../../services/friends";
 import { getGameList, getGameSorts } from "../../services/games";
 import { multiGetUniverseIcons } from "../../services/thumbnails";
@@ -138,16 +139,16 @@ const MyDashboard = props => {
             return <GameRow key={v.token} title={v.displayName} games={v.games} icons={icons} />
           })
         }
-        <div className='row mt-4'>
+        {getFlag('UserFeedEnabled', false) ? <div className='row mt-4'>
           <div className='col-12 col-md-6'>
             <div className={cardStyles.card}>
               <div className='p-2'>
                 <h3 className={s.subHeader}>MY FEED</h3>
-                <MyFeed></MyFeed>
+                <MyFeed />
               </div>
             </div>
           </div>
-        </div>
+        </div> : null}
       </div>
       <div className='d-none d-lg-flex col-2'><AdSkyscraper context='dashboard-right'></AdSkyscraper></div>
     </div>
