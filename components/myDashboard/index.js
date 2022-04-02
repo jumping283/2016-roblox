@@ -139,7 +139,7 @@ const MyDashboard = props => {
             return <GameRow key={v.token} title={v.displayName} games={v.games} icons={icons} />
           })
         }
-        {getFlag('UserFeedEnabled', false) ? <div className='row mt-4'>
+        {getFlag('userFeedEnabled', false) ? <div className='row mt-4'>
           <div className='col-12 col-md-6'>
             <div className={cardStyles.card}>
               <div className='p-2'>
