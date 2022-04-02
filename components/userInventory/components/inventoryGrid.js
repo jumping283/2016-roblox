@@ -18,6 +18,8 @@ const InventoryGrid = props => {
   const s = useStyles();
   const store = userInventoryStore.useContainer();
   const myPage = store.data ? store.data.Page : null;
+  const isEmpty = store.data && store.data.Items.length === 0 && !store.previousPageAvailable();
+  const showPaging = store.data && !isEmpty;
   // TODO: is it "Totalitems" or "TotalItems"?
 
   return <div className='col-12 col-lg-10'>
@@ -36,7 +38,8 @@ const InventoryGrid = props => {
             })
             : null}
         </div>
-        <Paging />
+        {isEmpty ? <p className='text-center mt-4'>Player does not have any items in this category.</p> : null}
+        {showPaging ? <Paging /> : null}
       </div>
     </div>
   </div>
