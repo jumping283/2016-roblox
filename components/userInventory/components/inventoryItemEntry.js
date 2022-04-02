@@ -25,7 +25,7 @@ const useStyles = createUseStyles({
     marginTop: '10px',
     marginRight: '10px',
     marginBottom: '-34px',
-    zIndex: '8',
+    zIndex: '2',
     position: 'relative',
   },
   fakeLimitedLabel: {
