@@ -17,10 +17,6 @@ const GameDetailsStore = createContainer(() => {
 
     if (!details) return;
 
-    getGameMedia({
-      placeId: details.id,
-    }).then(setMedia);
-
     multiGetPlaceDetails({
       placeIds: [details.id],
     }).then(d => setPlaceDetails(d[0]));
@@ -32,6 +28,9 @@ const GameDetailsStore = createContainer(() => {
       universeIds: [placeDetails.universeId],
     }).then(d => {
       setUniverseDetails(d[0]);
+      getGameMedia({
+        universeId: d[0].id,
+      }).then(setMedia);
     })
   }, [placeDetails]);
 
