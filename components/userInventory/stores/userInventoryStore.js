@@ -2,13 +2,14 @@ import { useState } from "react";
 import { createContainer } from "unstated-next";
 import {getUserInfo} from "../../../services/users";
 import {getInventory} from "../../../services/inventory";
+import getFlag from "../../../lib/getFlag";
 
 const UserInventoryStore = createContainer(() => {
-  const limit = 24;
+  const limit = getFlag('inventoryPageLimit', 24);
   const [userId, setUserId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [category, setCategory] = useState({name: 'Hats',
-   value: 'Hat'});
+   value: 8});
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
