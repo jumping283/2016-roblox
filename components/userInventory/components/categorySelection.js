@@ -47,15 +47,15 @@ const CategorySelection = props => {
   const options = [
     {
       name: 'Heads',
-      value: 'Head',
+      value: 17,
     },
     {
       name: 'Faces',
-      value: 'Face',
+      value: 18,
     },
     {
       name: 'Gears',
-      value: 'Gear',
+      value: 19,
     },
     getFlag('accessoriesEnabled', false) ? {
       name: 'Accessories',
@@ -63,92 +63,92 @@ const CategorySelection = props => {
       children: [
         {
           name: 'Hats',
-          value: 'Hat',
+          value: 8,
         },
         {
           name: 'Hair',
-          value: 'HairAccessory',
+          value: 41,
         },
         {
           name: 'Face',
-          value: 'FaceAccessory',
+          value: 42,
         },
         {
           name: 'Neck',
-          value: 'NeckAccessory',
+          value: 43,
         },
         {
           name: 'Shoulder',
-          value: 'ShoulderAccessory',
+          value: 44,
         },
         {
           name: 'Front',
-          value: 'FrontAccessory',
+          value: 45,
         },
         {
           name: 'Back',
-          value: 'BackAccessory',
+          value: 46,
         },
         {
           name: 'Waist',
-          value: 'WaistAccessory',
+          value: 47,
         },
       ]
     } : {
       name: 'Hats',
-      value: 'Hat',
+      value: 8,
     },
     {
       name: 'T-Shirts',
-      value: 'TeeShirt',
+      value: 2,
     },
     {
       name: 'Shirts',
-      value: 'Shirt',
+      value: 11,
     },
     {
       name: 'Pants',
-      value: 'Pants',
+      value: 12,
     },
     {
       name: 'Decals',
-      value: 'Decal',
+      value: 13,
     },
     {
       name: 'Models',
-      value: 'Model',
+      value: 10,
     },
     {
       name: 'Plugins',
-      value: 'Plugin',
+      value: 38,
     },
     {
       name: 'Animations',
-      value: 'Animation',
+      value: 24,
     },
     {
       name: 'Places',
-      value: 'Place',
+      value: 9,
     },
     {
       name: 'Game Passes',
-      value: 'Gamepass',
+      value: 34,
     },
     {
       name: 'Audio',
-      value: 'Audio',
+      value: 3,
     },
     {
       name: 'Badges',
-      value: 'Badge',
+      value: 21,
     },
     {
       name: 'Torsos',
-      value: 'Torso',
+      value: 27,
     },
     getFlag('packagesEnabled', false) && {
       name: 'Packages',
-      value: 'Package',
+      value: 32,
     },
   ].filter(v => !!v);
   const [selected ,setSelected] = useState(() => {
@@ -158,7 +158,7 @@ const CategorySelection = props => {
       return null;
     }
 
-    return options.find(v => v.value === (getFlag('accessoriesEnabled', false) ? 'Accessories' : 'Hats'))
+    return options.find(v => v.value === (getFlag('accessoriesEnabled', false) ? 'Accessories' : 8))
   });
   const onChange = v => {
     if (v.children) {
@@ -174,11 +174,11 @@ const CategorySelection = props => {
   return <div className='col-12 col-lg-2'>
     <div className='d-block d-lg-none'>
       <h2 className={s.categoryTitle}>CATEGORY</h2>
-      <Selector options={options} onChange={onChange} value={getFlag('accessoriesEnabled', false) ? 'Accessories' : 'Hat'} />
+      <Selector options={options} onChange={onChange} value={getFlag('accessoriesEnabled', false) ? 'Accessories' : 8} />
       {
         selected && getFlag('accessoriesEnabled', false) && selected.children ? <>
           <h2 className={s.categoryTitle}>SUBCATEGORY</h2>
-          <Selector options={selected.children} onChange={onChangeSubCategory} value='Hat' /> 
+          <Selector options={selected.children} onChange={onChangeSubCategory} value={8} /> 
         </> : null
       }
     </div>
