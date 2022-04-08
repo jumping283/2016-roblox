@@ -34,6 +34,8 @@ const Paging = props => {
   const store = UserInventoryStore.useContainer();
   const s = useStyles();
   if (!store.data) return null;
+  const totalDisplay = store.data.TotalItems ? ('of '+ Math.ceil((store.data.TotalItems) / store.limit)) : (store.nextPageAvailable() ? 'of many' : null);
+
   return <div className='row'>
     <div className='col-12'>
       <div className={s.buttonWrapper}>
@@ -43,7 +45,7 @@ const Paging = props => {
         }}>
           <p>{'<'}</p>
         </div>
-        <p className={s.textCurrentPage}>Page {store.data.Page} of {Math.ceil((store.data.TotalItems || store.data.Totalitems) / store.limit)}</p>
+        <p className={s.textCurrentPage}>Page {store.data.Page} {totalDisplay}</p>
         <div className={s.buttonPaginate + ' ' + (!store.nextPageAvailable() ? s.buttonPaginateDisabled : '')} onClick={() => {
           if (store.nextPageAvailable())
             store.loadNextPage();
