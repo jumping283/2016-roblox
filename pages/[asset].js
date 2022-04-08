@@ -8,7 +8,7 @@ import getFlag from "../lib/getFlag";
 import { logger } from "../lib/logger";
 import redirectIfNotEqual from "../lib/redirectIfNotEqual";
 import { getItemDetails, getProductInfoLegacy, itemNameToEncodedName } from "../services/catalog";
-import { getGameUrl } from "../services/games";
+import { getGameUrl, multiGetPlaceDetails, multiGetUniverseDetails } from "../services/games";
 
 const getUrlForAssetType = ({ assetTypeId, assetId, name }) => {
   if (assetTypeId === 9) {
@@ -30,8 +30,11 @@ const AssetPage = props => {
    * @type {[AssetDetailsEntry, import('react').Dispatch<AssetDetailsEntry>]}
    */
   const [details, setDetails] = useState(null);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    if (!assetId) return
+    if (!assetId) return;
+
     getItemDetails([assetId]).then(result => {
       const newDetails = result.data.data[0];
       if (newDetails === undefined) {
@@ -39,7 +42,45 @@ const AssetPage = props => {
       }
       setDetails(newDetails);
     }).catch(e => {
+      if (e.response && e.response.status === 406) {
+        const isBadAssetType = e.response.data.errors.find(v => v.code === 11);
+        if (isBadAssetType) {
+          // Get from place details endpoint
+          multiGetPlaceDetails({placeIds: [assetId]}).then(resp => {
+            const place = resp[0];
+            return multiGetUniverseDetails({universeIds: [place.universeId]}).then(data => {
+              const uni = data[0];
+              setDetails({
+                name: uni.name,
+                description: uni.description,
+                creatorTargetId: uni.creator.id,
+                creatorType: uni.creator.type,
+                creatorName: uni.creator.name,
+                assetType: 9,
+                id: assetId,
+                createdAt: uni.created,
+                updatedAt: uni.updated,
+                genres: [uni.genre],
+                favoriteCount: uni.favoritedCount,
+                isForSale: uni.price !== null,
+                price: uni.price,
+                itemRestrictions: [],
+                productId: assetId,
+                itemType: 'Asset',
+                lowestSellerData: null,
+                offsaleDeadline: null,
+                currency: 1,
+              })
+            })
+          }).catch(e => {
+            console.error('could not get place details',e);
+            setError(e);
+          });
+          return;
+        }
+      }
       console.error(e)
+      setError(e);
     })
   }, [assetId]);
   useEffect(() => {
