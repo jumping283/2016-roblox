@@ -20,13 +20,13 @@ const InventoryGrid = props => {
   const myPage = store.data ? store.data.Page : null;
   const isEmpty = store.data && store.data.Items.length === 0 && !store.previousPageAvailable();
   const showPaging = store.data && !isEmpty;
-  // TODO: is it "Totalitems" or "TotalItems"?
+  const total = store.data ? (store.data?.TotalItems?.toLocaleString() || 'many') : null; // roblox started returning "null" for TotalItems :(
 
   return <div className='col-12 col-lg-10'>
     <div className='row'>
       <div className='col-12 pe-1 ps-1'>
         <h2 className={s.categoryValue}>{store.category.name.toUpperCase()}</h2>
-        <p className={s.showingLabel}>{myPage ? `Showing ${myPage} to ${store.data.Items.length} of ${store.data.TotalItems || store.data.Totalitems}` : null}</p>
+        <p className={s.showingLabel}>{myPage ? `Showing ${myPage} to ${store.data.Items.length} of ${total}` : null}</p>
       </div>
       <div className='col-12'>
         <div className='row'>
