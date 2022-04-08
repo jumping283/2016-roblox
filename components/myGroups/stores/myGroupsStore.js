@@ -9,6 +9,10 @@ const MyGroupsStore = createContainer(() => {
   return {
     groups,
     setGroups: groups => {
+      if (groups.length === 0) {
+        setGroups(groups);
+        return;
+      }
       multiGetGroupIcons({
         groupIds: groups.map(v => v.group.id),
       }).then(d => {
