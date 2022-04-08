@@ -92,7 +92,9 @@ const GroupPage = props => {
     if (!auth.userId) return;
     getPrimaryGroup({
       userId: auth.userId,
-    }).then(store.setPrimary);
+    }).then(store.setPrimary).catch(e => {
+      // endpoint fails with "Network error" if response body is null (which is returned when user has no primary group). I'm just gonna ignore it for now.
+    })
   }, [auth.userId]);
 
   const s = useStyles();
