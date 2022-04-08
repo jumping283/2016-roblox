@@ -48,7 +48,7 @@ const useSelectorStyles = createUseStyles({
 
 /**
  * 
- * @param {{options: {name: string; value: string}[]; onChange: (v: any) => void; value?: string}} props
+ * @param {{options: {name: string; value: any}[]; onChange: (v: any) => void; value?: any}} props
  * @returns 
  */
 const Selector = props => {
