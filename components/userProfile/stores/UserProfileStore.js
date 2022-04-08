@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createContainer } from "unstated-next";
+import getFlag from "../../../lib/getFlag";
 import { getFollowersCount, getFollowingsCount, getFriends, getFriendStatus, isAuthenticatedUserFollowingUserId } from "../../../services/friends";
 import { getUserGames } from "../../../services/games";
 import { getUserGroups } from "../../../services/groups";
@@ -30,7 +31,8 @@ const UserProfileStore = createContainer(() => {
       setLastError('InvalidUserId');
     });
     getPreviousUsernames({ userId: userId }).then(setPreviousNames);
-    getUserStatus({ userId }).then(setStatus);
+    if (getFlag('userProfileUserStatusEnabled', false))
+      getUserStatus({ userId }).then(setStatus);
     getFollowersCount({ userId }).then(setFollowersCount);
     getFollowingsCount({ userId }).then(setFollowingsCount);
     getFriends({ userId }).then(setFriends);
