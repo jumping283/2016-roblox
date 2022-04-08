@@ -56,14 +56,14 @@ There are some duplicates here, like the 2015+ and before 2015 profile page. I i
   - This is likely not accurate. I could not find any images of the message compose page from 2016, but if anyone has them, please share them.
 - ✔️ `/My/Messages` Messages page
   - Again, not very accurate as the only image I could find was for the "Sent" tab in late 2015.
-- :x: `/users/{userId}/inventory` User inventory page
+- ✔️ `/users/{userId}/inventory` User inventory page
 - ✔️ `/users/{userId}/friends` User friends/followers/followings page
 
 **Groups**
 - ✔️ `/My/CreateGroup.aspx` Create group page
 - :x: `/Group/Groups.aspx` Group list/searching
 - ✔️ `/My/Groups.aspx` Authenticated user groups
-- :x: `/Groups/Group.aspx?gid=1` Group page
+- ✔️ `/Groups/Group.aspx?gid=1` Group page
 - :x: `/Groups/Admin.aspx?gid=1` Group admin page
 
 **Forums**
