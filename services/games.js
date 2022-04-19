@@ -54,3 +54,13 @@ export const multiGetUniverseDetails = ({ universeIds }) => {
 export const getServers = ({ placeId, offset }) => {
   return request('GET', getBaseUrl() + `/games/getgameinstancesjson?placeId=${placeId}&startIndex=${offset}`).then(d => d.data);
 }
+
+export const multiGetGameVotes = ({universeIds}) => {
+  return request('GET', getFullUrl('games', '/v1/games/votes?universeIds=' + encodeURIComponent(universeIds.join(',')))).then(d => d.data.data);
+}
+
+export const voteOnGame = ({universeId, isUpvote}) => {
+  return request('PATCH', getFullUrl('games', '/v1/games/'+universeId+'/user-votes'), {
+    vote: isUpvote,
+  }).then(d => d.data.data);
+}

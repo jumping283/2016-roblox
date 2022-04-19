@@ -8,6 +8,7 @@ import Description from "./description";
 import GameStats from "./gameStats";
 import GameThumbnails from "./gameThumbnails";
 import PlayButton from "./playButton";
+import Vote from "./vote";
 
 const useStyles = createUseStyles({
   gameTitle: {
@@ -41,6 +42,7 @@ const GameOverview = props => {
     }
     <div className='col-12 col-lg-8'>
       <GameThumbnails/>
+      <Vote />
       <Description/>
     </div>
     <div className='col-12 col-lg-4'>
