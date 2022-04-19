@@ -230,7 +230,7 @@ const BuyItemModal = props => {
               {
                 (modalStore.purchaseState === 'PURCHASE' || modalStore.purchaseState === 'PURCHASE_PENDING') &&
                 <p className={s.footerText}>Your balance after this transaction will be R${newBalance.toLocaleString()} robux.</p>
-                || modalStore.purchaseState === 'PURCHASE_OK' && <p className={s.footerText}><a href='/My/Character.ashx'>Customize Character</a></p> || null
+                || modalStore.purchaseState === 'PURCHASE_OK' && <p className={s.footerText}><a href='/My/Character.aspx'>Customize Character</a></p> || null
               }
             </div>
           </div>
