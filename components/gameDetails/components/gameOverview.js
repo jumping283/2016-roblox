@@ -36,19 +36,19 @@ const GameOverview = props => {
               url: `/places/${store.details.id}/update`,
             }
           ]
-        }></GearDropdown>
+        } />
       </div>
     }
     <div className='col-12 col-lg-8'>
-      <GameThumbnails></GameThumbnails>
-      <Description></Description>
+      <GameThumbnails/>
+      <Description/>
     </div>
     <div className='col-12 col-lg-4'>
-      <BuilderDetails creatorId={store.details.creatorTargetId} creatorName={store.details.creatorName} creatorType={store.details.creatorType}></BuilderDetails>
-      <div className='divider-top mb-3'></div>
-      <PlayButton placeId={store.details.id}></PlayButton>
-      <GameStats></GameStats>
-      <div className='divider-top mb-0'></div>
+      <BuilderDetails creatorId={store.details.creatorTargetId} creatorName={store.details.creatorName} creatorType={store.details.creatorType}/>
+      <div className='divider-top mb-3'/>
+      <PlayButton placeId={store.details.id}/>
+      <GameStats/>
+      <div className='divider-top mb-0'/>
     </div>
   </div>
 }

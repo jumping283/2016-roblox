@@ -88,6 +88,10 @@ export const multiGetGroupIcons = ({ groupIds }) => {
   return request('get', getFullUrl('thumbnails', `/v1/groups/icons?groupIds=${toCsv(groupIds)}&format=png&size=420x420`)).then(d => d.data.data).then(addBaseUrl);
 }
 
+export const multiGetAssetThumbnails = ({ assetIds }) => {
+  return request('get', getFullUrl('thumbnails', `/v1/assets?assetIds=${toCsv(assetIds)}&format=png&size=420x420`)).then(d => d.data.data).then(addBaseUrl);
+}
+
 export const multiGetUniverseIcons = ({ universeIds, size }) => {
   let all = [];
   let c = chunk(universeIds, 100);
