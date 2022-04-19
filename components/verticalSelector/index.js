@@ -20,7 +20,7 @@ const VerticalSelector = props => {
     <div className='col-12 pe-0 me-0'>
       {
         props.options.map(v => {
-          return <SelectorOption key={v.name + v.url} name={v.name} url={v.url} selected={props.selected === v.name} disabled={v.disabled}></SelectorOption>
+          return <SelectorOption key={v.name + v.url} onClick={v.onClick} name={v.name} url={v.url} selected={props.selected === v.name} disabled={v.disabled}/>
         })
       }
     </div>
