@@ -48,8 +48,7 @@ const GameThumbnails = props => {
           setImages(thumb.map(v => v.imageUrl));
         })
       }else{
-        // TODO: get generated thumb
-        multiGetAssetThumbnails({assetIds: store.universeDetails.rootPlaceId}).then(thumb => {
+        multiGetAssetThumbnails({assetIds: [store.universeDetails.rootPlaceId]}).then(thumb => {
           if (thumb.length) {
             setImageUrl(thumb[0].imageUrl);
             setImages([thumb[0].imageUrl]);
