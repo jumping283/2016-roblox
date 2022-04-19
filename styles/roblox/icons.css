@@ -1525,3 +1525,21 @@ span.game-privacy-symbol.gps-inactive {
 span.game-privacy-symbol.gps-active {
 	background-position: 0 0;
 }
+
+.tiny-thumbs-up, .tiny-thumbs-down, .upvote.tiny, .downvote.tiny {
+	background: url('/img/thumbsup.png') no-repeat 0 -170px;
+	width: 12px;
+	height: 13px;
+	padding-right: 5px;
+	display: inline-block;
+	position: relative;
+	top: 2px;
+}
+
+.tiny-thumbs-down {
+	background-position: 0 -224px;
+	margin-right: 0;
+	padding-right: 0;
+	margin-left: 5px;
+	top: 2px;
+}
