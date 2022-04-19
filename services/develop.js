@@ -8,6 +8,13 @@ export const uploadAsset = ({ name, assetTypeId, file }) => {
   return request('POST', getBaseUrl() + '/develop/upload', formData);
 }
 
+export const uploadAssetVersion = ({assetId, file}) => {
+  let form = new FormData();
+  form.append('assetId', assetId);
+  form.append('file', file);
+  return request('POST', getBaseUrl() + '/develop/upload-version', form);
+}
+
 export const getCreatedAssetDetails = (assetIds) => {
   return request('POST', getFullUrl('itemconfiguration', '/v1/creations/get-asset-details'), {
     assetIds,
