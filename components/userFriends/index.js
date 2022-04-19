@@ -18,6 +18,7 @@ import PlayerImage from "../playerImage";
 import Tabs2016 from "../tabs2016";
 import useCardStyles from "../userProfile/styles/card";
 import UserFriendsStore from "./stores/userFriendsStore";
+import Paging from "../pagination2016";
 
 const useStyles = createUseStyles({
   title: {
@@ -25,6 +26,7 @@ const useStyles = createUseStyles({
   },
   imageWrapper: {
     border: '1px solid #c3c3c3',
+    minHeight: '82px',
   },
   userCard: {},
   username: {
@@ -250,27 +252,45 @@ const UserFriends = props => {
       }
     </div>
     <div className='row mt-2'>
-      {arrayToUse && (pageCount > 1) && <GenericPagination onClick={(nm) => {
-        return e => {
-          e.preventDefault();
-          let newPageNumber = page + nm;
-          if (newPageNumber === 0) return;
-          if (newPageNumber > pageCount) return;
-
+      {arrayToUse && (pageCount > 1) && <>
+        <Paging page={page} totalItems={pageCount * limit} limit={limit} nextPageAvailable={() => {
           if (tab === 'Friends') {
-            return setPage(newPageNumber);
+            if ((page + 1) > pageCount) {
+              return false;
+            }
+          }else{
+            if (!followEntries.nextPageCursor) {
+              return false;
+            }
           }
-          if (nm === -1) {
-            if (!followEntries.previousPageCursor) return
-            setPage(page - 1);
-            setCursor(followEntries.previousPageCursor)
-          } else {
-            if (!followEntries.nextPageCursor) return
-            setPage(page + 1);
-            setCursor(followEntries.nextPageCursor);
+          return true;
+        }} previousPageAvailable={() => {
+          if (tab === 'Friends') {
+            if ((page - 1) < 1) {
+              return false;
+            }
+          }else{
+            if (!followEntries.previousPageCursor) {
+              return false;
+            }
           }
-        }
-      }} page={page} pageCount={pageCount} />}
+          return true;
+        }} loadNextPage={() => {
+          if (tab === 'Friends') {
+            return setPage(page+1);
+          }
+          if (!followEntries.nextPageCursor) return
+          setPage(page + 1);
+          setCursor(followEntries.nextPageCursor);
+        }} loadPreviousPage={() => {
+          if (tab === 'Friends') {
+            return setPage(page-1);
+          }
+          if (!followEntries.previousPageCursor) return
+          setPage(page - 1);
+          setCursor(followEntries.previousPageCursor)
+        }} />
+      </>}
     </div>
   </div>
 }
