@@ -28,12 +28,15 @@ const Vote = props => {
   const [feedback, setFeedback] = useState(null);
   const [locked, setLocked] = useState(false);
 
-  useEffect(() => {
+  const loadVotes = () => {
     if (store.universeDetails && store.universeDetails.id) {
       multiGetGameVotes({universeIds: [store.universeDetails.id]}).then(data => {
         setVotes(data[0]);
       })
     }
+  }
+  useEffect(() => {
+    loadVotes();
   }, [store.universeDetails]);
 
   const submitVote = (didUpvote) => {
@@ -42,13 +45,7 @@ const Vote = props => {
     setFeedback(null);
 
     voteOnGame({universeId: store.universeDetails.id, isUpvote: didUpvote}).then(result => {
-      let newVotes = {...votes};
-      if (didUpvote) {
-        newVotes.upVotes ++;
-      }else{
-        newVotes.downVotes++;
-      }
-      setVotes(newVotes);
+      loadVotes();
     }).catch(e => {
       if (!e.response || !e.response.data || !e.response.data.errors) {
         setFeedback('An unknown error has occurred. Try again.');
