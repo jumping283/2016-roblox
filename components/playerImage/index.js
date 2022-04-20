@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { getBaseUrl } from "../../lib/request";
 import { reportImageFail } from "../../services/metrics";
+import thumbnailStore from "../../stores/thumbnailStore";
 
 const useStyles = createUseStyles({
   image: {
@@ -17,12 +18,17 @@ const PlayerImage = (props) => {
   const s = useStyles();
   const size = props.size || 420;
   const [retryCount, setRetryCount] = useState(0);
-  const [image, setImage] = useState(null);
+  const thumbs = thumbnailStore.useContainer();
+  const [image, setImage] = useState(thumbs.getUserThumbnail(props.id, '420x420'));
 
   useEffect(() => {
     setRetryCount(0);
-    setImage(getBaseUrl() + `/Thumbs/Avatar.ashx?height=${size}&width=${size}&userid=${props.id}&v=${props.disableCache ? new Date().getTime() : '0'}`);
+    setImage(thumbs.getUserThumbnail(props.id, '420x420'));
   }, [props]);
+
+  useEffect(() => {
+    setImage(thumbs.getUserThumbnail(props.id, '420x420'));
+  }, [thumbs.thumbnails]);
 
   return <img className={s.image} src={image} alt={props.name} onError={(e) => {
     if (retryCount >= 3) return;
@@ -32,7 +38,7 @@ const PlayerImage = (props) => {
       src: image,
     })
     setRetryCount(retryCount + 1);
-    setImage('/img/empty.png')
+    setImage('/img/placeholder.png')
   }} />
 }
 

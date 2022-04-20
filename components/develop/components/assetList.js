@@ -5,6 +5,7 @@ import GearDropdown from "../../gearDropdown";
 import AssetListAdEntry from "./assetListAdEntry";
 import AssetListCatalogEntry from "./assetListCatalogEntry";
 import AssetListGameEntry from "./assetListGameEntry";
+import thumbnailStore from "../../../stores/thumbnailStore";
 
 const useStyles = createUseStyles({
   image: {
@@ -25,6 +26,7 @@ const useStyles = createUseStyles({
 
 const AssetEntry = props => {
   const s = useStyles();
+  const thumbs = thumbnailStore.useContainer();
   const isPlace = props.assetType === 9;
   const isAd = props.ad !== undefined && props.target !== undefined;
 
@@ -94,19 +96,19 @@ const AssetEntry = props => {
 
   return <div className={'row ' + s.row}>
     <div className='col-2'>
-      <img className={s.image} src={`/Thumbs/Asset.ashx?width=100&height=100&assetId=${imageAssetId}`}></img>
+      <img className={s.image} src={thumbs.getAssetThumbnail(imageAssetId)}/>
     </div>
     <div className='col-9 ps-0'>
       <p className='mb-0'><a href={url}>{props.name}</a></p>
       {
-        isAd ? <AssetListAdEntry ad={props.ad} target={props.target} runMenuOpen={runMenuOpen} setRunMenuOpen={setRunMenuOpen}></AssetListAdEntry>
+        isAd ? <AssetListAdEntry ad={props.ad} target={props.target} runMenuOpen={runMenuOpen} setRunMenuOpen={setRunMenuOpen}/>
           : props.assetType === 9 ?
-            <AssetListGameEntry url={assetUrl} startPlaceName={props.name}></AssetListGameEntry>
-            : <AssetListCatalogEntry created={props.created}></AssetListCatalogEntry>
+            <AssetListGameEntry url={assetUrl} startPlaceName={props.name}/>
+            : <AssetListCatalogEntry created={props.created}/>
       }
     </div>
     <div className='col-1'>
-      <GearDropdown boxDropdownRightAmount={0} options={gearOptions.filter(v => !!v)}></GearDropdown>
+      <GearDropdown boxDropdownRightAmount={0} options={gearOptions.filter(v => !!v)}/>
     </div>
   </div>
 }
@@ -116,7 +118,7 @@ const AssetList = props => {
     <div className='col-12'>
       {
         props.assets.map(v => {
-          return <AssetEntry key={v.assetId || v.ad.id} {...v}></AssetEntry>
+          return <AssetEntry key={v.assetId || v.ad.id} {...v}/>
         })
       }
     </div>

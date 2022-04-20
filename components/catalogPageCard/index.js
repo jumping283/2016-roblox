@@ -11,6 +11,7 @@ import SaleOverlay from "../catalogOverlays/sale";
 import TimerOverlay from "../catalogOverlays/timer";
 import CreatorLink from "../creatorLink";
 import Robux from "../robux";
+import thumbnailStore from "../../stores/thumbnailStore";
 
 const useCatalogPageStyles = createUseStyles({
   image: {
@@ -127,7 +128,8 @@ const CatalogPageCard = props => {
   const s = useCatalogPageStyles();
   const isLarge = props.mode === 'large';
   const c = isLarge ? 'col-6 col-md-6 col-lg-3 mb-4 ' : 'col-6 col-md-6 col-lg-2 mb-2';
-  const image = getBaseUrl() + '/thumbs/asset.ashx?width=420&height=420&assetId=' + props.id;
+  const thumbs = thumbnailStore.useContainer();
+  const image = thumbs.getAssetThumbnail(props.id);
   const [showDetails, setShowDetails] = useState(false);
   const cardRef = useRef(null);
   // various conditionals

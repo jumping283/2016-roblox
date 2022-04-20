@@ -30,8 +30,6 @@ const useStyles = createUseStyles({
 const GameThumbnails = props => {
   const s = useStyles();
   const store = GameDetailsStore.useContainer();
-  const [selectedImage, setSelectedImage] = useState(0);
-  // const imageUrl = getBaseUrl() + '/thumbs/asset.ashx?width=420&height=420&assetId=' + store.details.id;
   const [imageUrl, setImageUrl] = useState(null);
   const [images, setImages] = useState(null);
 

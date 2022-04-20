@@ -1,5 +1,6 @@
 import { createUseStyles } from "react-jss";
 import { getBaseUrl } from "../../lib/request";
+import ThumbnailStore from "../../stores/thumbnailStore";
 
 const useStyles = createUseStyles({
   image: {
@@ -13,9 +14,10 @@ const useStyles = createUseStyles({
 
 const ItemImage = (props) => {
   const s = useStyles();
-  const image = getBaseUrl() + '/thumbs/asset.ashx?width=420&height=420&assetId=' + props.id;
+  const store = ThumbnailStore.useContainer();
+  const image = store.getAssetThumbnail(props.id, '420x420');
 
-  return <img className={s.image + ' ' + (props.className || '')} src={image} alt={props.name}></img>
+  return <img className={s.image + ' ' + (props.className || '')} src={image} alt={props.name}/>
 }
 
 export default ItemImage;
