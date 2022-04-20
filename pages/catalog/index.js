@@ -6,7 +6,6 @@ import CatalogLegend from "../../components/catalogLegend";
 import CatalogPageInput from "../../components/catalogPageInput";
 import CatalogPageNavigation from "../../components/catalogPageNavigation";
 import CatalogPageResults from "../../components/catalogPageResults";
-import Dropdown from '../../components/dropdown';
 import CatalogPageStore from "../../stores/catalogPage";
 
 const useStyles = createUseStyles({
@@ -24,44 +23,40 @@ const useStyles = createUseStyles({
 
 const CatalogPage = props => {
   const s = useStyles();
-  return (
-    <CatalogPageStore.Provider>
+  return <CatalogPageStore.Provider>
       <div className='container mt-4'>
-        <AdBanner></AdBanner>
+        <AdBanner/>
         <div className={s.catalogContainer}>
           <div className='row mt-2'>
             <div className='col-12 col-md-4 col-lg-2'>
               <h1 className={s.title}>Catalog</h1>
             </div>
             <div className='col-12 col-md-8 col-lg-10'>
-              <CatalogPageInput></CatalogPageInput>
+              <CatalogPageInput/>
             </div>
           </div>
           <div className='row'>
             <div className='col-12 col-md-4 col-lg-2'>
               <div className='divider-right'>
                 <div className='pe-2'>
-                  <CatalogPageNavigation></CatalogPageNavigation>
-                  <CatalogFilters></CatalogFilters>
-                  <CatalogLegend></CatalogLegend>
+                  <CatalogPageNavigation/>
+                  <CatalogFilters/>
+                  <CatalogLegend/>
                 </div>
               </div>
             </div>
             <div className='col-12 col-md-8 col-lg-10'>
-              <CatalogPageResults></CatalogPageResults>
+              <CatalogPageResults/>
             </div>
           </div>
         </div>
       </div>
     </CatalogPageStore.Provider>
-  )
 }
 
-export const getStaticProps = () => {
+CatalogPage.getInitialProps = () => {
   return {
-    props: {
-      title: 'Catalog - ROBLOX',
-    },
+    title: 'Catalog - ROBLOX',
   }
 }
 

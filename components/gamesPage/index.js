@@ -34,7 +34,7 @@ const Games = props => {
   if (!store.sorts || !store.games || !store.icons) return null;
   return <div className={'row ' + (auth.isAuthenticated ? s.container : '')}>
     <div className='col-12'>
-      <AdBanner context='gamesPage'></AdBanner>
+      <AdBanner context='gamesPage'/>
     </div>
     <div className='col-12 ps-0 pb-0'>
       <div className={'row pb-2 ' + s.gamesContainer}>
@@ -79,7 +79,7 @@ const Games = props => {
                     name: 'Builders Club',
                     value: 'builders-club',
                   },
-                ]}></Selector>
+                ]}/>
             </div>
           }
           {showGenre &&
@@ -90,7 +90,7 @@ const Games = props => {
                   console.log('[info] use genre', newValue);
                   store.setGenreFilter(newValue.value);
                 }}
-                options={store.selectorSorts}></Selector>
+                options={store.selectorSorts}/>
             </div>
           }
         </div>
@@ -102,7 +102,7 @@ const Games = props => {
               }
               existingGames[v.token] = true;
               let games = store.games && store.games[v.token] || null;
-              return <GameRow ads={true} key={'row ' + v.token} title={v.displayName} games={games} icons={store.icons}></GameRow>
+              return <GameRow ads={true} key={'row ' + v.token} title={v.displayName} games={games} icons={store.icons}/>
             })}
           </div>
         </div>

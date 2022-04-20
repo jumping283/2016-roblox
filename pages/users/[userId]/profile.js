@@ -9,7 +9,7 @@ const UserProfilePage = props => {
   const userId = router.query['userId'];
   return <UserProfileStore.Provider>
     <Theme2016>
-      <UserProfile userId={userId}></UserProfile>
+      <UserProfile userId={userId}/>
     </Theme2016>
   </UserProfileStore.Provider>
 }

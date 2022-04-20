@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { createUseStyles } from "react-jss";
 import { abbreviateNumber } from "../../lib/numberUtils";
 
@@ -52,6 +52,9 @@ const OldVerticalTabs = props => {
   const s = useStyles();
   const { options } = props;
   const [selected, setSelected] = useState(props.default ? options.find(v => v.name === props.default) : options[0]);
+  useEffect(() => {
+    setSelected(props.default ? options.find(v => v.name === props.default) : options[0]);
+  }, [props.default, options]);
   return <div className='row'>
     <div className={`${s.buttonCol} col-12`}>
       {
@@ -64,7 +67,7 @@ const OldVerticalTabs = props => {
             }
           }}>
             <p className={`${!isSelected ? s.vTabUnselected : ''} ${s.vTabLabel}`}>{v.name} {typeof v.count === 'number' ? <span className={s.count}>{abbreviateNumber(v.count)}</span> : null}</p>
-            {isSelected && <div className={s.btnBottomSeperator}></div>}
+            {isSelected && <div className={s.btnBottomSeperator}/>}
           </div>
         })
       }

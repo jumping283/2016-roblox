@@ -35,15 +35,15 @@ const CreatorDetails = props => {
   }
   return <div className='row'>
     <div className='col-4 pe-0'>
-      <PlayerImage id={props.id} name={props.name}></PlayerImage>
-      <BcOverlay></BcOverlay>
+      <PlayerImage id={props.id} name={props.name}/>
+      <BcOverlay/>
     </div>
     <div className='col-8 ps-0'>
       <StatEntry name="Creator" value={
-        <CreatorLink id={props.id} name={props.name} type={props.type}></CreatorLink>
-      }></StatEntry>
-      <StatEntry name="Created" value={dayjs(props.createdAt).format('M/D/YYYY')}></StatEntry>
-      <StatEntry name="Updated" value={dayjs(props.updatedAt).fromNow()}></StatEntry>
+        <CreatorLink id={props.id} name={props.name} type={props.type}/>
+      }/>
+      <StatEntry name="Created" value={dayjs(props.createdAt).format('M/D/YYYY')}/>
+      <StatEntry name="Updated" value={dayjs(props.updatedAt).fromNow()}/>
     </div>
   </div>
 }
