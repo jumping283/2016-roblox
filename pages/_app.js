@@ -14,6 +14,7 @@ import NavigationStore from '../stores/navigation';
 import { getTheme, themeType } from '../services/theme';
 import MainWrapper from '../components/mainWrapper';
 import GlobalAlert from '../components/globalAlert';
+import ThumbnailStore from "../stores/thumbnailStore";
 
 // @ts-ignore
 if (process.browser) {
@@ -67,7 +68,9 @@ function RobloxApp({ Component, pageProps }) {
       </LoginModalStore.Provider>
       <GlobalAlert />
       <MainWrapper>
-        <Component {...pageProps} />
+        <ThumbnailStore.Provider>
+          <Component {...pageProps} />
+        </ThumbnailStore.Provider>
       </MainWrapper>
       <Footer></Footer>
     </AuthenticationStore.Provider>
