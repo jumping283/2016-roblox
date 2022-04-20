@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import CatalogDetails from "../components/catalogDetailsPage";
-import CatalogDetailsPage from "../components/catalogDetailsPage/stores/catalogDetailsPage";
-import CatalogDetailsPageModal from "../components/catalogDetailsPage/stores/catalogDetailsPageModal";
-import GameDetails from "../components/gameDetails";
-import GameDetailsStore from "../components/gameDetails/stores/gameDetailsStore";
-import getFlag from "../lib/getFlag";
-import { logger } from "../lib/logger";
-import redirectIfNotEqual from "../lib/redirectIfNotEqual";
-import { getItemDetails, getProductInfoLegacy, itemNameToEncodedName } from "../services/catalog";
-import { getGameUrl, multiGetPlaceDetails, multiGetUniverseDetails } from "../services/games";
+import CatalogDetails from "../catalogDetailsPage";
+import CatalogDetailsPage from "../catalogDetailsPage/stores/catalogDetailsPage";
+import CatalogDetailsPageModal from "../catalogDetailsPage/stores/catalogDetailsPageModal";
+import GameDetails from "../gameDetails";
+import GameDetailsStore from "../gameDetails/stores/gameDetailsStore";
+import getFlag from "../../lib/getFlag";
+import { logger } from "../../lib/logger";
+import redirectIfNotEqual from "../../lib/redirectIfNotEqual";
+import {getItemDetails, getItemUrl, getProductInfoLegacy, itemNameToEncodedName} from "../../services/catalog";
+import { getGameUrl, multiGetPlaceDetails, multiGetUniverseDetails } from "../../services/games";
+import {useRouter} from "next/dist/client/router";
 
 const getUrlForAssetType = ({ assetTypeId, assetId, name }) => {
   if (assetTypeId === 9) {
@@ -19,13 +20,20 @@ const getUrlForAssetType = ({ assetTypeId, assetId, name }) => {
     });
   }
   // Anything else
-  return `/${itemNameToEncodedName(name)}-item?id=${assetId}`;
+  return getItemUrl({assetId: assetId, name: name});
 }
 
 const AssetPage = props => {
+  const router = useRouter();
+  useEffect(() => {
+    console.log('id', props);
+  }, [router.query[props.idParamName]]);
+  const assetId = router.query[props.idParamName];
+
+  // console.log('ASSET PAGE!!!!!!!!!!!!!!', props, router.query, router);
   // TODO: all this asset details crap needs to be done in getInitialProps()
   // The only reason it's not in there now is because I don't have a solution to the server-side CSRF issue yet
-  const { assetId, name } = props;
+  // const { assetId, name } = props;
   /**
    * @type {[AssetDetailsEntry, import('react').Dispatch<AssetDetailsEntry>]}
    */
@@ -83,16 +91,6 @@ const AssetPage = props => {
       setError(e);
     })
   }, [assetId]);
-  useEffect(() => {
-    if (!details) return;
-    if (redirectIfNotEqual(getUrlForAssetType({
-      assetId: details.id,
-      name: details.name,
-      assetTypeId: details.assetType,
-    }))) {
-      return;
-    }
-  }, [details]);
 
   if (!details) return null;
   if (!assetId) return null;
@@ -100,20 +98,20 @@ const AssetPage = props => {
   if (details.assetType === 9) {
     // Place
     return <GameDetailsStore.Provider>
-      <GameDetails details={details}></GameDetails>
+      <GameDetails details={details}/>
     </GameDetailsStore.Provider>;
   }
   // Anything else (e.g. hat, shirt, model)
   return <CatalogDetailsPage.Provider>
     <CatalogDetailsPageModal.Provider>
-      <CatalogDetails details={details}></CatalogDetails>
+      <CatalogDetails details={details}/>
     </CatalogDetailsPageModal.Provider>
   </CatalogDetailsPage.Provider>;
 }
-
+/*
 export async function getServerSideProps({ query, res, req }) {
   const assetId = query['id'];
-  const name = query['asset'];
+  const name = query['asset'] || query['url'];
   if (!assetId || !name) {
     return {
       notFound: true,
@@ -156,6 +154,7 @@ export async function getServerSideProps({ query, res, req }) {
     },
   };
 }
+*/
 
 
 export default AssetPage;
