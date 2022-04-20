@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { createUseStyles } from "react-jss";
 import getFlag from "../../lib/getFlag";
 import { getBaseUrl } from "../../lib/request";
@@ -129,7 +129,12 @@ const CatalogPageCard = props => {
   const isLarge = props.mode === 'large';
   const c = isLarge ? 'col-6 col-md-6 col-lg-3 mb-4 ' : 'col-6 col-md-6 col-lg-2 mb-2';
   const thumbs = thumbnailStore.useContainer();
-  const image = thumbs.getAssetThumbnail(props.id);
+
+  const [image, setImage] = useState(thumbs.getPlaceholder());
+  useEffect(() => {
+    setImage(thumbs.getAssetThumbnail(props.id));
+  }, [props, thumbs.thumbnails]);
+
   const [showDetails, setShowDetails] = useState(false);
   const cardRef = useRef(null);
   // various conditionals
@@ -146,14 +151,18 @@ const CatalogPageCard = props => {
     <div ref={cardRef} className={isLarge ? s.imageBig : s.imageSmall}>
       <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.id}`}>
         <div style={{ zIndex: showDetails ? 10 : 0, position: 'relative' }}>
-          {isTimedItem && <TimerOverlay></TimerOverlay>}
-          {isNew ? <NewOverlay></NewOverlay> : isSale ? <SaleOverlay></SaleOverlay> : null}
-          <img src={image} className={`${s.image} ${props.mode === 'large' ? s.imageBig : s.imageSmall}`}></img>
-          {isLimited && <LimitedOverlay></LimitedOverlay>}
-          {isLimitedU && <LimitedUniqueOverlay></LimitedUniqueOverlay>}
+          {isTimedItem && <TimerOverlay/>}
+          {isNew ? <NewOverlay/> : isSale ? <SaleOverlay/> : null}
+          <img alt={props.name} src={image} className={`${s.image} ${props.mode === 'large' ? s.imageBig : s.imageSmall}`} onError={e => {
+            if (e.currentTarget.src !== thumbs.getPlaceholder()) {
+              setImage(thumbs.getPlaceholder());
+            }
+          }}/>
+          {isLimited && <LimitedOverlay/>}
+          {isLimitedU && <LimitedUniqueOverlay/>}
           <div className={s.overviewDetails} style={hasBottomOverlay ? { marginTop: '-18px' } : undefined}>
             <p className={`mb-0 ${s.itemName}`}>{props.name}</p>
-            <PriceText {...props}></PriceText>
+            <PriceText {...props}/>
           </div>
         </div>
       </a>
