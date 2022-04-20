@@ -51,50 +51,39 @@ const ThumbnailStore = createContainer(() => {
       pendingTimer: 0,
       pendingItems: copy.pendingItems,
     };
-    const assets = copy['asset'];
-    if (assets && assets.length) {
-      for (const t of assets) {
-        pendingState.current.pendingItems.push(getKey(t.id, 'asset', '420x420'));
-      }
-      doWithRetry(async () => {
-        const data = await multiGetAssetThumbnails({
-          assetIds: assets.map(v => v.id),
-        });
-        dispatchThumbnails({
+    const getAndProcessThumbnails = (type, cb) => {
+      // todo: size support?
+      const assets = copy[type];
+      if (assets && assets.length) {
+        for (const t of assets) {
+          pendingState.current.pendingItems.push(getKey(t.id, type, '420x420'));
+        }
+        doWithRetry(async () => {
+          const data = await cb(assets);
+          dispatchThumbnails({
             event: 'MULTI_ADD',
-            type: 'asset',
+            type: type,
             size: '420x420',
             thumbnails: data,
-        });
-        for (const item of data) {
-          pendingState.current.pendingItems = pendingState.current.pendingItems.filter(v => v !== getKey(item.targetId, 'asset', '420x420'));
-        }
-      })
-    }
-    const userThumbs = copy['userThumbnail'];
-    if (userThumbs && userThumbs.length) {
-      for (const t of userThumbs) {
-        pendingState.current.pendingItems.push(getKey(t.id, 'userThumbnail', '420x420'));
-      }
-      doWithRetry(async () => {
-        const data = await multiGetUserThumbnails({
-          userIds: userThumbs.map(v => v.id),
-          size: '420x420',
-          format: 'png',
-        });
-        dispatchThumbnails({
-          event: 'MULTI_ADD',
-          type: 'userThumbnail',
-          size: '420x420',
-          thumbnails: data,
-        });
-        for (const item of data) {
-          pendingState.current.pendingItems = pendingState.current.pendingItems.filter(v => {
-            return v !== getKey(item.targetId, 'userThumbnail', '420x420');
           });
-        }
-      })
+          for (const item of data) {
+            pendingState.current.pendingItems = pendingState.current.pendingItems.filter(v => v !== getKey(item.targetId, type, '420x420'));
+          }
+        })
+      }
     }
+    getAndProcessThumbnails('asset', (items) => {
+      return multiGetAssetThumbnails({
+        assetIds: items.map(v => v.id),
+      });
+    });
+    getAndProcessThumbnails('userThumbnail', (items) => {
+      return multiGetUserThumbnails({
+        userIds: items.map(v => v.id),
+        size: '420x420',
+        format: 'png',
+      });
+    });
   }
   const requestThumbnail = (id, type, size) => {
     if (!pendingState.current[type]) {
@@ -117,37 +106,41 @@ const ThumbnailStore = createContainer(() => {
       pendingState.current.pendingTimer = setTimeout(() => {
         fetchThumbnails();
       }, 10);
+    }else if (pendingState.current.pendingCount >= 50) {
+      clearTimeout(pendingState.current.pendingTimer);
+      fetchThumbnails();
     }
   }
 
+  const getPlaceholder = () => {
+    return '/img/placeholder.png';
+  };
+
+  const getThumbnailHandler = (type) => {
+    return (id, size = '420x420') => {
+      if (!['420x420'].includes(size)) {
+        throw new Error('Invalid size');
+      }
+
+      const t = thumbnails[getKey(id, type, size)];
+      // if t is null, the image is pending/blocked/not available, so don't try to get it again.
+      if (t === null || (typeof t === 'string' && t.length === 0)) {
+        return getPlaceholder();
+      }
+      if (t === undefined) {
+        requestThumbnail(id, type, size);
+        return '/img/placeholder.png';
+      }
+      return t;
+    }
+  }
 
   return {
     thumbnails,
 
-    getUserThumbnail: (userId, size = '420x420') => {
-      if (!['420x420'].includes(size)) {
-        throw new Error('Invalid size');
-      }
-
-      const t = thumbnails[getKey(userId, 'userThumbnail', size)];
-      if (t === undefined) {
-        requestThumbnail(userId, 'userThumbnail', size);
-        return '/img/placeholder.png';
-      }
-      return t;
-    },
-    getAssetThumbnail: (assetId, size = '420x420') => {
-      if (!['420x420'].includes(size)) {
-        throw new Error('Invalid size');
-      }
-
-      const t = thumbnails[getKey(assetId, 'asset', size)];
-      if (t === undefined) {
-        requestThumbnail(assetId, 'asset', size);
-        return '/img/placeholder.png';
-      }
-      return t;
-    }
+    getUserThumbnail: getThumbnailHandler('userThumbnail'),
+    getAssetThumbnail: getThumbnailHandler('asset'),
+    getPlaceholder,
   }
 });
 
