@@ -128,8 +128,6 @@ const ThumbnailStore = createContainer(() => {
       if (!['420x420'].includes(size)) {
         throw new Error('Invalid size');
       }
-      if (!Number.isSafeInteger(userId))
-        throw new Error('Invalid userId');
 
       const t = thumbnails[getKey(userId, 'userThumbnail', size)];
       if (t === undefined) {
@@ -142,8 +140,6 @@ const ThumbnailStore = createContainer(() => {
       if (!['420x420'].includes(size)) {
         throw new Error('Invalid size');
       }
-      if (!Number.isSafeInteger(assetId))
-        throw new Error('Invalid assetId');
 
       const t = thumbnails[getKey(assetId, 'asset', size)];
       if (t === undefined) {
