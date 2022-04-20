@@ -7,6 +7,7 @@ import CatalogDetailsPage from "../stores/catalogDetailsPage";
 import CatalogDetailsPageModal from "../stores/catalogDetailsPageModal";
 import ItemImage from "../../itemImage";
 import Robux from "./robux";
+import Link from "../../link";
 
 const useDescStyles = createUseStyles({
   purchaseText: {
@@ -230,7 +231,7 @@ const BuyItemModal = props => {
               {
                 (modalStore.purchaseState === 'PURCHASE' || modalStore.purchaseState === 'PURCHASE_PENDING') &&
                 <p className={s.footerText}>Your balance after this transaction will be R${newBalance.toLocaleString()} robux.</p>
-                || modalStore.purchaseState === 'PURCHASE_OK' && <p className={s.footerText}><a href='/My/Character.aspx'>Customize Character</a></p> || null
+                || modalStore.purchaseState === 'PURCHASE_OK' && <p className={s.footerText}><Link href='/My/Character.aspx'><a>Customize Character</a></Link></p> || null
               }
             </div>
           </div>

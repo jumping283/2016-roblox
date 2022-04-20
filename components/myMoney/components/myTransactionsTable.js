@@ -40,11 +40,11 @@ const DescriptionEntry = props => {
   }
   if (!noun) {
     // item was deleted ?
-    noun = <DeletedEntryMessage message={deletedMessage}></DeletedEntryMessage>
+    noun = <DeletedEntryMessage message={deletedMessage}/>
   }
   // console.log(props)
   return <span>
-    {verb} {link ? <a href={link}>{noun}</a> : noun}
+    {verb} {link ? <Link href={link}><a>{noun}</a></Link> : noun}
   </span>;
 }
 

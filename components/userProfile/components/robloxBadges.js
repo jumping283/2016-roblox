@@ -3,6 +3,7 @@ import { createUseStyles } from "react-jss"
 import { getUserRobloxBadges } from "../../../services/accountInformation";
 import SmallButtonLink from "./smallButtonLink";
 import Subtitle from "./subtitle";
+import Link from "../../link";
 
 const useBadgeStyles = createUseStyles({
   label: {
@@ -58,12 +59,14 @@ const RobloxBadges = props => {
           {
             badges.slice(0, showAll ? badges.length : 6).map((v, i) => {
               return <div className='col-4 col-lg-2' key={i}>
-                <a href='/Badges.aspx' className={s.badgeLink}>
-                  <div className={s.imageWrapper}>
-                    <span className={`icon-${v.name.toLowerCase().replace(/ /g, '-')}`}></span>
-                  </div>
-                  <p className={`${s.label} mb-0`}>{v.name}</p>
-                </a>
+                <Link href='/Badges.aspx' className={s.badgeLink}>
+                  <a>
+                    <div className={s.imageWrapper}>
+                      <span className={`icon-${v.name.toLowerCase().replace(/ /g, '-')}`}/>
+                    </div>
+                    <p className={`${s.label} mb-0`}>{v.name}</p>
+                  </a>
+                </Link>
               </div>
             })
           }

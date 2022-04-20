@@ -6,6 +6,7 @@ import AssetListAdEntry from "./assetListAdEntry";
 import AssetListCatalogEntry from "./assetListCatalogEntry";
 import AssetListGameEntry from "./assetListGameEntry";
 import thumbnailStore from "../../../stores/thumbnailStore";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   image: {
@@ -99,7 +100,13 @@ const AssetEntry = props => {
       <img className={s.image} src={thumbs.getAssetThumbnail(imageAssetId)}/>
     </div>
     <div className='col-9 ps-0'>
-      <p className='mb-0'><a href={url}>{props.name}</a></p>
+      <p className='mb-0'>
+        <Link href={url}>
+          <a>
+            {props.name}
+          </a>
+        </Link>
+      </p>
       {
         isAd ? <AssetListAdEntry ad={props.ad} target={props.target} runMenuOpen={runMenuOpen} setRunMenuOpen={setRunMenuOpen}/>
           : props.assetType === 9 ?

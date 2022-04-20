@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
 import request, { getBaseUrl } from "../../lib/request";
 import { adTypes } from "./constants";
+import Link from "../link";
 
 const useStyles = createUseStyles({
   adWrapper: {
@@ -60,12 +61,14 @@ const UserAdvertisement = props => {
   // TODO: calculate correct height of ad when current screen width is smaller than ad width. The height is way too big on mobile.
   if (!info) throw new Error(`unexpected adType: ${props.type}`);
   if (!imageUrl) {
-    return <div style={{ width: '100%', height: info.height }}></div>
+    return <div style={{width: '100%', height: info.height}}/>
   }
   return <div className={s.adWrapper} style={imageLoaded ? undefined : { height: info.height, width: '100%' }}>
-    <a href={link} title={title}>
-      <img onLoad={() => { setImageLoaded(true) }} src={imageUrl} className={s.adImage} style={{ maxWidth: info.width, maxHeight: info.height }}></img>
-    </a>
+    <Link href={link || '#'}>
+      <a title={title}>
+        <img onLoad={() => { setImageLoaded(true) }} src={imageUrl} className={s.adImage} style={{ maxWidth: info.width, maxHeight: info.height }}/>
+      </a>
+    </Link>
   </div>
 }
 

@@ -2,6 +2,7 @@ import searchUsersStore from "../stores/searchUsersStore";
 import {createUseStyles} from "react-jss";
 import PlayerImage from "../../playerImage";
 import dayjs from "../../../lib/dayjs";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   textRight: {
@@ -57,19 +58,21 @@ const UsersRow = props => {
           const isOnline = presence && dayjs(presence.lastOnline).isAfter(dayjs().subtract(5, 'minutes'))
 
           return <div className={s.userRow} key={v.UserId}>
-               <a href={v.UserProfilePageUrl}>
-                 <div className='row'>
-                   <div className='col-6 col-md-2 col-lg-1'>
-                     <PlayerImage id={v.UserId} />
+               <Link href={v.UserProfilePageUrl}>
+                 <a>
+                   <div className='row'>
+                     <div className='col-6 col-md-2 col-lg-1'>
+                       <PlayerImage id={v.UserId} />
+                     </div>
+                     <div className='col-6 col-md-7 col-lg-8'>
+                       <p><span className={s.status + ' ' + (isUnknown ? s.unknownStatus : isOnline ? s.onlineStatus : s.offlineStatus)}>.</span> <span className={s.username}>{v.Name}</span> </p>
+                     </div>
+                     <div className='col-12 col-md-3 col-lg-3'>
+                       <p className={s.textRight + ' ' + s.colorNormal}>{presence ? dayjs(presence.lastOnline).format('M/D/YYYY h:mm A') : null}</p>
+                     </div>
                    </div>
-                   <div className='col-6 col-md-7 col-lg-8'>
-                     <p><span className={s.status + ' ' + (isUnknown ? s.unknownStatus : isOnline ? s.onlineStatus : s.offlineStatus)}>.</span> <span className={s.username}>{v.Name}</span> </p>
-                   </div>
-                   <div className='col-12 col-md-3 col-lg-3'>
-                     <p className={s.textRight + ' ' + s.colorNormal}>{presence ? dayjs(presence.lastOnline).format('M/D/YYYY h:mm A') : null}</p>
-                   </div>
-                 </div>
-               </a>
+                 </a>
+               </Link>
           </div>
         }) : <div className='row'>
           <div className='col-12'>

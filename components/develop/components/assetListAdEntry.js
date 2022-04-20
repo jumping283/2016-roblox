@@ -5,6 +5,7 @@ import { bidOnAd } from "../../../services/ads";
 import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import useButtonStyles from "../../../styles/buttonStyles";
 import ActionButton from "../../actionButton";
+import Link from "../../link";
 
 const getUrl = (target) => {
   if (target.targetType === 'Asset')
@@ -57,16 +58,16 @@ const AssetListAdEntry = props => {
   let ctr = ((ad.clicksLastRun / ad.impressionsLastRun) * 100).toFixed(2);
   let totalCtr = ((ad.clicksAll / ad.impressionsAll) * 100).toFixed(2);
   return <div>
-    <p className='mb-0'>{ad.name} (for <a href={getUrl(target)}>{target.targetName}</a>)</p>
+    <p className='mb-0'>{ad.name} (for <Link href={getUrl(target)}><a>{target.targetName}</a></Link>)</p>
     <div className='row'>
-      <AdStat name='Impressions' value={ad.impressionsLastRun.toLocaleString()}></AdStat>
-      <AdStat name='Clicks' value={ad.clicksLastRun.toLocaleString()}></AdStat>
-      <AdStat name='CTR' value={ctr + '%'}></AdStat>
-      <AdStat name='Bid' value={ad.bidAmountRobuxLastRun.toLocaleString()}></AdStat>
-      <AdStat name='Total Impr' value={ad.impressionsAll.toLocaleString()}></AdStat>
-      <AdStat name='Total Clicks' value={ad.clicksAll.toLocaleString()}></AdStat>
-      <AdStat name='Total CTR' value={totalCtr + '%'}></AdStat>
-      <AdStat name='Total Bid' value={ad.bidAmountRobuxAll.toLocaleString()}></AdStat>
+      <AdStat name='Impressions' value={ad.impressionsLastRun.toLocaleString()}/>
+      <AdStat name='Clicks' value={ad.clicksLastRun.toLocaleString()}/>
+      <AdStat name='CTR' value={ctr + '%'}/>
+      <AdStat name='Bid' value={ad.bidAmountRobuxLastRun.toLocaleString()}/>
+      <AdStat name='Total Impr' value={ad.impressionsAll.toLocaleString()}/>
+      <AdStat name='Total Clicks' value={ad.clicksAll.toLocaleString()}/>
+      <AdStat name='Total CTR' value={totalCtr + '%'}/>
+      <AdStat name='Total Bid' value={ad.bidAmountRobuxAll.toLocaleString()}/>
     </div>
     <div className='row'>
       <div className='col-12'>
@@ -74,14 +75,14 @@ const AssetListAdEntry = props => {
           if (!ad.isRunning || true) {
             setRunMenuOpen(!runMenuOpen);
           }
-        }}><span className={'game-privacy-symbol ' + (ad.isRunning ? 'gps-active' : 'gps-inactive')}></span> {ad.isRunning ? 'Running' : 'Not Running'}</p>
+        }}><span className={'game-privacy-symbol ' + (ad.isRunning ? 'gps-active' : 'gps-inactive')}/> {ad.isRunning ? 'Running' : 'Not Running'}</p>
       </div>
     </div>
     {
       runMenuOpen ? <div className='row'>
         {feedback && <div className='col-12'><p className='text-danger'>{feedback}</p></div>}
         <div className='col-12'>
-          <span className={s.bidLabel}>Bid in Robux: </span><input disabled={locked} ref={amountRef} type='text' className='p-1'></input>
+          <span className={s.bidLabel}>Bid in Robux: </span><input disabled={locked} ref={amountRef} type='text' className='p-1'/>
           <ActionButton disabled={locked} label='Bid' className={buttonStyles.buyButton + ' ' + buttonStyles.normal + ' ' + s.btn} divClassName={s.btn} onClick={() => {
             if (locked) return;
             setFeedback(null);
@@ -97,10 +98,10 @@ const AssetListAdEntry = props => {
               setFeedback('Error buying ad. ' + e.message);
               setLocked(false);
             })
-          }}></ActionButton>
+          }}/>
           <ActionButton label='Cancel' className={buttonStyles.cancelButton + ' ' + buttonStyles.normal + ' ' + s.btn} divClassName={s.btn} onClick={() => {
             setRunMenuOpen(false);
-          }}></ActionButton>
+          }}/>
         </div>
       </div> : null
     }

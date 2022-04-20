@@ -1,4 +1,5 @@
 import { createUseStyles } from "react-jss";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   startPlaceLabel: {
@@ -13,11 +14,13 @@ const useStyles = createUseStyles({
 const AssetListGameEntry = props => {
   const s = useStyles();
   return <div>
-    <p className='mb-0'><span className={s.startPlaceLabel}>Start Place: </span> <a href={props.url}>{props.startPlaceName}</a></p>
+    <p className='mb-0'><span className={s.startPlaceLabel}>Start Place: </span> <Link href={props.url}><a>{props.startPlaceName}</a></Link></p>
     <p className={s.visibilityButton + ' mb-0 mt-1'}>
-      <a href={props.url + '#/#basicSettings'}>
-        Public
-      </a>
+      <Link href={props.url + '#/#basicSettings'}>
+        <a>
+          Public
+        </a>
+      </Link>
     </p>
   </div>
 }

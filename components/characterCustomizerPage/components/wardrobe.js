@@ -10,6 +10,7 @@ import ItemImage from "../../itemImage";
 import OldVerticalTabs from "../../oldVerticalTabs";
 import assetTypes from "../assetTypes";
 import WardrobeEntry from "./wardrobeEntry";
+import Link from "../../link";
 
 const creatableAssets = [
   2, // T-Shirt
@@ -203,8 +204,10 @@ const Wardrobe = props => {
           </p>
         })}
         <p className={s.categoryEntry}>
-          <a href='/catalog'>Shop</a>
-          {creatableAssets.includes(category.id) && <span>| <a href='/test'>Create</a></span>}
+          <Link href='/catalog'>
+            <a>Shop</a>
+          </Link>
+          {creatableAssets.includes(category.id) && <span> || <Link href='/develop'><a>Create</a></Link></span>}
         </p>
       </div>
     </div>
