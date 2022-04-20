@@ -2,13 +2,17 @@ import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { bidOnAd } from "../../../services/ads";
-import { itemNameToEncodedName } from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import useButtonStyles from "../../../styles/buttonStyles";
 import ActionButton from "../../actionButton";
 
 const getUrl = (target) => {
-  if (target.targetType === 'Asset') return `/${itemNameToEncodedName(target.targetName)}-item?id=${target.targetId}`;
-  if (target.targetType === 'Group') return `/Groups/Group.aspx?gid=${target.targetId}`;
+  if (target.targetType === 'Asset')
+    return getItemUrl({assetId: target.targetId, name: target.targetName});
+
+  if (target.targetType === 'Group')
+    return `/Groups/Group.aspx?gid=${target.targetId}`;
+
   throw new Error('Type not implemented: ' + target.targetType);
 }
 
