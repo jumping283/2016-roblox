@@ -1,6 +1,6 @@
 import {createUseStyles} from "react-jss";
 import ItemImage from "../../itemImage";
-import {itemNameToEncodedName} from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import Link from "../../link";
 
 const useStyles = createUseStyles({

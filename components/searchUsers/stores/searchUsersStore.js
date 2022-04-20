@@ -13,6 +13,7 @@ const SearchUsersStore = createContainer(() => {
   useEffect(() => {
     if (!keyword && !getFlag('searchUsersAllowNullKeyword', false))
       return;
+    setLocked(true);
     searchUsers({keyword, limit: 12, offset: 0}).then(d => {
       setData(d);
       const ids = d.UserSearchResults.map(v => v.UserId);
@@ -23,7 +24,9 @@ const SearchUsersStore = createContainer(() => {
         }
         setPresence(obj);
       })
-    });
+    }).finally(() => {
+      setLocked(false);
+    })
   }, [keyword]);
 
   return {

@@ -21,6 +21,7 @@ const useStyles = createUseStyles({
 })
 
 const MyGroups = props => {
+  console.log('props',props);
   const s = useStyles();
 
   const store = MyGroupsStore.useContainer();
@@ -59,7 +60,7 @@ const MyGroups = props => {
       groupPageStore.setInfo(store.groups[0]?.group);
       groupPageStore.setRank(store.groups[0]?.role);
     }
-  }, [store.groups]);
+  }, [store.groups, props.id]);
 
   const groupCol = auth.isAuthenticated ? 'col-7 ps-0' : 'col-10';
 
@@ -69,20 +70,20 @@ const MyGroups = props => {
         <SideBar />
       </div>
       <div className={groupCol}>
-        <SearchGroups></SearchGroups>
+        <SearchGroups/>
         <div className='row'>
           <div className='col-12'>
-            {groupPageStore.groupId && <GroupPage></GroupPage>}
+            {groupPageStore.groupId && <GroupPage/>}
           </div>
         </div>
       </div>
       <div className='col-2 ps-0'>
-        {groupPageStore.info && groupPageStore.info.owner && groupPageStore.info.owner.userId === auth.userId && <Currency groupId={groupPageStore.groupId}></Currency>}
+        {groupPageStore.info && groupPageStore.info.owner && groupPageStore.info.owner.userId === auth.userId && <Currency groupId={groupPageStore.groupId}/>}
         <div className='mt-2'>
-          <GroupControls></GroupControls>
+          <GroupControls/>
         </div>
         <div className='mt-2'>
-          <AdSkyscraper context='GroupDetailsPage'></AdSkyscraper>
+          <AdSkyscraper context='GroupDetailsPage'/>
         </div>
       </div>
     </div>

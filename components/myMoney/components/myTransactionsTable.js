@@ -7,6 +7,7 @@ import AuthenticationStore from "../../../stores/authentication";
 import Robux from "../../catalogDetailsPage/components/robux";
 import PlayerHeadshot from "../../playerHeadshot";
 import Table from "./table";
+import Link from "../../link";
 
 const DeletedEntryMessage = props => {
   const [showMessage, setShowMessage] = useState(false);
@@ -71,14 +72,16 @@ const SellerEntry = props => {
     return <div>{props.name}</div>
   }
   return <div>
-    <a href={`/users/${props.id}/profile`}>
-      <div className={s.playerHeadshot}>
-        <PlayerHeadshot id={props.id} name={props.name}></PlayerHeadshot>
-      </div>
-      <div className={s.sellerName}>
-        {props.name}
-      </div>
-    </a>
+    <Link href={`/users/${props.id}/profile`}>
+      <a>
+        <div className={s.playerHeadshot}>
+          <PlayerHeadshot id={props.id} name={props.name}/>
+        </div>
+        <div className={s.sellerName}>
+          {props.name}
+        </div>
+      </a>
+    </Link>
   </div>
 }
 

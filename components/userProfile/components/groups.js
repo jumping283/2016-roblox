@@ -5,6 +5,7 @@ import { multiGetGroupIcons } from "../../../services/thumbnails";
 import UserProfileStore from "../stores/UserProfileStore";
 import SmallButtonLink from "./smallButtonLink";
 import Subtitle from "./subtitle";
+import Link from "../../link";
 
 const useGroupGridEntryStyles = createUseStyles({
   groupImage: {
@@ -37,16 +38,18 @@ const useGroupGridEntryStyles = createUseStyles({
 const GroupGridEntry = props => {
   const s = useGroupGridEntryStyles();
   return <div className='col-6 col-lg-2 pe-0 ps-0'>
-    <a href={`/My/Groups.aspx?gid=${props.group.group.id}`}>
-      <div className='card pt-1 pb-1 pe-1 ps-1'>
-        <img className={s.groupImage} src={props.icon}></img>
-        <div className='pe-1 ps-1'>
-          <p className={s.name}>{props.group.group.name}</p>
-          <p className={s.memberCount}>{abbreviateNumber(props.group.group.memberCount)} Members</p>
-          <p className={s.memberCount}>{props.group.role.name}</p>
+    <Link href={`/My/Groups.aspx?gid=${props.group.group.id}`}>
+      <a>
+        <div className='card pt-1 pb-1 pe-1 ps-1'>
+          <img className={s.groupImage} src={props.icon}/>
+          <div className='pe-1 ps-1'>
+            <p className={s.name}>{props.group.group.name}</p>
+            <p className={s.memberCount}>{abbreviateNumber(props.group.group.memberCount)} Members</p>
+            <p className={s.memberCount}>{props.group.role.name}</p>
+          </div>
         </div>
-      </div>
-    </a>
+      </a>
+    </Link>
   </div>
 }
 
@@ -179,9 +182,11 @@ const GroupSquareEntry = props => {
         <span className={s.cursorChevron}>‹</span></div>}
       <div className={s.iconCard}>
         <div className={s.imageWrapper}>
-          <a href={`/My/Groups.aspx?gid=${group.group.id}`}>
-            <img className={s.image} src={props.icons[group.group.id]}></img>
-          </a>
+          <Link href={`/My/Groups.aspx?gid=${group.group.id}`}>
+            <a>
+              <img className={s.image} src={props.icons[group.group.id]}/>
+            </a>
+          </Link>
         </div>
       </div>
     </div>

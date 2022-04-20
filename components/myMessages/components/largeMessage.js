@@ -8,6 +8,7 @@ import useButtonStyles from "../../../styles/buttonStyles";
 import ActionButton from "../../actionButton";
 import Header from "../../header";
 import PlayerImage from "../../playerImage"
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   username: {
@@ -95,9 +96,11 @@ const LargeMessage = props => {
     </div>
     <div className='col-10'>
       <p className={s.username}>
-        <a className='normal' href={`/users/${props.fromUserId}/profile`}>
-          {props.fromUserName}
-        </a>
+        <Link href={`/users/${props.fromUserId}/profile`}>
+          <a className='normal'>
+            {props.fromUserName}
+          </a>
+        </Link>
       </p>
       <p className={s.created}>{dayjs(props.created).format('MMM DD, YYYY | h:mm A')}</p>
     </div>

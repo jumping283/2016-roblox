@@ -8,7 +8,7 @@ const MyGroupsPage = props => {
   const router = useRouter();
   return <MyGroupsStore.Provider>
     <GroupPageStore.Provider>
-      <MyGroups id={router.query['gid']}></MyGroups>
+      <MyGroups id={router.query['gid']}/>
     </GroupPageStore.Provider>
   </MyGroupsStore.Provider>
 }

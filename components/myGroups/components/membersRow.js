@@ -5,6 +5,7 @@ import { getRoles, getRolesetMembers } from "../../../services/groups";
 import BcOverlay from "../../bcOverlay";
 import GenericPagination from "../../genericPagination";
 import PlayerImage from "../../playerImage";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   select: {
@@ -80,10 +81,12 @@ const MembersRow = props => {
         {
           members && members.data && members.data.map(v => {
             return <div className='col-2' key={v.userId}>
-              <a href={`/users/${v.userId}/profile`}>
-                <PlayerImage id={v.userId} name={v.username} />
-                <p className='mb-0 text-left font-size-14 text-truncate'>{v.username}</p>
-              </a>
+              <Link href={`/users/${v.userId}/profile`}>
+                <a>
+                  <PlayerImage id={v.userId} name={v.username} />
+                  <p className='mb-0 text-left font-size-14 text-truncate'>{v.username}</p>
+                </a>
+              </Link>
             </div>
           })
         }

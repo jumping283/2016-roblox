@@ -34,10 +34,10 @@ const SettingsDropdown = props => {
   const s = useDropdownStyles();
   return <div className={s.wrapper}>
     <p className={`${s.text}`}>
-      <a href='/My/Account' className='text-dark'>Settings</a>
+      <Link href='/My/Account'><a className='text-dark'>Settings</a></Link>
     </p>
     <p className={`${s.text}`}>
-      <a href='/help' className='text-dark'>Help</a>
+      <Link href='/help'><a className='text-dark'>Help</a></Link>
     </p>
     <p className={`${s.text}`}>
       <a onClick={(e) => {

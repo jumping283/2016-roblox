@@ -19,6 +19,7 @@ import Tabs2016 from "../tabs2016";
 import useCardStyles from "../userProfile/styles/card";
 import UserFriendsStore from "./stores/userFriendsStore";
 import Paging from "../pagination2016";
+import Link from "../link";
 
 const useStyles = createUseStyles({
   title: {
@@ -211,18 +212,20 @@ const UserFriends = props => {
           return <div className={'col-6 col-lg-4 mb-4'} key={v.id}>
             <div className={s.friendCardWrapper}>
               <div className={'card ' + s.friendCard}>
-                <a href={`/users/${v.id}/profile`}>
-                  <div className='row p-2'>
-                    <div className='col-4'>
-                      <div className={s.imageWrapper}>
-                        <PlayerImage id={v.id} name={v.name} />
+                <Link href={`/users/${v.id}/profile`}>
+                  <a>
+                    <div className='row p-2'>
+                      <div className='col-4'>
+                        <div className={s.imageWrapper}>
+                          <PlayerImage id={v.id} name={v.name} />
+                        </div>
+                      </div>
+                      <div className='col-8'>
+                        <p className={'mb-0 font-size-18 ' + s.username}>{v.name}</p>
                       </div>
                     </div>
-                    <div className='col-8'>
-                      <p className={'mb-0 font-size-18 ' + s.username}>{v.name}</p>
-                    </div>
-                  </div>
-                </a>
+                  </a>
+                </Link>
               </div>
               {
                 tab === 'Friend Requests' ? <div className={s.manageRequestCard}>

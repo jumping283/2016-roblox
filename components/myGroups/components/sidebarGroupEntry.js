@@ -1,5 +1,6 @@
 import { createUseStyles } from "react-jss";
 import MyGroupsStore from "../stores/myGroupsStore";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   icon: {
@@ -25,9 +26,11 @@ const SidebarGroupEntry = props => {
     </div>
     <div className='col-9 ps-1'>
       <p className='mb-0 mt-3 fw-600'>
-        <a className={s.link} href={`/My/Groups.aspx?gid=${props.group.id}`}>
-          {props.group.name}
-        </a>
+        <Link href={`/My/Groups.aspx?gid=${props.group.id}`}>
+          <a className={s.link}>
+            {props.group.name}
+          </a>
+        </Link>
       </p>
     </div>
   </div>
