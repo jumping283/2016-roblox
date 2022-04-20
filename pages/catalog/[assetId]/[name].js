@@ -1,20 +1,8 @@
-const Redirect = props => {
-  window.location.href = '/catalog'
-  return null;
+import SharedAssetPage from "../../../components/sharedAssetPage";
+import {useRouter} from "next/dist/client/router";
+import {useEffect, useState} from "react";
+
+const ItemPage = props => {
+  return <SharedAssetPage idParamName='assetId' />
 }
-
-
-export async function getServerSideProps({ query, res, req }) {
-  const assetId = query['assetId'];
-
-  return {
-    redirect: {
-      destination: '/unnamed-item?id=' + assetId
-    },
-    props: {}
-  };
-
-}
-
-
-export default Redirect;
+export default ItemPage;
