@@ -11,11 +11,11 @@ const GameStats = props => {
   const stats = [
     {
       name: 'Created',
-      value: dayjs(store.details.created).format('M/DD/YYYY'),
+      value: dayjs(store.universeDetails.created).format('M/DD/YYYY'),
     },
     {
       name: 'Updated',
-      value: dayjs(store.details.updated).fromNow(),
+      value: dayjs(store.universeDetails.updated).fromNow(),
     },
     {
       name: 'Favorited',
@@ -39,8 +39,8 @@ const GameStats = props => {
       }
     </div>
     <div className='col-12 mt-3'>
-      <StatEntry name='Genres' value={store.universeDetails.genre}></StatEntry>
-      <StatEntry name='Allowed Gear Types' value={''}></StatEntry>
+      <StatEntry name='Genres' value={store.universeDetails.genre}/>
+      <StatEntry name='Allowed Gear Types' value={''}/>
       <p>
         None
         {
