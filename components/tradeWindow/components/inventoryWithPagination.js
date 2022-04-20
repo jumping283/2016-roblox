@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import getFlag from "../../../lib/getFlag";
 import t from "../../../lib/t";
-import { itemNameToEncodedName } from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import { getCollectibleInventory } from "../../../services/inventory";
 import AuthenticationStore from "../../../stores/authentication";
 import useButtonStyles from "../../../styles/buttonStyles";
@@ -10,6 +10,7 @@ import Robux from "../../catalogDetailsPage/components/robux";
 import GenericPagination from "../../genericPagination";
 import ItemImage from "../../itemImage";
 import TradeWindowStore from "../stores/tradeWindowStore";
+import Link from "../../link";
 
 
 const ItemEntry = props => {
@@ -29,9 +30,9 @@ const ItemEntry = props => {
   }}>
     <div className={s.itemCard}>
       <p className={'mb-0 font-size-12 text-center ' + (open ? s.itemNameOpen : s.itemName )}>
-        <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.assetId}`}>
-          {props.name}
-        </a>
+          <a target='_blank' href={getItemUrl({assetId: props.assetId, name: props.name})}>
+            {props.name}
+          </a>
       </p>
       <div className={open ? s.itemImageWrapperOpen : undefined}>
         <ItemImage className='pt-0' id={props.assetId} name={props.name}></ItemImage>

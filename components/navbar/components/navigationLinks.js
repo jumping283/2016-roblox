@@ -1,4 +1,5 @@
 import { createUseStyles } from "react-jss";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   container: {
@@ -47,9 +48,11 @@ const useStyles = createUseStyles({
 const LinkEntry = props => {
   const s = useStyles();
   return <div className='col-3'>
-    <a className={`${s.linkEntry} nav-link active pt-0`} href={`/${props.url}`}>
-      {props.children}
-    </a>
+    <Link href={`/${props.url}`}>
+      <a className={`${s.linkEntry} nav-link active pt-0`}>
+        {props.children}
+      </a>
+    </Link>
   </div>
 }
 
@@ -59,7 +62,7 @@ const NavigationLinks = props => {
     <div className={s.container}>
       <div className='row'>
         <LinkEntry url='games'>Games</LinkEntry>
-        <LinkEntry url='catalog.aspx'>Catalog</LinkEntry>
+        <LinkEntry url='catalog'>Catalog</LinkEntry>
         <LinkEntry url='develop'>Develop</LinkEntry>
         <LinkEntry url='robux.aspx'>ROBUX</LinkEntry>
       </div>

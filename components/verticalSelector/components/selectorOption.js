@@ -1,4 +1,5 @@
 import { createUseStyles } from "react-jss";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   wrapper: {
@@ -31,10 +32,17 @@ const useStyles = createUseStyles({
 
 const SelectorOption = props => {
   const s = useStyles();
-
-  return <a href={props.url || '#'} onClick={props.onClick} className={s.wrapper + (props.selected ? ' ' + s.wrapperSelected : '') + (props.disabled ? ' ' + s.wrapperDisabled : '')}>
+  const el = <a onClick={props.onClick} className={s.wrapper + (props.selected ? ' ' + s.wrapperSelected : '') + (props.disabled ? ' ' + s.wrapperDisabled : '')}>
     <span className={s.text + (props.selected ? ' ' + s.textSelected : '')}>{props.name}</span>
   </a>
+
+  if (props.url) {
+    return <Link href={props.url}>
+      {el}
+    </Link>
+  }
+
+  return el;
 }
 
 export default SelectorOption;

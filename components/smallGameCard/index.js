@@ -5,6 +5,7 @@ import { itemNameToEncodedName } from "../../services/catalog";
 import { getGameUrl } from "../../services/games";
 import CreatorLink from "../creatorLink";
 import useCardStyles from "../userProfile/styles/card";
+import Link from "../link";
 
 const useStyles = createUseStyles({
   label: {
@@ -78,38 +79,40 @@ const SmallGameCard = props => {
     setShowCreator(false);
   }}>
     <div className={cardStyles.card + ' '} ref={colRef}>
-      <a href={url}>
-        <div className={s.imageWrapper}>
-          <img className={s.image} src={iconUrl} alt={props.name} onLoad={(e) => {
-            // console.log('on load', e)
-          }} onError={(e) => {
-            console.log('[info] icon load error');
-            if (!iconUrl || iconUrl.indexOf('empty.png') !== -1) return;
-            setIconUrl('/img/empty.png');
-            setTimeout(() => {
-              setIconUrl(props.iconUrl);
-            }, 1000);
-          }}></img>
-        </div>
-      </a>
+      <Link href={url}>
+        <a>
+          <div className={s.imageWrapper}>
+            <img className={s.image} src={iconUrl} alt={props.name} onLoad={(e) => {
+              // console.log('on load', e)
+            }} onError={(e) => {
+              console.log('[info] icon load error');
+              if (!iconUrl || iconUrl.indexOf('empty.png') !== -1) return;
+              setIconUrl('/img/empty.png');
+              setTimeout(() => {
+                setIconUrl(props.iconUrl);
+              }, 1000);f
+            }}/>
+          </div>
+        </a>
+      </Link>
       <div className='pe-2 pb-2 pt-2 ps-2'>
         <p className={s.label + ' truncate'}>{props.name}</p>
         <p className={s.labelPlaying + ' truncate'}>{abbreviateNumber(props.playerCount)} Playing</p>
         {
           !showCreator && <p className={s.thumbsUp + ' mt-2'}>
-            <span className='icon-thumbs-up'></span>
+            <span className='icon-thumbs-up'/>
           </p>
         }
         {
           showCreator && <div className={s.creatorDetailsCard + ' ' + cardStyles.card} style={colRef ? { width: colRef.current.clientWidth + 'px' } : undefined}>
             <p className={s.thumbsUp + ' ps-2 pe-2 mt-2'}>
-              <span className='icon-thumbs-up'></span>
-              <span className={'icon-thumbs-down ' + s.floatRight}></span>
+              <span className='icon-thumbs-up'/>
+              <span className={'icon-thumbs-down ' + s.floatRight}/>
             </p>
             <div className='ps-1 pt-2 pe-1'>
-              <div className='divider-top'></div>
+              <div className='divider-top'/>
             </div>
-            <p className={'ps-2 pt-2 pb-0 ' + s.creatorText}>By <CreatorLink type={props.creatorType} name={props.creatorName} id={props.creatorId}></CreatorLink></p>
+            <p className={'ps-2 pt-2 pb-0 ' + s.creatorText}>By <CreatorLink type={props.creatorType} name={props.creatorName} id={props.creatorId}/></p>
           </div>
         }
       </div>

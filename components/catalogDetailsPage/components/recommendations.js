@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { createUseStyles } from "react-jss"
-import { getRecommendations, itemNameToEncodedName } from "../../../services/catalog"
+import {getItemUrl, getRecommendations, itemNameToEncodedName} from "../../../services/catalog"
 import CreatorLink from "../../creatorLink"
 import ItemImage from "../../itemImage"
+import Link from "../../link";
 
 const useEntryStyles = createUseStyles({
   creator: {
@@ -21,16 +22,18 @@ const RecommendationEntry = props => {
   const s = useEntryStyles();
   return <div className='col-4 col-lg-2'>
     <div className={s.image}>
-      <ItemImage id={props.id}></ItemImage>
+      <ItemImage id={props.id}/>
     </div>
     <p className='mb-0 text-center'>
-      <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.id}`}>
-        {props.name}
-      </a>
+      <Link href={getItemUrl({assetId: props.id, name: props.name})}>
+        <a>
+          {props.name}
+        </a>
+      </Link>
     </p>
     <p className={`${s.creator} mb-0 text-center`}>
 
-      Creator: <CreatorLink id={props.creatorId} type={props.creatorType} name={props.creatorName}></CreatorLink>
+      Creator: <CreatorLink id={props.creatorId} type={props.creatorType} name={props.creatorName}/>
     </p>
   </div>
 }
@@ -66,7 +69,7 @@ const Recommendations = props => {
   return <div className={`row ${s.row}`}>
     {
       recommendations && recommendations.map((v) => {
-        return <RecommendationEntry key={v.item.assetId} id={v.item.assetId} name={v.item.name} creatorId={v.creator.creatorId} creatorType={v.creator.creatorType} creatorName={v.creator.name}></RecommendationEntry>
+        return <RecommendationEntry key={v.item.assetId} id={v.item.assetId} name={v.item.name} creatorId={v.creator.creatorId} creatorType={v.creator.creatorType} creatorName={v.creator.name}/>
       })
     }
   </div>

@@ -1,7 +1,8 @@
 import {createUseStyles} from "react-jss";
 import assetTypes from "../../characterCustomizerPage/assetTypes";
 import configureItemStore from "../stores/configureItemStore";
-import {itemNameToEncodedName} from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   header: {
@@ -17,7 +18,11 @@ const ConfigureHeader = props => {
 
   return <>
     <h1 className={s.header}>Configure {assetTypes[store.details.assetType]}</h1>
-    <p><a href={`/${itemNameToEncodedName(store.details.name)}-item?id=${store.assetId}`}>Back</a></p>
+    <p>
+      <Link href={getItemUrl({assetId: store.details.name, name: store.details.name})}>
+        <a>Back</a>
+      </Link>
+    </p>
   </>
 }
 

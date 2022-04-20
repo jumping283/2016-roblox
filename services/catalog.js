@@ -1,5 +1,6 @@
 import request, { getBaseUrl } from "../lib/request"
 import { getFullUrl } from "../lib/request";
+import getFlag from "../lib/getFlag";
 
 export const itemNameToEncodedName = (str) => {
   if (typeof str !== 'string') {
@@ -11,6 +12,17 @@ export const itemNameToEncodedName = (str) => {
     .replace(/^-+|-+$/g, "")
     .replace(/^(COM\d|LPT\d|AUX|PRT|NUL|CON|BIN)$/i, "") || "unnamed";
   return seoName;
+}
+
+const itemPageLate2016Enabled = getFlag('itemPageLate2016Enabled', false);
+const csrEnabled = getFlag('clientSideRenderingEnabled', false);
+
+export const getItemUrl = ({ assetId, name }) => {
+  if (itemPageLate2016Enabled || csrEnabled) {
+    return `/catalog/${assetId}/${itemNameToEncodedName(name)}`;
+  }
+
+  return `${itemNameToEncodedName(name)}-item?id=${assetId}`;
 }
 
 

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { getItemDetails, itemNameToEncodedName } from "../../../services/catalog";
+import {getItemDetails, getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import { getTransactions } from "../../../services/economy";
 import AuthenticationStore from "../../../stores/authentication";
 import Robux from "../../catalogDetailsPage/components/robux";
@@ -25,7 +25,7 @@ const DescriptionEntry = props => {
   let noun = '';
   if (props.assetDetails) {
     noun = props.assetDetails.name;
-    link = `/${itemNameToEncodedName(props.assetDetails.name)}-item?id=${props.assetDetails.id}`;
+    link = getItemUrl({assetId: props.assetDetails.id, name: props.assetDetails.name});
   }
   if (props.transactionType === 'Purchase') {
     verb = 'Purchased';

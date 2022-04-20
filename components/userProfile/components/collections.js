@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { getBaseUrl } from "../../../lib/request";
 import t from "../../../lib/t";
-import { itemNameToEncodedName } from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import { getCollections } from "../../../services/inventory";
 import ItemImage from "../../itemImage";
 import useCardStyles from "../styles/card";
@@ -60,12 +60,12 @@ const Collections = props => {
         <div className='row ps-4 pe-4 pt-4 pb-4'>
           {
             collections.map((v, i) => {
-              const assetId = t.string(v.AssetSeoUrl).match(/\/catalog\/([0-9+]+)\//);
-              const url = assetId && assetId.length > 1 && `/${itemNameToEncodedName(v.Name)}-item?id=${assetId[1]}` || v.AssetSeoUrl;
+              const assetId = v.Id;
+              const url = assetId && getItemUrl({assetId: assetId, name: v.Name}) || v.AssetSeoUrl;
               return <div className='col-4 col-lg-2' key={i}>
                 <a href={url}>
                   <div className={s.imageWrapper}>
-                    <img src={v.Thumbnail.Url.startsWith('http') ? v.Thumbnail.Url : getBaseUrl() + v.Thumbnail.Url} className={s.image}></img>
+                    <img src={v.Thumbnail.Url.startsWith('http') ? v.Thumbnail.Url : getBaseUrl() + v.Thumbnail.Url} className={s.image}/>
                   </div>
                   <p className={`mb-0 ${s.itemLabel}`}>{v.Name}</p>
                 </a>

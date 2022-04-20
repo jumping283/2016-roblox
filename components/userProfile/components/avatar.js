@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss"
 import { getAvatar } from "../../../services/avatar";
-import { itemNameToEncodedName } from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import ItemImage from "../../itemImage";
 import PlayerImage from "../../playerImage"
 import Subtitle from "./subtitle"
+import Link from "../../link";
 
 const useAvatarStyles = createUseStyles({
   avatarImageWrapper: {
@@ -59,7 +60,7 @@ const Avatar = props => {
     <div className='col-12 col-lg-6 pe-0'>
       <div className={'card ' + s.avatarImageCard}>
         <div className={s.avatarImageWrapper}>
-          <PlayerImage id={userId}></PlayerImage>
+          <PlayerImage id={userId}/>
         </div>
       </div>
     </div>
@@ -69,9 +70,11 @@ const Avatar = props => {
           {selectedAssets && selectedAssets.map(v => {
             return <div className='col-3 pt-2 ps-1 pe-1' key={v.id}>
               <div className='card' title={v.name}>
-                <a href={`/${itemNameToEncodedName(v.name)}-item?id=${v.id}`} title={v.name}>
-                  <ItemImage id={v.id} className='pt-0'></ItemImage>
-                </a>
+                <Link href={getItemUrl({name: v.name, assetId: v.id})}>
+                  <a title={v.name}>
+                    <ItemImage id={v.id} className='pt-0'/>
+                  </a>
+                </Link>
               </div>
             </div>
           })}

@@ -1,6 +1,7 @@
 import {createUseStyles} from "react-jss";
 import ItemImage from "../../itemImage";
 import {itemNameToEncodedName} from "../../../services/catalog";
+import Link from "../../link";
 
 const useStyles = createUseStyles({
   itemCard: {
@@ -64,17 +65,19 @@ const InventoryItemEntry = props => {
   const {isLimited, isLimitedUnique, serialNumber} = props;
 
   return <div className={'col-4 col-md-3 col-lg-2 ps-1 pe-1'}>
-    <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.id}`}>
-      <div className={s.itemCard}>
-        {typeof serialNumber === 'number' ? <p className={s.serial}>#{serialNumber}</p> : null }
-        <div className={s.itemImage}>
-          <ItemImage id={props.id} />
+    <Link href={getItemUrl({name: props.name, assetId: props.id})}>
+      <a>
+        <div className={s.itemCard}>
+          {typeof serialNumber === 'number' ? <p className={s.serial}>#{serialNumber}</p> : null }
+          <div className={s.itemImage}>
+            <ItemImage id={props.id} />
+          </div>
+          <span className={isLimitedUnique ? "icon-limited-unique-label" : isLimited ? "icon-limited-label" : s.fakeLimitedLabel}/>
+          <p className={s.itemLabel + ' text-truncate'}>{props.name}</p>
+          <p className={s.creatorLabel + ' text-truncate'}>By <a className={s.creatorUrl} href={props.creatorType === 1 ? `/users/${props.creatorId}/profile` : `/My/Groups.aspx?gid=${props.creatorId}`}>{props.creatorName}</a> </p>
         </div>
-        <span className={isLimitedUnique ? "icon-limited-unique-label" : isLimited ? "icon-limited-label" : s.fakeLimitedLabel}/>
-        <p className={s.itemLabel + ' text-truncate'}>{props.name}</p>
-        <p className={s.creatorLabel + ' text-truncate'}>By <a className={s.creatorUrl} href={props.creatorType === 1 ? `/users/${props.creatorId}/profile` : `/My/Groups.aspx?gid=${props.creatorId}`}>{props.creatorName}</a> </p>
-      </div>
-    </a>
+      </a>
+    </Link>
   </div>
 }
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createUseStyles } from "react-jss";
-import { itemNameToEncodedName } from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import Robux from '../../robux';
 import ItemImage from "../../itemImage";
 
@@ -83,18 +83,18 @@ const TradeItem = props => {
     setExpanded(false);
   }}>
     {props.name && <p className={`text-truncate ${s.itemName} ${expanded ? s.expandedItemName : ''} mb-0 ps-1 pe-1`}>
-      <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.assetId}`}>
+      <a href={getItemUrl({assetId: props.assetId, name: props.name})}>
         {props.name}
       </a>
     </p>}
     {props.robux && <p className={`text-center`}>{props.robux} Robux</p>}
     <div className={s.imageWrapper}>
-      {props.robux && <img src='/img/test.png' alt='Robux Image'></img>}
-      {props.assetId && <ItemImage className='pt-1' id={props.assetId}></ItemImage>}
+      {props.robux && <img src='/img/test.png' alt='Robux Image'/>}
+      {props.assetId && <ItemImage className='pt-1' id={props.assetId}/>}
     </div>
     {expanded && props.serialNumber && <p className={labelStyles.rapText + ' ' + labelStyles.serialText}>#{props.serialNumber}/{props.assetStock || '-'}</p>}
-    {expanded && <TradeLabelWithRobux name='Avg. Price: ' amount={props.recentAveragePrice}></TradeLabelWithRobux>}
-    {expanded && <TradeLabelWithRobux name='Orig. Price: ' amount={props.originalPrice}></TradeLabelWithRobux>}
+    {expanded && <TradeLabelWithRobux name='Avg. Price: ' amount={props.recentAveragePrice}/>}
+    {expanded && <TradeLabelWithRobux name='Orig. Price: ' amount={props.originalPrice}/>}
   </div>
 }
 
@@ -106,13 +106,13 @@ const TradeItemRow = ({ items, robux }) => {
   return <div className='row ms-1 mb-4'>
     {
       items.map(v => {
-        return <TradeItem key={v.id} {...v}></TradeItem>
+        return <TradeItem key={v.id} {...v}/>
       })
     }
-    {robux && <TradeItem robux={robux}></TradeItem>}
+    {robux && <TradeItem robux={robux}/>}
     {
       [... new Array(placeholders)].map((v, i) => {
-        return <TradeItem key={`placeholder ${i}`}></TradeItem>
+        return <TradeItem key={`placeholder ${i}`}/>
       })
     }
   </div>

@@ -2,9 +2,10 @@ import getFlag from "../lib/getFlag";
 import request, { getBaseUrl, getFullUrl } from "../lib/request"
 import { itemNameToEncodedName } from "./catalog";
 const gamePage2015Enabled = getFlag('2015GameDetailsPageEnabled', false);
+const csrEnabled = getFlag('clientSideRenderingEnabled', false);
 
 export const getGameUrl = ({ placeId, name }) => {
-  if (gamePage2015Enabled) {
+  if (gamePage2015Enabled || csrEnabled) {
     return `/games/${placeId}/${itemNameToEncodedName(name)}`;
   }
   return `/${itemNameToEncodedName(name)}-place?id=${placeId}`;

@@ -3,7 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import { createUseStyles } from "react-jss";
 import getFlag from "../../lib/getFlag";
 import { getBaseUrl } from "../../lib/request";
-import { itemNameToEncodedName } from "../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../services/catalog";
 import LimitedOverlay from "../catalogOverlays/limited";
 import LimitedUniqueOverlay from "../catalogOverlays/limitedUnique";
 import NewOverlay from "../catalogOverlays/new";
@@ -12,6 +12,7 @@ import TimerOverlay from "../catalogOverlays/timer";
 import CreatorLink from "../creatorLink";
 import Robux from "../robux";
 import thumbnailStore from "../../stores/thumbnailStore";
+import Link from "../link";
 
 const useCatalogPageStyles = createUseStyles({
   image: {
@@ -149,23 +150,25 @@ const CatalogPageCard = props => {
 
   return <div className={`${c}`} onMouseEnter={() => setShowDetails(true)} onMouseLeave={() => setShowDetails(false)}>
     <div ref={cardRef} className={isLarge ? s.imageBig : s.imageSmall}>
-      <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.id}`}>
-        <div style={{ zIndex: showDetails ? 10 : 0, position: 'relative' }}>
-          {isTimedItem && <TimerOverlay/>}
-          {isNew ? <NewOverlay/> : isSale ? <SaleOverlay/> : null}
-          <img alt={props.name} src={image} className={`${s.image} ${props.mode === 'large' ? s.imageBig : s.imageSmall}`} onError={e => {
-            if (e.currentTarget.src !== thumbs.getPlaceholder()) {
-              setImage(thumbs.getPlaceholder());
-            }
-          }}/>
-          {isLimited && <LimitedOverlay/>}
-          {isLimitedU && <LimitedUniqueOverlay/>}
-          <div className={s.overviewDetails} style={hasBottomOverlay ? { marginTop: '-18px' } : undefined}>
-            <p className={`mb-0 ${s.itemName}`}>{props.name}</p>
-            <PriceText {...props}/>
+      <Link href={getItemUrl({assetId: props.id, name: props.name})}>
+        <a>
+          <div style={{ zIndex: showDetails ? 10 : 0, position: 'relative' }}>
+            {isTimedItem && <TimerOverlay/>}
+            {isNew ? <NewOverlay/> : isSale ? <SaleOverlay/> : null}
+            <img alt={props.name} src={image} className={`${s.image} ${props.mode === 'large' ? s.imageBig : s.imageSmall}`} onError={e => {
+              if (e.currentTarget.src !== thumbs.getPlaceholder()) {
+                setImage(thumbs.getPlaceholder());
+              }
+            }}/>
+            {isLimited && <LimitedOverlay/>}
+            {isLimitedU && <LimitedUniqueOverlay/>}
+            <div className={s.overviewDetails} style={hasBottomOverlay ? { marginTop: '-18px' } : undefined}>
+              <p className={`mb-0 ${s.itemName}`}>{props.name}</p>
+              <PriceText {...props}/>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </Link>
       <div
         style={showDetails ? {
           width: cardRef.current.clientWidth,

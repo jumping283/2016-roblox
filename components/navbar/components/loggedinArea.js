@@ -3,6 +3,7 @@ import { createUseStyles } from "react-jss";
 import { abbreviateNumber } from "../../../lib/numberUtils";
 import { logout } from "../../../services/auth";
 import AuthenticationStore from "../../../stores/authentication";
+import Link from "../../link";
 
 const useDropdownStyles = createUseStyles({
   wrapper: {
@@ -98,9 +99,11 @@ const LoggedInArea = props => {
     <div className='row'>
       <div className={`col-12 ${s.linkContainer}`}>
         <p className={s.text}>
-          <a href='/My/Money.aspx'>
-            <span className='icon-nav-robux'></span>
-          </a>
+          <Link href='/My/Money.aspx'>
+            <a>
+              <span className='icon-nav-robux'/>
+            </a>
+          </Link>
         </p>
         <p className={s.text + ' ' + s.robuxText}>
           <span>{abbreviateNumber(authStore.robux)}</span>
@@ -110,10 +113,10 @@ const LoggedInArea = props => {
             e.preventDefault();
             setSettingsOpen(!settingsOpen);
           }}>
-            <span className={`icon-nav-settings ${s.settingsIcon}`} id="nav-settings"></span>
+            <span className={`icon-nav-settings ${s.settingsIcon}`} id="nav-settings"/>
           </a>
         </p>
-        {settingsOpen && <SettingsDropdown></SettingsDropdown>}
+        {settingsOpen && <SettingsDropdown/>}
       </div>
     </div>
   </div>

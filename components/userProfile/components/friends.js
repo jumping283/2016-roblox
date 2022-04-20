@@ -5,6 +5,7 @@ import UserProfileStore from "../stores/UserProfileStore";
 import useCardStyles from "../styles/card";
 import SmallButtonLink from "./smallButtonLink";
 import Subtitle from "./subtitle"
+import Link from "../../link";
 
 const useFriendStyles = createUseStyles({
   friendCol: {
@@ -63,12 +64,14 @@ const Friends = props => {
             store.friends.slice(0, 10).map(v => {
               return <div className={`col-1 ${s.friendCol}`} key={v.id}>
                 <div className={s.cardWrapper}>
-                  <a href={`/users/${v.id}/profile`}>
-                    <div className={s.imageWrapper}>
-                      <PlayerImage id={v.id}></PlayerImage>
-                    </div>
-                    <p className={s.username}>{v.name}</p>
-                  </a>
+                  <Link href={`/users/${v.id}/profile`}>
+                    <a>
+                      <div className={s.imageWrapper}>
+                        <PlayerImage id={v.id}/>
+                      </div>
+                      <p className={s.username}>{v.name}</p>
+                    </a>
+                  </Link>
                 </div>
               </div>
             })

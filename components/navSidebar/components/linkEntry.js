@@ -1,4 +1,5 @@
 import { createUseStyles } from "react-jss";
+import Link from "../../link";
 
 const formatCount = num => {
   if (num > 99) return '99+';
@@ -41,16 +42,18 @@ const useStyles = createUseStyles({
  */
 const LinkEntry = props => {
   const s = useStyles();
-  return <a href={props.url} className={s.link}>
-    <div className={s.wrapper + ' hover-' + props.icon}>
-      <p className={s.linkEntry}>
-        <span className={props.icon}></span> <span className={s.name}>{props.name}</span>
-        {props.count && <span className={s.countWrapper}>
+  return <Link href={props.url}>
+    <a className={s.link}>
+      <div className={s.wrapper + ' hover-' + props.icon}>
+        <p className={s.linkEntry}>
+          <span className={props.icon}></span> <span className={s.name}>{props.name}</span>
+          {props.count && <span className={s.countWrapper}>
           <span className={s.count}>{formatCount(props.count)}</span>
         </span> || null}
-      </p>
-    </div>
-  </a>
+        </p>
+      </div>
+    </a>
+  </Link>
 }
 
 export default LinkEntry;

@@ -1,10 +1,11 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
-import { itemNameToEncodedName } from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import CharacterCustomizationStore from "../../../stores/characterPage";
 import useButtonStyles from "../../../styles/buttonStyles";
 import ActionButton from "../../actionButton";
 import ItemImage from "../../itemImage";
+import Link from "../../link";
 
 const useEntryStyles = createUseStyles({
   itemName: {
@@ -87,16 +88,18 @@ const WardrobeEntry = props => {
               }
             }])
           }
-        }}></ActionButton>
+        }}/>
       </div>
       <div className={s.thumbWrapper}>
-        <ItemImage id={props.assetId}></ItemImage>
+        <ItemImage id={props.assetId}/>
       </div>
     </div>
     <p className={s.itemName}>
-      <a href={`/${itemNameToEncodedName(props.name)}-item?id=${props.assetId}`}>
-        {props.name}
-      </a>
+      <Link href={getItemUrl({assetId: props.assetId, name: props.name})}>
+        <a>
+          {props.name}
+        </a>
+      </Link>
     </p>
     {
       props.showAssetType && <div className={s.assetTypeWrapper}>
