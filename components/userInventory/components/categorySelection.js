@@ -187,7 +187,7 @@ const CategorySelection = props => {
         <div className='ps-3 pe-3 pt-4'><h2 className={s.categoryTitle}>CATEGORY</h2></div>
         {options.map(v => {
           const catSelected = store.category.value === v.value;
-          return <div onMouseEnter={() => {
+          return <div key={v.value + v.name} onMouseEnter={() => {
             setSelected(v);
           }}>
             <div onClick={e => {
