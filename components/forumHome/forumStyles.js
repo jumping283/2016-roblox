@@ -21,6 +21,9 @@ const useForumStyles = createUseStyles({
       background: '#e9e9e9',
     },
   },
+  lastPostHeader: {
+    minWidth: '110px',
+  },
 })
 
 export default useForumStyles;

@@ -7,10 +7,6 @@ import ForumHeader from "../forumHeader";
 import Link from "../link";
 import {useEffect, useReducer, useState} from "react";
 
-const useStyles = createUseStyles({
-
-});
-
 const subReducer = (prev, act) => {
   if (act.type === 'ADD') {
     let newSt = {...prev};
@@ -54,7 +50,7 @@ const ForumHome = props => {
               <th>{v.name}</th>
               <th className='text-center'>Threads</th>
               <th className='text-center'>Posts</th>
-              <th>Last Post</th>
+              <th className={s.lastPostHeader + ' text-center'}>Last Post</th>
             </tr>
             </thead>
             <tbody>
