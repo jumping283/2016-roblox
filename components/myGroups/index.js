@@ -36,15 +36,14 @@ const MyGroups = props => {
   }, [auth.userId, auth.isAuthenticated]);
 
   useEffect(() => {
-    if (!store.groups) return;
+    // if (!store.groups) return;
     if (props.id) {
-      // TODO: get group
       groupPageStore.setGroupId(parseInt(props.id, 10));
       getInfo({
         groupId: props.id,
       }).then(groupPageStore.setInfo);
       // check if exists
-      let inCache = store.groups.find(v => v.group.id == props.id);
+      let inCache = store.groups && store.groups.find(v => v.group.id == props.id);
       if (inCache) {
         groupPageStore.setRank(inCache.role);
       } else {
@@ -55,20 +54,21 @@ const MyGroups = props => {
           groupPageStore.setRank(guest);
         })
       }
-    } else {
+    } else if (store.groups) {
       groupPageStore.setGroupId(store.groups[0]?.group.id);
       groupPageStore.setInfo(store.groups[0]?.group);
       groupPageStore.setRank(store.groups[0]?.role);
     }
   }, [store.groups, props.id]);
 
-  const groupCol = auth.isAuthenticated ? 'col-7 ps-0' : 'col-10';
+  const groupCol = auth.isAuthenticated ? 'col-7 ps-0' : 'col-8 mx-auto';
 
   return <div className={'container ' + s.groupsContainer}>
     <div className='row'>
-      <div className='col-3'>
-        <SideBar />
-      </div>
+      {auth.isAuthenticated ?
+        <div className='col-3'>
+          <SideBar />
+        </div> : null}
       <div className={groupCol}>
         <SearchGroups/>
         <div className='row'>
