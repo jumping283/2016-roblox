@@ -7,7 +7,7 @@ export const sendMessage = ({ userId, subject, body, replyMessageId, includePrev
     subject,
     replyMessageId,
     includePreviousMessage,
-  });
+  }).then(d => d.data);
 }
 
 export const getAnnouncements = () => {
