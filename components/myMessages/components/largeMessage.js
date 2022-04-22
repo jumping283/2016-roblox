@@ -27,7 +27,7 @@ const useStyles = createUseStyles({
     marginBottom: 0,
   },
   body: {
-
+    whiteSpace: 'break-spaces',
   },
   backButtonWrapper: {
     width: '80px',
@@ -64,6 +64,7 @@ const LargeMessage = props => {
   const replyInputRef = useRef(null);
   const showReplyButton = props.fromUserId !== 1;
   const auth = AuthenticationStore.useContainer();
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     if (props.id !== 1 && props.read !== true && props.fromUserId !== auth.userId) {
@@ -74,17 +75,21 @@ const LargeMessage = props => {
     }
   }, []);
 
+  useEffect(() => {
+    setFeedback(null);
+  }, [props]);
+
   return <div className='row pt-2'>
     <div className='col-12'>
       <div className={s.backButtonWrapper}>
         <ActionButton label='Back' className={buttonStyles.cancelButton} onClick={() => {
           store.setHighlightedMessage(null);
-        }}></ActionButton>
+        }}/>
       </div>
       {showReplyButton && <div className={s.replyButtonWrapper}>
         <ActionButton label='Reply' className={buttonStyles.continueButton} onClick={() => {
           setReply(!reply);
-        }}></ActionButton>
+        }}/>
       </div>
       }
     </div>
@@ -92,7 +97,7 @@ const LargeMessage = props => {
       <h2 className={s.subject}>{props.subject}</h2>
     </div>
     <div className='col-1 pe-0'>
-      <PlayerImage id={props.fromUserId}></PlayerImage>
+      <PlayerImage id={props.fromUserId}/>
     </div>
     <div className='col-10'>
       <p className={s.username}>
@@ -116,16 +121,21 @@ const LargeMessage = props => {
         </textarea>
         <div className={s.replyWrapper}>
           <ActionButton label='Send Reply' className={buttonStyles.continueButton} onClick={() => {
+            setFeedback(null);
             sendMessage({
               userId: props.fromUserId,
               subject: 'RE: ' + props.subject,
               body: replyInputRef.current.value,
               includePreviousMessage: true,
               replyMessageId: props.id,
-            }).then(() => {
-              store.setHighlightedMessage(null);
+            }).then((res) => {
+              if (res.success) {
+                store.setHighlightedMessage(null);
+              }else{
+                setFeedback(res.message);
+              }
             });
-          }}></ActionButton>
+          }}/>
         </div>
       </div>
     }

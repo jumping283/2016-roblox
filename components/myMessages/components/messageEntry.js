@@ -25,7 +25,6 @@ const useStyles = createUseStyles({
   body: {
     color: '#969696',
     fontWeight: 500,
-    whiteSpace: 'break-spaces',
   },
   messageRow: {
     cursor: 'pointer',
