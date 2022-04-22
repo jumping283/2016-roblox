@@ -42,6 +42,9 @@ const useStyles = createUseStyles({
     paddingLeft: '4px',
     paddingRight: '4px',
   },
+  mainColumn: {
+    minHeight: '100vh',
+  },
 });
 
 /**
@@ -72,7 +75,7 @@ const OldVerticalTabs = props => {
         })
       }
     </div>
-    <div className='col-12'>
+    <div className={'col-12 ' + s.mainColumn}>
       {selected.element}
     </div>
   </div>
