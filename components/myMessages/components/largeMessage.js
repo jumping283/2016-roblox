@@ -95,6 +95,7 @@ const LargeMessage = props => {
     </div>
     <div className='col-12'>
       <h2 className={s.subject}>{props.subject}</h2>
+      {feedback ? <p className='text-danger'>{feedback}</p> : null}
     </div>
     <div className='col-1 pe-0'>
       <PlayerImage id={props.fromUserId}/>
