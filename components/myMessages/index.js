@@ -11,6 +11,7 @@ const useStyles = createUseStyles({
     background: '#fff',
     padding: '4px 8px',
     overflow: 'hidden',
+    minHeight: '100vh',
   }
 })
 
