@@ -35,6 +35,12 @@ const detailsMap = {
     fileLabel: '.mp3 or .ogg file',
     subtext: `Audio uploads cost 350 Robux regardless of size, however this will change in the future. Audio uploads must be less than 7 minutes and smaller than 19.5 MB.`,
   },
+  1: {
+    name: 'Image',
+    namePlural: 'images',
+    title: 'Image',
+    fileLabel: '.png or .jpeg',
+  },
 }
 
 const useStyles = createUseStyles({
@@ -112,10 +118,10 @@ const Clothing = props => {
     <div className='col-12'>
       <div className='ms-4 me-4 mt-4'>
         {details.templateUrl ? <p>Did you use the template? If not, <a href={details.templateUrl}>download it here</a>.</p> : null}
-        <p>Find your {details.fileLabel}: <input ref={fileRef} type='file'></input> {feedback && <span className='text-danger'>{feedback}</span>}</p>
-        <p>{details.name} Name: <input ref={nameRef} type='text' className={s.inputItemName}></input></p>
+        <p>Find your {details.fileLabel}: <input ref={fileRef} type='file'/> {feedback && <span className='text-danger'>{feedback}</span>}</p>
+        <p>{details.name} Name: <input ref={nameRef} type='text' className={s.inputItemName}/></p>
         <div className='float-left'>
-          <ActionButton disabled={locked} label='Upload' onClick={onSubmit}></ActionButton>
+          <ActionButton disabled={locked} label='Upload' onClick={onSubmit}/>
         </div>
       </div>
     </div>
@@ -123,7 +129,7 @@ const Clothing = props => {
       {assetList ? (
         assetList.data.length === 0 ?
           <p>You haven't created any {details.namePlural.toLowerCase()}.</p>
-          : <AssetList assets={assetList.data}></AssetList>
+          : <AssetList assets={assetList.data}/>
       ) : null}
     </div>
   </div>

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss"
-import { itemNameToEncodedName } from "../../../services/catalog";
+import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
 import GearDropdown from "../../gearDropdown";
 import AssetListAdEntry from "./assetListAdEntry";
 import AssetListCatalogEntry from "./assetListCatalogEntry";
 import AssetListGameEntry from "./assetListGameEntry";
 import thumbnailStore from "../../../stores/thumbnailStore";
 import Link from "../../link";
+import getFlag from "../../../lib/getFlag";
+import {getGameUrl} from "../../../services/games";
 
 const useStyles = createUseStyles({
   image: {
@@ -31,7 +33,7 @@ const AssetEntry = props => {
   const isPlace = props.assetType === 9;
   const isAd = props.ad !== undefined && props.target !== undefined;
 
-  const assetUrl = `/${itemNameToEncodedName(props.name)}-${isPlace ? 'game' : 'item'}?id=${props.assetId}`;
+  const assetUrl = isPlace ? getGameUrl({placeId: props.assetId, name: props.name}) : getItemUrl({assetId: props.assetId, name: props.name})
   const url = isPlace ? `/universes/configure?id=${props.universeId}` : assetUrl;
 
   const imageAssetId = isAd ? props.ad.advertisementAssetId : props.assetId;

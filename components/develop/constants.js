@@ -29,6 +29,12 @@ const developerPages = [
     disabled: true,
   },
   {
+    id: 102,
+    name: 'Images',
+    url: '/develop?View=102',
+    element: () => <Clothing id={1} />
+  },
+  {
     id: 21,
     name: 'Badges',
     url: '/develop?View=21',
