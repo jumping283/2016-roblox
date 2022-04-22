@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { createUseStyles } from "react-jss";
 import MyMessagesStore from "../../stores/myMessages";
 import AdBanner from "../ad/adBanner";
@@ -16,35 +16,38 @@ const useStyles = createUseStyles({
 
 const MyMessages = props => {
   const s = useStyles();
-
   const store = MyMessagesStore.useContainer();
+  const [tab, setTab] = useState('Inbox');
+
   return <div className='container'>
-    <AdBanner></AdBanner>
+    <AdBanner/>
     <div className={s.messagesContainer}>
       <div className='row mt-2'>
         <div className='col-12'>
           {
-            store.highlightedMessage ? <LargeMessage {...store.highlightedMessage}></LargeMessage> :
+            store.highlightedMessage ? <LargeMessage {...store.highlightedMessage}/> :
 
-              <OldVerticalTabs options={[
+              <OldVerticalTabs onChange={(v) => {
+                setTab(v.name);
+              }} default={tab} options={[
                 {
                   name: 'Inbox',
-                  element: <MessageRow tab='inbox'></MessageRow>,
+                  element: <MessageRow tab='inbox'/>,
                 },
                 {
                   name: 'Sent',
-                  element: <MessageRow tab='sent'></MessageRow>,
+                  element: <MessageRow tab='sent'/>,
                 },
                 {
                   name: 'Notifications',
-                  element: <MessageRow tab='notifications'></MessageRow>,
+                  element: <MessageRow tab='notifications'/>,
                   count: store.notifications ? store.notifications.collection.length : undefined,
                 },
                 {
                   name: 'Archive',
-                  element: <MessageRow tab='archive'></MessageRow>,
+                  element: <MessageRow tab='archive'/>,
                 },
-              ]}></OldVerticalTabs>
+              ]}/>
           }
         </div>
       </div>
