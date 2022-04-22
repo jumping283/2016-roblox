@@ -130,10 +130,10 @@ const LargeMessage = props => {
               includePreviousMessage: true,
               replyMessageId: props.id,
             }).then((res) => {
-              if (res.success && !res.message) {
+              if (res.success) {
                 store.setHighlightedMessage(null);
               }else{
-                setFeedback(res.message);
+                setFeedback(res.message || 'Unknown error. Try again.');
               }
             }).catch(e => {
               setFeedback(e.message);
