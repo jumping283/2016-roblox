@@ -130,12 +130,14 @@ const LargeMessage = props => {
               includePreviousMessage: true,
               replyMessageId: props.id,
             }).then((res) => {
-              if (res.success) {
+              if (res.success && !res.message) {
                 store.setHighlightedMessage(null);
               }else{
                 setFeedback(res.message);
               }
-            });
+            }).catch(e => {
+              setFeedback(e.message);
+            })
           }}/>
         </div>
       </div>
