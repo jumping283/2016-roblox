@@ -34,7 +34,7 @@ const useStyles = createUseStyles({
     display: 'inline-block',
     position: 'relative',
     marginTop: '-15px',
-    paddingLeft: '5px',
+    paddingLeft: '15px',
   },
   markRead: {
     zIndex: 99,
@@ -47,6 +47,16 @@ const useStyles = createUseStyles({
     top: '20px',
     zIndex: 99,
   },
+
+  userCheckAndImage: {
+    display: 'inline-block',
+    width: '65px',
+  },
+  subjectAndContent: {
+    display: 'inline-block',
+    width: 'calc(100% - 65px)',
+    verticalAlign: 'super',
+  },
 })
 
 /**
@@ -58,11 +68,11 @@ const MessageEntry = props => {
   const s = useStyles();
   const store = MyMessagesStore.useContainer();
   const isChecked = store.checked.find(v => v.id === props.id) !== undefined;
-  return <div className={`row pt-2 ${s.messageRow}`} onClick={(e) => {
+  return <div className={`pt-2 ${s.messageRow}`} onClick={(e) => {
     e.preventDefault();
     store.setHighlightedMessage(props);
   }}>
-    <div className='col-1'>
+    <div className={s.userCheckAndImage}>
       <div className={s.markReadWrapper}>
         <input type='checkbox' checked={isChecked} className={s.markRead} onClick={(e) => {
           e.stopPropagation();
@@ -73,18 +83,18 @@ const MessageEntry = props => {
           } else {
             store.setChecked([...store.checked, props]);
           }
-        }}></input>
+        }}/>
       </div>
       <div className={s.userImage}>
-        <PlayerImage id={props.fromUserId}></PlayerImage>
+        <PlayerImage id={props.fromUserId}/>
       </div>
     </div>
-    <div className='col-10'>
+    <div className={s.subjectAndContent}>
       <p className={s.username}>{props.fromUserName}</p>
       <p className={s.subjectBodyParagraph}><span className={s.subject + ' ' + (props.read ? '' : s.subjectUnread)}>{props.subject}</span> - <span className={s.body}>{props.body}</span></p>
     </div>
-    <div className='col-12'>
-      <div className='divider-top'></div>
+    <div >
+      <div className='divider-top'/>
     </div>
   </div>
 }
