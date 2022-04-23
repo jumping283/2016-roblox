@@ -27,7 +27,7 @@ const MyAvatar = props => {
       <h2 className={s.header}>Avatar</h2>
     </div>
     <div className='col-12'>
-      {characterStore.isRendering ? <p>Loading...</p> : <PlayerImage urk={characterStore.thumbnail} id={characterStore.userId}/>}
+      {characterStore.isRendering ? <p>Loading...</p> : <PlayerImage url={characterStore.thumbnail} id={characterStore.userId}/>}
       <div className={s.renderButtonWrapper}>
         {characterStore.isModified && <ActionButton disabled={characterStore.isRendering} label='Save Changes' className={s.renderButton + ' ' + buttonStyles.continueButton} onClick={() => {
           characterStore.requestRender(false);
