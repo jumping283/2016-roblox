@@ -19,14 +19,21 @@ const PlayerImage = (props) => {
   const size = props.size || 420;
   const [retryCount, setRetryCount] = useState(0);
   const thumbs = thumbnailStore.useContainer();
-  const [image, setImage] = useState(thumbs.getUserThumbnail(props.id, '420x420'));
+  const [image, setImage] = useState(props.url ? props.url : thumbs.getUserThumbnail(props.id, '420x420'));
 
   useEffect(() => {
+    if (props.url) {
+      setImage(props.url)
+      return
+    }
     setRetryCount(0);
     setImage(thumbs.getUserThumbnail(props.id, '420x420'));
   }, [props]);
 
   useEffect(() => {
+    if (props.url) {
+      return
+    }
     setImage(thumbs.getUserThumbnail(props.id, '420x420'));
   }, [thumbs.thumbnails]);
 

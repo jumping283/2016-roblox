@@ -1,28 +1,16 @@
 import React, { useEffect } from "react";
-import { createUseStyles } from "react-jss";
 import MyAvatar from "../../components/characterCustomizerPage/components/avatar";
 import AuthenticationStore from "../../stores/authentication";
 import CharacterCustomizationStore from "../../stores/characterPage";
-import AdBanner from "../ad/adBanner";
 import OldVerticalTabs from "../oldVerticalTabs";
 import Color from "./components/color";
 import CurrentlyWearing from "./components/currentlyWearing";
 import Outfits from "./components/outfits";
 import Wardrobe from "./components/wardrobe";
 
-const useCharacterPageStyles = createUseStyles({
-  header: {
-    fontWeight: 700,
-    marginBottom: 0,
-    marginTop: 0,
-    fontSize: '30px',
-  },
-});
-
 const CharacterPage = props => {
   const auth = AuthenticationStore.useContainer();
   const store = CharacterCustomizationStore.useContainer();
-  const s = useCharacterPageStyles();
 
   useEffect(() => {
     store.setUserId(auth.userId);
@@ -33,8 +21,8 @@ const CharacterPage = props => {
   }
   return <div className='row mt-4'>
     <div className='col-12 col-lg-4'>
-      <MyAvatar></MyAvatar>
-      <Color></Color>
+      <MyAvatar/>
+      <Color/>
     </div>
     <div className='col-12 col-lg-8'>
       <div className='row'>
@@ -42,16 +30,16 @@ const CharacterPage = props => {
           <OldVerticalTabs options={[
             {
               name: 'Wardrobe',
-              element: <Wardrobe></Wardrobe>,
+              element: <Wardrobe/>,
             },
             {
               name: 'Outfits',
-              element: <Outfits></Outfits>,
+              element: <Outfits/>,
             },
-          ]}></OldVerticalTabs>
+          ]}/>
         </div>
       </div>
-      <CurrentlyWearing></CurrentlyWearing>
+      <CurrentlyWearing/>
     </div>
   </div>
 }

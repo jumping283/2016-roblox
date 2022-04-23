@@ -11,6 +11,7 @@ const CharacterCustomizationStore = createContainer(() => {
   const [userId, setUserId] = useState(null);
   const [changes, setChanges] = useState(0);
   const [isModified, setIsModified] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
 
   useEffect(() => {
     if (!userId) return;
@@ -30,7 +31,6 @@ const CharacterCustomizationStore = createContainer(() => {
   useEffect(() => {
     setChanges(changes + 1);
     if (changes <= 2) return;
-    console.log('change count', changes);
     setIsModified(true);
   }, [wearingAssets, colors]);
 
@@ -44,6 +44,7 @@ const CharacterCustomizationStore = createContainer(() => {
         const user = result[0];
         if (user.state === 'Completed' && typeof user.imageUrl === 'string') {
           setIsRendering(false);
+          setThumbnail(user.imageUrl);
           clearInterval(timer);
         }
       });
@@ -60,11 +61,13 @@ const CharacterCustomizationStore = createContainer(() => {
         if (force) {
           redrawMyAvatar().then(() => {
             setIsRendering(true);
+            setThumbnail(null);
           }).catch(e => {
 
           });
         } else {
           setIsRendering(true);
+          setThumbnail(null);
         }
       })
     })
@@ -91,6 +94,9 @@ const CharacterCustomizationStore = createContainer(() => {
 
     isRendering,
     setIsRendering,
+
+    thumbnail,
+    setThumbnail,
 
     isModified,
     setIsModified,

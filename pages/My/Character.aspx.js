@@ -22,7 +22,7 @@ const useCharacterPageStyles = createUseStyles({
 const MyCharacterPage = props => {
   const s = useCharacterPageStyles();
   return <div className='container'>
-    <AdBanner context='MyCharacterPage'></AdBanner>
+    <AdBanner context='MyCharacterPage'/>
     <div className={s.characterContainer}>
       <div className='row mt-2'>
         <div className='col-12 ps-4 pe-4'>
@@ -30,7 +30,7 @@ const MyCharacterPage = props => {
         </div>
       </div>
       <CharacterCustomizationStore.Provider>
-        <CharacterPage></CharacterPage>
+        <CharacterPage/>
       </CharacterCustomizationStore.Provider>
     </div>
   </div>
