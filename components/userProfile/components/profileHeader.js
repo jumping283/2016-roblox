@@ -144,7 +144,7 @@ const ProfileHeader = props => {
                 {dropdownOptions && <Dropdown2016 options={dropdownOptions}/>}
               </div></h2>
               {editStatus ? <div>
-                  <input ref={statusInput} type='text' className={s.updateStatusInput} maxLength={255} defaultValue={store.status.status || ''}/>
+                  <input ref={statusInput} type='text' className={s.updateStatusInput} maxLength={255} defaultValue={store.status?.status || ''}/>
                   <p className={s.updateStatusButton} onClick={() => {
                     let v = statusInput.current.value;
                     store.setStatus({
