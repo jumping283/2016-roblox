@@ -135,17 +135,16 @@ const ProfileHeader = props => {
           <div className='row'>
             <div className='col-12 col-lg-2 pe-0'>
               <div className={s.iconWrapper}>
-                <PlayerHeadshot id={store.userId} name={store.username}></PlayerHeadshot>
+                <PlayerHeadshot id={store.userId} name={store.username}/>
                 {status && <div className={s.activityWrapper}><Activity relative={false} {...status}></Activity></div>}
               </div>
             </div>
             <div className='col-12 col-lg-10 ps-0'>
               <h2 className={s.username}>{store.username} <span className="icon-obc"></span> <div className={s.dropdown}>
-                {dropdownOptions && <Dropdown2016 options={dropdownOptions}></Dropdown2016>}
+                {dropdownOptions && <Dropdown2016 options={dropdownOptions}/>}
               </div></h2>
-              {store.status && (
-                editStatus ? <div>
-                  <input ref={statusInput} type='text' className={s.updateStatusInput} maxLength={255} defaultValue={store.status.status || ''}></input>
+              {editStatus ? <div>
+                  <input ref={statusInput} type='text' className={s.updateStatusInput} maxLength={255} defaultValue={store.status.status || ''}/>
                   <p className={s.updateStatusButton} onClick={() => {
                     let v = statusInput.current.value;
                     store.setStatus({
@@ -157,8 +156,8 @@ const ProfileHeader = props => {
                       userId: auth.userId,
                     })
                   }}>Update Status</p>
-                </div> : !store.status.status ? null : <p className={s.userStatus}>&quot;{store.status.status}&quot;</p>
-              ) || <p>&emsp;</p>}
+              </div> : (!store.status || !store.status.status) ? <p>&emsp;</p> : <p className={s.userStatus}>&quot;{store.status.status}&quot;</p>
+              }
               <div className='row'>
                 <RelationshipStatistics id='friends' label='Friends' value={store.friends?.length} userId={store.userId}></RelationshipStatistics>
                 <RelationshipStatistics id='followers' label='Followers' value={store.followersCount} userId={store.userId}></RelationshipStatistics>
