@@ -106,7 +106,7 @@ const CatalogDetails = props => {
   const subTitle = `ROBLOX ${store.subCategoryDisplayName}${(isLimited || isLimitedUnique) ? ' / Collectible Item' : ''}${isLimitedUnique ? ' / Limited Edition' : ''}`;
 
   return <div className='container'>
-    <AdBanner></AdBanner>
+    <AdBanner />
     <div className={s.catalogItemContainer}>
       <BuyItemModal/>
       <SellItemModal/>
