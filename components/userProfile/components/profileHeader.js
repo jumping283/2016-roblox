@@ -159,16 +159,16 @@ const ProfileHeader = props => {
               </div> : (!store.status || !store.status.status) ? <p>&emsp;</p> : <p className={s.userStatus}>&quot;{store.status.status}&quot;</p>
               }
               <div className='row'>
-                <RelationshipStatistics id='friends' label='Friends' value={store.friends?.length} userId={store.userId}></RelationshipStatistics>
-                <RelationshipStatistics id='followers' label='Followers' value={store.followersCount} userId={store.userId}></RelationshipStatistics>
-                <RelationshipStatistics id='followings' label='Following' value={store.followingsCount} userId={store.userId}></RelationshipStatistics>
+                <RelationshipStatistics id='friends' label='Friends' value={store.friends?.length} userId={store.userId}/>
+                <RelationshipStatistics id='followers' label='Followers' value={store.followersCount} userId={store.userId}/>
+                <RelationshipStatistics id='followings' label='Following' value={store.followingsCount} userId={store.userId}/>
                 {
                   showButtons && <>
                     <div className='col-6 col-lg-2 offset-lg-2 pe-1'>
-                      <MessageButton></MessageButton>
+                      <MessageButton/>
                     </div>
                     <div className='col-6 col-lg-2 ps-1'>
-                      <FriendButton></FriendButton>
+                      <FriendButton/>
                     </div>
                   </>
                 }
