@@ -18,11 +18,7 @@ const itemPageLate2016Enabled = getFlag('itemPageLate2016Enabled', false);
 const csrEnabled = getFlag('clientSideRenderingEnabled', false);
 
 export const getItemUrl = ({ assetId, name }) => {
-  if (itemPageLate2016Enabled || csrEnabled) {
-    return `/catalog/${assetId}/${itemNameToEncodedName(name)}`;
-  }
-
-  return `${itemNameToEncodedName(name)}-item?id=${assetId}`;
+  return `/catalog/${assetId}/${itemNameToEncodedName(name)}`;
 }
 
 
