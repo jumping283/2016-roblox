@@ -25,21 +25,29 @@ const getUrlForAssetType = ({ assetTypeId, assetId, name }) => {
 
 const AssetPage = props => {
   const router = useRouter();
-  useEffect(() => {
-    console.log('id', props);
-  }, [router.query[props.idParamName]]);
   const assetId = router.query[props.idParamName];
+  const name = router.query[props.nameParamName];
 
-  // console.log('ASSET PAGE!!!!!!!!!!!!!!', props, router.query, router);
   // TODO: all this asset details crap needs to be done in getInitialProps()
   // The only reason it's not in there now is because I don't have a solution to the server-side CSRF issue yet
-  // const { assetId, name } = props;
   /**
    * @type {[AssetDetailsEntry, import('react').Dispatch<AssetDetailsEntry>]}
    */
   const [details, setDetails] = useState(null);
   const [error, setError] = useState(null);
 
+  const redirectIfBadUrl = ({assetTypeId, name}) => {
+    const expectedUrl = getUrlForAssetType({
+      assetTypeId: assetTypeId,
+      assetId: assetId,
+      name: name,
+    });
+    if (typeof window !== 'undefined' && window.location.href !== expectedUrl) {
+      router.push(expectedUrl);
+      return true;
+    }
+    return false;
+  }
   useEffect(() => {
     if (!assetId) return;
 
@@ -49,10 +57,14 @@ const AssetPage = props => {
         throw new Error('NotFound');
       }
       setDetails(newDetails);
+      redirectIfBadUrl({assetTypeId: newDetails.assetType, name: newDetails.name})
     }).catch(e => {
       if (e.response && e.response.status === 406) {
         const isBadAssetType = e.response.data.errors.find(v => v.code === 11);
         if (isBadAssetType) {
+          if (redirectIfBadUrl({assetTypeId: 9, name: name})) {
+            return;
+          }
           // Get from place details endpoint
           multiGetPlaceDetails({placeIds: [assetId]}).then(resp => {
             const place = resp[0];
@@ -85,12 +97,27 @@ const AssetPage = props => {
             setError(e);
           });
           return;
+        }else{
+          setError(e);
         }
       }
-      console.error(e)
       setError(e);
     })
   }, [assetId]);
+
+  if (error) {
+    // todo: better error page would be nice
+    return <div className='container'>
+      <div className='row'>
+        <div className='col-12'>
+          <div className='card card-body'>
+            <p className='fw-bold'>Error Loading Item</p>
+            <p>{error.message ? error.message : error.toString()}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 
   if (!details) return null;
   if (!assetId) return null;
