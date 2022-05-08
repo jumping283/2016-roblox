@@ -13,6 +13,7 @@ import CreatorLink from "../creatorLink";
 import Robux from "../robux";
 import thumbnailStore from "../../stores/thumbnailStore";
 import Link from "../link";
+import Tickets from "../tickets";
 
 const useCatalogPageStyles = createUseStyles({
   image: {
@@ -92,28 +93,32 @@ const PriceText = (props) => {
   const isLimited = props.itemRestrictions && (props.itemRestrictions.includes('Limited') || props.itemRestrictions.includes('LimitedUnique'));
   const copiesRemaining = props.unitsAvailableForConsumption;
 
-  let priceElement = null;
+  let priceElements = [];
   if (props.isForSale) {
-    if (props.price === 0 || props.price === null) {
-      priceElement = <p className='mb-0 text-dark'>Free</p>;
-    } else {
-      priceElement = <p className='mb-0'><Robux>{props.price}</Robux></p>
+    if (props.price === 0) {
+      priceElements.push(<p className='mb-0 text-dark'>Free</p>)
+    } else if (props.price !== null) {
+      priceElements.push(<p className='mb-0'><Robux>{props.price}</Robux></p>)
+    }
+    // If item is free, why would anyone pay in tickets?
+    if (props.priceTickets !== null && props.price !== 0) {
+      priceElements.push(<p className='mb-0'><Tickets>{props.priceTickets}</Tickets></p>)
     }
   }
 
   if (props.isForSale && props.price !== 0 && props.price !== null) {
     if (isLimited && copiesRemaining) {
       return <div>
-        {priceElement}
+        <>{priceElements.map((v, i) => <React.Fragment key={i}>{v}</React.Fragment>)}</>
         <span>
           <span className={s.remainingLabel}>Remaining: </span> <span className={s.remainingText + ' text-dark'}>{copiesRemaining.toLocaleString()}</span>
         </span>
       </div>
     }
-    return priceElement
+    return <>{priceElements.map((v, i) => <React.Fragment key={i}>{v}</React.Fragment>)}</>
   }
   if (props.isForSale && (props.price === 0 || props.price === null)) {
-    return priceElement;
+    return <>{priceElements.map((v, i) => <React.Fragment key={i}>{v}</React.Fragment>)}</>
   }
   if (isLimited && !props.isForSale) {
     // Limited and not for sale anymore
