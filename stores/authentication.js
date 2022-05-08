@@ -40,7 +40,7 @@ const AuthenticationStore = createContainer(() => {
     // Get Robux
     getRobux({ userId }).then((data) => {
       setRobux(data.robux || 0);
-      setTix(data.tix || 0);
+      setTix(data.tickets || 0);
     }).catch(e => {
       // what do we do here?
       console.error('[error] robux error', e);
