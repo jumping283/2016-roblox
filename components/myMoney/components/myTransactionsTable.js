@@ -8,6 +8,7 @@ import Robux from "../../catalogDetailsPage/components/robux";
 import PlayerHeadshot from "../../playerHeadshot";
 import Table from "./table";
 import Link from "../../link";
+import Tickets from "../../tickets";
 
 const DeletedEntryMessage = props => {
   const [showMessage, setShowMessage] = useState(false);
@@ -175,7 +176,10 @@ const MyTransactionsTable = props => {
             dayjs(v.created).format('M/D/YY'),
             <SellerEntry key={v.id} {...v.agent}></SellerEntry>,
             <DescriptionEntry {...v}></DescriptionEntry>,
-            v.currency.amount === 0 ? '0' : v.currency.type === 'Tix' ? v.currency.amount + ' Tix' : <Robux>{v.currency.amount}</Robux>
+            v.currency.amount === 0 ? '0' : 
+            (v.currency.type === 'Tix' || v.currency.type === 'Tickets') ? 
+            <Tickets>{v.currency.amount}</Tickets> : 
+            <Robux>{v.currency.amount}</Robux>
           ];
         })}></Table>
     </div>

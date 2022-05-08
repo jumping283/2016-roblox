@@ -19,7 +19,7 @@ const ConfigureHeader = props => {
   return <>
     <h1 className={s.header}>Configure {assetTypes[store.details.assetType]}</h1>
     <p>
-      <Link href={getItemUrl({assetId: store.details.name, name: store.details.name})}>
+      <Link href={getItemUrl({assetId: store.details.id, name: store.details.name})}>
         <a>Back</a>
       </Link>
     </p>

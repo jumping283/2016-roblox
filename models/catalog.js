@@ -19,4 +19,5 @@
  * @property {number} price Robux Price
  * @property {number} productId
  * @property {number} currency
+ * @property {number|null} priceTickets
  */

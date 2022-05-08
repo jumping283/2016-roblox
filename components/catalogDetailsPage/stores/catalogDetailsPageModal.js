@@ -7,6 +7,7 @@ const CatalogDetailsPageModal = createContainer(() => {
   const [purchaseState, setPurchaseState] = useState('PURCHASE');
   const [isPurchasePromptOpen, setIsPurchasePromptOpen] = useState(false);
   const [purchaseDetails, setPurchaseDetails] = useState(null);
+  const [currency, setCurrency] = useState(null);
 
   const [isPurchasing, setIsPurchasing] = useState(false);
 
@@ -18,11 +19,16 @@ const CatalogDetailsPageModal = createContainer(() => {
     purchaseState,
     setPurchaseState,
 
-    openPurchaseModal: (details, currentBalanceRobux, currentBalanceTix) => {
+    currency,
+    setCurrency,
+
+    openPurchaseModal: (details, currentBalanceRobux, currentBalanceTix, currency) => {
       if (isPurchasing) return;
       setIsPurchasePromptOpen(true);
       setPurchaseDetails(details);
-      const newBalance = currentBalanceRobux - details.price;
+      setCurrency(currency);
+
+      const newBalance = currency === 1 ? (currentBalanceRobux - details.price) : currentBalanceTix - details.priceTickets;
       if (newBalance < 0) {
         setPurchaseState('INSUFFICIENT_FUNDS');
       } else {
@@ -45,8 +51,8 @@ const CatalogDetailsPageModal = createContainer(() => {
           productId: purchaseDetails.productId,
           sellerId: purchaseDetails.sellerId,
           userAssetId: purchaseDetails.userAssetId,
-          price: purchaseDetails.price,
-          expectedCurrency: purchaseDetails.currency,
+          price: currency === 1 ? purchaseDetails.price : purchaseDetails.priceTickets,
+          expectedCurrency: currency,
         });
         const success = result.purchased;
         if (!success) {

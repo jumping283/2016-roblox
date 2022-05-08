@@ -1,6 +1,7 @@
 import {createContainer} from "unstated-next";
 import {useState} from "react";
-import {setPriceRobux, updateAsset} from "../../../services/develop";
+import {setAssetPrice, updateAsset} from "../../../services/develop";
+import getFlag from "../../../lib/getFlag";
 
 const ConfigureItemStore = createContainer(() => {
   const [assetId, setAssetId] = useState(null);
@@ -12,6 +13,7 @@ const ConfigureItemStore = createContainer(() => {
   const [description, setDescription] = useState(null);
   // 0 = free, null = unset
   const [price, setPrice] = useState(null);
+  const [priceTickets, setPriceTickets] = useState(null);
   const [isForSale, setIsForSale] = useState(false);
   const [commentsEnabled, setCommentsEnabled] = useState(false);
   const [genres, setGenres] = useState(null);
@@ -31,6 +33,9 @@ const ConfigureItemStore = createContainer(() => {
       setPrice(newDetails.price);
       setCommentsEnabled(newDetails.commentsEnabled);
       setGenres(newDetails.genres);
+      if (getFlag('sellItemForTickets', false)) {
+        setPriceTickets(newDetails.priceTickets);
+      }
     },
 
     error,
@@ -44,6 +49,9 @@ const ConfigureItemStore = createContainer(() => {
 
     price,
     setPrice,
+
+    priceTickets,
+    setPriceTickets,
 
     isForSale,
     setIsForSale,
@@ -62,7 +70,7 @@ const ConfigureItemStore = createContainer(() => {
         return;
       setLocked(true);
       Promise.all([
-        setPriceRobux({assetId, priceInRobux: price}),
+        setAssetPrice({assetId, priceInRobux: !Number.isSafeInteger(price) ? null : price, priceInTickets: priceTickets}),
         updateAsset({
           assetId,
           name,

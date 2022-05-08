@@ -1,3 +1,4 @@
+import getFlag from "../lib/getFlag";
 import request, { getBaseUrl, getFullUrl } from "../lib/request"
 
 export const uploadAsset = ({ name, assetTypeId, file }) => {
@@ -44,10 +45,14 @@ export const updateAsset = async ({assetId, name, description, genres, isCopying
   });
 }
 
-export const setPriceRobux = async ({assetId, priceInRobux}) => {
-  return await request('POST', getFullUrl('itemconfiguration', `/v1/assets/${assetId}/update-price`), {
-    priceInRobux,
-  })
+export const setAssetPrice = async ({assetId, priceInRobux, priceInTickets}) => {
+  let obj = {
+    priceInRobux, 
+  };
+  if (getFlag('sellItemForTickets', false)) {
+    obj.priceInTickets = priceInTickets;
+  }
+  return await request('POST', getFullUrl('itemconfiguration', `/v1/assets/${assetId}/update-price`), obj);
 }
 
 export const getAllGenres = async () => {

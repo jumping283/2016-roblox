@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
+import getFlag from "../../../lib/getFlag";
 import { abbreviateNumber } from "../../../lib/numberUtils";
 import { logout } from "../../../services/auth";
 import AuthenticationStore from "../../../stores/authentication";
@@ -94,7 +95,7 @@ const LoggedInArea = props => {
   const authStore = AuthenticationStore.useContainer();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  if (authStore.robux === null) return null;
+  if (authStore.robux === null || authStore.tix === null) return null;
   return <div className={`${s.linkContainerCol} `}>
     <div className='row'>
       <div className={`col-12 ${s.linkContainer}`}>
@@ -108,6 +109,18 @@ const LoggedInArea = props => {
         <p className={s.text + ' ' + s.robuxText}>
           <span>{abbreviateNumber(authStore.robux)}</span>
         </p>
+        {getFlag('showTicketBalace', false) ? <>
+        <p className={s.text}>
+          <Link href='/My/Money.aspx'>
+            <a>
+              <span className='icon-nav-tix'/>
+            </a>
+          </Link>
+        </p>
+        <p className={s.text + ' ' + s.robuxText}>
+          <span>{abbreviateNumber(authStore.tix)}</span>
+        </p>
+        </> : null}
         <p className={s.text}>
           <a onClick={(e) => {
             e.preventDefault();

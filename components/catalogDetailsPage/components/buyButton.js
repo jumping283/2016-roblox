@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
 import AuthenticationStore from "../../../stores/authentication";
 import ActionButton from "../../actionButton";
+import Tickets from "../../tickets";
 import CatalogDetailsPage from "../stores/catalogDetailsPage";
 import CatalogDetailsPageModal from "../stores/catalogDetailsPageModal";
 import BuyItemModal from "./buyItemModal";
@@ -73,7 +74,24 @@ const OwnedCount = props => {
   </p>
 }
 
+const useTicketPriceStyles = createUseStyles({
+  ticketPrice: {
+    width: '100%',
+    height: '23px',
+  },
+});
+
+const PriceTickets = props => {
+  const s = useTicketPriceStyles();
+  const store = CatalogDetailsPage.useContainer();
+
+  return <div className={s.ticketPrice}>
+    <span>Price: </span><Tickets>{store.details.priceTickets}</Tickets>
+  </div>
+}
+
 const BuyAction = props => {
+  const currency = props.currency; // 1 = Robux, 2 = Tickets
   const store = CatalogDetailsPage.useContainer();
   const authenticationStore = AuthenticationStore.useContainer();
   const modalStore = CatalogDetailsPageModal.useContainer();
@@ -91,7 +109,15 @@ const BuyAction = props => {
   const isFree = !isDisabled && store.details.price === 0;
 
   const tooltipTitle = isOwned ? 'You already own this item.' : 'This item is not for sale';
-  const actionBuyText = isOwned ? 'Buy with R$' : !isDisabled ? (isFree ? 'Take One' : 'Buy with R$') : 'Buy Now';
+  const actionBuyText = (() => {
+      if (isFree)
+        return 'Take One';
+
+      if (currency === 2) {
+        return 'Buy with Tx';
+      }
+      return 'Buy with R$';
+  })();
 
   if (store.isResellable) {
     if (!store.allResellers || store.allResellers.length === 0) {
@@ -102,12 +128,42 @@ const BuyAction = props => {
   return <div>
     {showPriceText &&
       <p className='mb-1 text-center'>
-        <Robux prefix="Price: ">{isFree ? 'FREE' : store.details.price}</Robux>
+        {
+          currency === 1 ? <Robux prefix="Price: ">{isFree ? 'FREE' : store.details.price}</Robux> :
+          <PriceTickets />
+        }
       </p>
     }
     <ActionButton onClick={(e) => {
-      modalStore.openPurchaseModal(store.getPurchaseDetails(), auth.robux, auth.tix);
+      modalStore.openPurchaseModal(store.getPurchaseDetails(), auth.robux, auth.tix, currency);
     }} label={actionBuyText} disabled={isDisabled} tooltipText={tooltipTitle}></ActionButton>
+  </div>
+}
+
+const useOrTabStyles = createUseStyles({
+  wrapper: {
+    borderBottom: '1px solid #a7a7a7',
+    marginBottom: '10px',
+  },
+  label: {
+    padding: '0 10px',
+    marginBottom: 0,
+    width: 'width',
+    textAlign: 'center',
+  },
+  labelBg: {
+    background: '#e1e1e1',
+    position: 'relative',
+    bottom: '-10px',
+  },
+});
+
+const PurchaseWithRobuxOrTicketsLabel = props => {
+  const s = useOrTabStyles();
+  return <div className={s.wrapper}>
+    <p className={s.label}>
+      <span className={s.labelBg}>OR</span>
+    </p>
   </div>
 }
 
@@ -118,21 +174,36 @@ const BuyAction = props => {
 const BuyButton = props => {
   const s = useBuyButtonStyles();
   const store = CatalogDetailsPage.useContainer();
-  const showBuyButton = true;
+  // Show buy button if item has ticket price and no sale price, or if item has sale price
+  const showBuyButton = (() => {
+    if (store.details.priceTickets) {
+      if (store.details.price === null) {
+        return false;
+      }
+    }
+    return true;
+  })();
   const isResellAsset = store.isResellable;
+  const showBuyTicketsButton = store.details.priceTickets !== null;
+  const showOrTab = !isResellAsset && showBuyButton && showBuyTicketsButton;
+
   return <div className={s.wrapper}>
     <div>
-      {isResellAsset && <BestPriceEntry details={store.details}></BestPriceEntry>}
+      {isResellAsset ? <BestPriceEntry details={store.details}></BestPriceEntry> : null}
     </div>
     <div>
-      {!isResellAsset && <div className='mt-2'></div>}
-      {showBuyButton && <BuyAction></BuyAction>}
+      {!isResellAsset  ? <div className='mt-2'></div> : null}
+      {showBuyButton ? <BuyAction currency={1} /> : null}
     </div>
     <div>
-      {isResellAsset && <PrivateSellersCount details={store.details}></PrivateSellersCount>}
+      {showOrTab ? <PurchaseWithRobuxOrTicketsLabel /> : null}
+      {showBuyTicketsButton ? <BuyAction currency={2} /> : null}
     </div>
     <div>
-      {isResellAsset && <OwnedCount></OwnedCount>}
+      {isResellAsset ? <PrivateSellersCount details={store.details}></PrivateSellersCount> : null}
+    </div>
+    <div>
+      {isResellAsset ? <OwnedCount></OwnedCount> : null}
     </div>
     <div>
       <SaleCount></SaleCount>

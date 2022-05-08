@@ -25,6 +25,7 @@ export const purchaseItem = ({ productId, assetId, sellerId, userAssetId, price,
     expectedPrice: price,
     expectedSellerId: sellerId,
     userAssetId,
+    expectedCurrency,
   }).then(d => d.data);
 }
 
