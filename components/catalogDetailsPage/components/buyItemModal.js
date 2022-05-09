@@ -79,13 +79,13 @@ const ModalButtons = props => {
                 }).catch(e => {
                   modalStore.setPurchaseState(e.state || 'PURCHASE_ERROR');
                 })
-              }}></ActionButton>
+              }}/>
             </div>
             <div className='col-6'>
               <ActionButton disabled={modalStore.purchaseState === 'PURCHASE_PENDING'} label='Cancel' className={s.cancelButton} onClick={(e) => {
                 e.preventDefault();
                 modalStore.closePurchaseModal();
-              }}></ActionButton>
+              }}/>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ const ModalButtons = props => {
           <ActionButton className={s.continueButton} label='Continue Shopping' onClick={() => {
             modalStore.closePurchaseModal();
             window.location.reload();
-          }}></ActionButton>
+          }}/>
         </div>
       </div>
     case 'INSUFFICIENT_FUNDS':
@@ -105,13 +105,13 @@ const ModalButtons = props => {
           <ActionButton className={s.buyButton} label='Purchase ROBUX' onClick={() => {
             modalStore.closePurchaseModal();
             window.location.href = '/'
-          }}></ActionButton>
+          }}/>
         </div>
         <div className='col-4'>
           <ActionButton disabled={false} label='Cancel' className={s.cancelButton} onClick={(e) => {
             e.preventDefault();
             modalStore.closePurchaseModal();
-          }}></ActionButton>
+          }}/>
         </div>
       </div>
     case 'PURCHASE_ERROR':
@@ -120,7 +120,7 @@ const ModalButtons = props => {
           <ActionButton disabled={false} label='Cancel' className={s.cancelButton} onClick={(e) => {
             e.preventDefault();
             modalStore.closePurchaseModal();
-          }}></ActionButton>
+          }}/>
         </div>
       </div>
     default:
@@ -135,7 +135,7 @@ const ModalImage = (props) => {
     case 'PURCHASE':
     case 'PURCHASE_PENDING':
     case 'PURCHASE_OK':
-      return <ItemImage id={store.details.id}></ItemImage>
+      return <ItemImage id={store.details.id}/>
     case 'INSUFFICIENT_FUNDS':
     case 'PURCHASE_ERROR':
       // TODO: yellow triangle icon
@@ -228,20 +228,20 @@ const BuyItemModal = props => {
   return <div className={s.modalBg}>
     <div className={s.modalWrapper}>
       <h3 className={s.title}>
-        <ModalTitle></ModalTitle>
+        <ModalTitle/>
       </h3>
       <div className={s.innerSection}>
         <div className='row'>
           <div className='col-3'>
-            <ModalImage></ModalImage>
+            <ModalImage/>
           </div>
           <div className='col-9'>
-            <ModalDescription></ModalDescription>
+            <ModalDescription/>
           </div>
         </div>
         <div className='row mt-4'>
           <div className='col-12'>
-            <ModalButtons></ModalButtons>
+            <ModalButtons/>
           </div>
           <div className='row'>
             <div className='col-12'>
