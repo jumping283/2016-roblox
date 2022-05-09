@@ -2,6 +2,7 @@ import React from "react";
 import getFlag from "../../../lib/getFlag";
 import OldVerticalTabs from "../../oldVerticalTabs"
 import MoneyPageStore from "../stores/moneyPageStore";
+import CurrencyExchange from "./currencyExchange";
 import MySummaryTable from "./mySummaryTable";
 import MyTradesTable from "./myTradesTable";
 import MyTransactionsTable from "./myTransactionsTable";
@@ -17,11 +18,15 @@ const Bar = props => {
       name: 'Summary',
       element: <MySummaryTable></MySummaryTable>,
     },
+    getFlag('currencyExchangeEnabled', false) ? {
+      name: 'Trade Currency',
+      element: <CurrencyExchange></CurrencyExchange>,
+    } : undefined,
     {
       name: 'Trade Items',
       element: <MyTradesTable></MyTradesTable>,
     },
-  ];
+  ].filter(v => !!v);
   if (getFlag('moneyPagePromotionTabVisible', false)) {
     options.push({
       name: 'Promotion',
