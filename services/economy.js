@@ -57,3 +57,39 @@ export const getTransactions = ({ userId, cursor, type }) => {
 export const getTransactionSummary = ({ userId, timePeriod }) => {
   return request('GET', getFullUrl('economy', `/v2/users/${userId}/transaction-totals?timeFrame=${timePeriod}&transactionType=summary`)).then(d => d.data);
 }
+
+// Extension - these don't exist on real roblox
+
+export const getMarketActivity = () => {
+  return request('GET', getFullUrl('economy', '/v2/currency-exchange/market/activity')).then(d => d.data);
+}
+
+export const createCurrencyExchangeOrder = async ({
+  currency,
+  amount,
+  isMarketOrder,
+                                                    desiredRate,
+}) => {
+  return request('POST', getFullUrl('economy', '/v2/currency-exchange/orders/create'), {
+    amount,
+    sourceCurrency: currency,
+    isMarketOrder,
+    desiredRate,
+  })
+}
+
+/**
+ * Get open position count for authenticated user
+ * @returns {Promise<number>}
+ */
+export const countOpenPositions = async ({currency}) => {
+  return request('GET', getFullUrl('economy', '/v2/currency-exchange/orders/my/count?currency=' + currency)).then(d => d.data.total);
+}
+
+export const getOpenPositions = async ({startId, limit,currency}) => {
+  return request('GET', getFullUrl('economy', '/v2/currency-exchange/orders/my?limit=' + limit + '&startId=' + startId + '&currency=' + currency)).then(d => d.data);
+}
+
+export const closePosition = async({orderId}) => {
+  return request('POST', getFullUrl('economy', '/v2/currency-exchange/orders/' + orderId + '/close'));
+}
