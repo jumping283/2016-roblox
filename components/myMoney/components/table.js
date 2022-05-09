@@ -44,12 +44,12 @@ const useStyles = createUseStyles({
 
 /**
  * Money page table
- * @param {{keys: string[]; entries: (JSX.Element | string)[][]; children?: JSX.Element}} props
+ * @param {{keys: string[]; entries: (JSX.Element | string)[][]; children?: JSX.Element; ad: boolean}} props
  */
 const Table = props => {
   const s = useStyles();
   return <div className='row'>
-    <div className='col-12 col-lg-10'>
+    <div className={props.ad === false ? 'col-12' : 'col-12 col-lg-10'}>
       <div className='row'>
         <div className='col-12'>
           <table className={s.table}>
@@ -82,9 +82,9 @@ const Table = props => {
         </div>
       </div>
     </div>
-    <div className='d-none d-lg-flex col-2'>
-      <AdSkyscraper context='MyTransactionsTable'></AdSkyscraper>
-    </div>
+    {props.ad !== false ? <div className='d-none d-lg-flex col-2'>
+      <AdSkyscraper context='MyTransactionsTable'/>
+    </div> : null}
   </div>
 }
 
