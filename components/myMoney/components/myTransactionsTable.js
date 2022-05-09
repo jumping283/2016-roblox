@@ -38,6 +38,9 @@ const DescriptionEntry = props => {
     }
   } else if (props.transactionType === 'Sale') {
     verb = 'Sold';
+    if (props.details && props.details.name && !noun) {
+      noun = props.details.name;
+    }
   }
   if (!noun) {
     // item was deleted ?
