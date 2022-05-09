@@ -2,12 +2,15 @@ import {useEffect, useRef, useState} from "react";
 import { createUseStyles } from "react-jss";
 import SmallGameCard from "../../smallGameCard";
 import UserAdvertisement from "../../userAdvertisement";
+import {getTheme, themeType} from "../../../services/theme";
 
 const useStyles = createUseStyles({
   title: {
     fontWeight: 300,
     marginBottom: '10px',
     marginTop: '10px',
+    color: p => p.theme === themeType.obc2016 ? '#fff' : 'rgb(33, 37, 41)',
+    marginLeft: '10px',
   },
   gameRow: {
     display: 'flex',
@@ -70,7 +73,9 @@ const useStyles = createUseStyles({
  * @param {{title: string; games: any[]; icons: any; ads?: boolean;}} props 
  */
 const GameRow = props => {
-  const s = useStyles();
+  const s = useStyles({
+    theme: getTheme(),
+  });
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(0);
   const [offsetComp, setOffsetComp] = useState(0);
