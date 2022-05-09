@@ -12,6 +12,7 @@ const useStyles = createUseStyles({
     marginBottom: 0,
     fontSize: '16px',
     padding: '15px 20px',
+    whiteSpace: 'break-spaces',
   },
   report: {
     paddingBottom: '40px',
