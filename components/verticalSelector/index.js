@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
 
 /**
  * Vertical selector, as seen on "Develop" page
- * @param {{selected: string; options: {name: string; url: string; disabled?: boolean;}[]}} props 
+ * @param {{selected: string; options: {name: string; url: string; disabled?: boolean; onClick: () => void}[]}} props 
  * @returns 
  */
 const VerticalSelector = props => {
