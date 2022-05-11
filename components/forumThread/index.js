@@ -32,6 +32,7 @@ const useStyles = createUseStyles({
   },
   postText: {
     whiteSpace: 'break-spaces',
+    wordWrap: 'anywhere',
   },
 })
 const limit = 15;

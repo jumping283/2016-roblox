@@ -53,7 +53,8 @@ const SellItemCurrency = props => {
     <div className={s.inline}>
       <input disabled={!store.isForSale || store.locked} type='text' value={store.isForSale ? price : ''} onChange={e => {
         let newValue = parseInt(e.currentTarget.value, 10);
-        if ((newValue > 1000000 || newValue < 2 || isNaN(newValue))) {
+        const isFree = (newValue === 0 && currency === 1);
+        if ((newValue > 1000000 || newValue < 2 || isNaN(newValue)) && !isFree) {
           if (e.currentTarget.value !== '')
             setFeedback(
               currency === 1 ? 'Price must be between R$2 and R$1,000,000' : 'Price must be between T$2 and T$1,000,000'

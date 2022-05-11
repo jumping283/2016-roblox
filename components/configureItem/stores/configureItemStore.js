@@ -70,7 +70,10 @@ const ConfigureItemStore = createContainer(() => {
         return;
       setLocked(true);
       Promise.all([
-        setAssetPrice({assetId, priceInRobux: !Number.isSafeInteger(price) ? null : price, priceInTickets: priceTickets}),
+        setAssetPrice({assetId,
+          priceInRobux: Number.isSafeInteger(price) ? price : null,
+          priceInTickets: Number.isSafeInteger(parseInt(priceTickets,10)) ? priceTickets : null,
+        }),
         updateAsset({
           assetId,
           name,
