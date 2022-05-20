@@ -35,3 +35,14 @@ export const getPreviousUsernames = async ({ userId }) => {
 export const searchUsers = async ({keyword, limit, offset}) => {
   return await request('GET', getBaseUrl() + '/search/users/results?keyword=' + (keyword||'') + '&maxRows='+limit+'&startIndex='+offset).then(d => d.data);
 }
+
+export const getMembershipType = async ({userId}) => {
+  return request('GET', getFullUrl('premiumfeatures', '/v1/users/'+userId+'/validate-membership')).then(d => d.data).then(data => {
+    if (data === true) {
+      return 4;
+    }else if (data === false) {
+      return 0;
+    }
+    return data;
+  })
+}
