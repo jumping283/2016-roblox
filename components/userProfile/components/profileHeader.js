@@ -1,15 +1,11 @@
-import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { abbreviateNumber } from "../../../lib/numberUtils";
 import { followUser, unfollowUser } from "../../../services/friends";
-import { getGameUrl } from "../../../services/games";
 import { multiGetPresence } from "../../../services/presence";
-import { updateStatus } from "../../../services/users";
+import {getMembershipType, updateStatus} from "../../../services/users";
 import AuthenticationStore from "../../../stores/authentication";
 import Dropdown2016 from "../../dropdown2016";
 import PlayerHeadshot from "../../playerHeadshot";
-import PlayerImage from "../../playerImage";
 import Activity from "../../userActivity";
 import UserProfileStore from "../stores/UserProfileStore";
 import useCardStyles from "../styles/card";
@@ -64,17 +60,29 @@ const ProfileHeader = props => {
   const [dropdownOptions, setDropdownOptions] = useState(null);
   const [editStatus, setEditStatus] = useState(false);
   const [status, setStatus] = useState(null);
+  const [bcLevel, setBcLevel] = useState(0);
 
   useEffect(() => {
     if (auth.isPending) return;
+    // reset
+    setStatus(null);
+    setBcLevel(0);
+    setEditStatus(false);
+    setDropdownOptions(null);
+
     multiGetPresence({ userIds: [store.userId] }).then((d) => {
       setStatus(d[0]);
+    });
+    getMembershipType({userId: store.userId}).then(d => {
+      setBcLevel(d);
+    }).catch(e => {
+      // can fail when not logged in :(
     })
-    const arr = [];
+    const buttons = [];
     const isOwnProfile = auth.userId == store.userId;
     if (isOwnProfile) {
       // Exclusive to your own profile
-      arr.push({
+      buttons.push({
         name: 'Update Status',
         onClick: e => {
           e.preventDefault();
@@ -82,8 +90,8 @@ const ProfileHeader = props => {
         },
       })
     } else {
-      // Exclusive to profiles other then your own
-      arr.push({
+      // Exclusive to profiles other than your own
+      buttons.push({
         name: store.isFollowing ? 'Unfollow' : 'Follow',
         onClick: (e) => {
           e.preventDefault();
@@ -107,12 +115,12 @@ const ProfileHeader = props => {
       },
     });
     */
-    arr.push({
+    buttons.push({
       name: 'Inventory',
       url: `/users/${store.userId}/inventory`,
     });
     if (!isOwnProfile) {
-      arr.push({
+      buttons.push({
         name: 'Trade',
         onClick: (e) => {
           e.preventDefault();
@@ -120,13 +128,35 @@ const ProfileHeader = props => {
         }
       });
     }
-    setDropdownOptions(arr);
-  }, [auth.userId, auth.isPending, store.isFollowing, editStatus]);
+    setDropdownOptions(buttons);
+  }, [auth.userId, auth.isPending, store.isFollowing, editStatus, store.userId]);
 
   const s = useHeaderStyles();
   const cardStyles = useCardStyles();
 
   const showButtons = auth.userId != store.userId && !auth.isPending;
+
+  const BcIcon = () => {
+    if (bcLevel === 0) {
+      return null;
+    }
+    // 1 = BC
+    // 2 = TBC
+    // 3 = OBC
+    // 4 = Premium
+    // 0 = None
+    switch(bcLevel) {
+      case 1:
+      case 4:
+        return <span className="icon-bc" />
+      case 2:
+        return <span className="icon-tbc" />
+      case 3:
+        return <span className="icon-obc" />
+      default:
+        return null;
+    }
+  }
 
   return <div className='row mt-2'>
     <div className='col-12'>
@@ -140,7 +170,7 @@ const ProfileHeader = props => {
               </div>
             </div>
             <div className='col-12 col-lg-10 ps-0'>
-              <h2 className={s.username}>{store.username} <span className="icon-obc"></span> <div className={s.dropdown}>
+              <h2 className={s.username}>{store.username} {<BcIcon />} <div className={s.dropdown}>
                 {dropdownOptions && <Dropdown2016 options={dropdownOptions}/>}
               </div></h2>
               {editStatus ? <div>
