@@ -115,7 +115,7 @@ const ForumThread = props => {
                     </a>
                   </Link>
                   <PlayerImage id={post.userId} />
-                  <BcOverlay />
+                  <BcOverlay id={post.userId} />
                   <p className={s.userStat}>
                     <span className='fw-bold'>Joined: </span><span>{dayjs(v.createdAt).format('DD MMM YYYY')}</span>
                   </p>

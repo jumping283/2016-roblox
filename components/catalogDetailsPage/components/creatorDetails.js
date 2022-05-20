@@ -36,7 +36,7 @@ const CreatorDetails = props => {
   return <div className='row'>
     <div className='col-4 pe-0'>
       <PlayerImage id={props.id} name={props.name}/>
-      <BcOverlay/>
+      <BcOverlay id={props.id}/>
     </div>
     <div className='col-8 ps-0'>
       <StatEntry name="Creator" value={
