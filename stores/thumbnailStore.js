@@ -135,11 +135,19 @@ const ThumbnailStore = createContainer(() => {
     }
   }
 
+  const getThumbnailRemovalHandler = (type) => {
+    return (id, size='420x420') => {
+      delete thumbnails[getKey(id, type, size)];
+    }
+  }
+
   return {
     thumbnails,
 
     getUserThumbnail: getThumbnailHandler('userThumbnail'),
     getAssetThumbnail: getThumbnailHandler('asset'),
+    removeUserThumbnail: getThumbnailRemovalHandler('userThumbnail'),
+
     getPlaceholder,
   }
 });
