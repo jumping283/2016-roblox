@@ -162,7 +162,7 @@ const Wardrobe = props => {
         name: props.name,
         id: props.id,
       });
-    }} className={category.id === props.id ? s.selected : ''}> {props.children} {!props.last && ' | '} </span>
+    }} className={category.id === props.id ? s.selected : ''}> {props.children} {!props.last ? ' | ' : null} </span>
   }
 
   useEffect(() => {
@@ -193,11 +193,11 @@ const Wardrobe = props => {
     <div className='col-12'>
       <div className={s.categoryWrapper}>
         {wardrobeItems.map(entry => {
-          return <p className={s.categoryEntry} key={entry.categories.join(',')}>
+          return <p className={s.categoryEntry} key={entry.categories.map(v => v.id).join(',')}>
             {entry.label ? <span className={s.categoryEntry}>{entry.label}</span> : null}
             {
               entry.categories.map((cat, idx, arr) => {
-                let isLast = idx === (cat.length - 1);
+                const isLast = idx === (arr.length - 1);
                 return <Category key={cat.id} id={cat.id} last={isLast}>{cat.name}</Category>
               })
             }
