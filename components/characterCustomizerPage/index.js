@@ -7,14 +7,22 @@ import Color from "./components/color";
 import CurrentlyWearing from "./components/currentlyWearing";
 import Outfits from "./components/outfits";
 import Wardrobe from "./components/wardrobe";
+import thumbnailStore from "../../stores/thumbnailStore";
 
 const CharacterPage = props => {
   const auth = AuthenticationStore.useContainer();
   const store = CharacterCustomizationStore.useContainer();
+  const thumbs = thumbnailStore.useContainer();
 
   useEffect(() => {
     store.setUserId(auth.userId);
   }, [auth.userId]);
+
+  useEffect(() => {
+    if (!store.userId || !store.thumbnail)
+      return;
+    thumbs.removeUserThumbnail(store.userId);
+  }, [store.thumbnail, store.userId]);
 
   if (!store.userId) {
     return null;
