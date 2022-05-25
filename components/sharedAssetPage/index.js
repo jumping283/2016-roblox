@@ -62,9 +62,6 @@ const AssetPage = props => {
       if (e.response && e.response.status === 406) {
         const isBadAssetType = e.response.data.errors.find(v => v.code === 11);
         if (isBadAssetType) {
-          if (redirectIfBadUrl({assetTypeId: 9, name: name})) {
-            return;
-          }
           // Get from place details endpoint
           multiGetPlaceDetails({placeIds: [assetId]}).then(resp => {
             const place = resp[0];
