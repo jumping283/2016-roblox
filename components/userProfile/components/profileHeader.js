@@ -63,12 +63,16 @@ const ProfileHeader = props => {
   const [bcLevel, setBcLevel] = useState(0);
 
   useEffect(() => {
-    if (auth.isPending) return;
     // reset
     setStatus(null);
     setBcLevel(0);
     setEditStatus(false);
     setDropdownOptions(null);
+
+  }, [store.userId]);
+
+  useEffect(() => {
+    if (auth.isPending) return;
 
     multiGetPresence({ userIds: [store.userId] }).then((d) => {
       setStatus(d[0]);
