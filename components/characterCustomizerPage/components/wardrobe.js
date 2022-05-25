@@ -193,12 +193,12 @@ const Wardrobe = props => {
     <div className='col-12'>
       <div className={s.categoryWrapper}>
         {wardrobeItems.map(entry => {
-          return <p className={s.categoryEntry}>
+          return <p className={s.categoryEntry} key={entry.categories.join(',')}>
             {entry.label ? <span className={s.categoryEntry}>{entry.label}</span> : null}
             {
               entry.categories.map((cat, idx, arr) => {
                 let isLast = idx === (cat.length - 1);
-                return <Category key={cat} id={cat.id} last={isLast}>{cat.name}</Category>
+                return <Category key={cat.id} id={cat.id} last={isLast}>{cat.name}</Category>
               })
             }
           </p>
@@ -215,7 +215,7 @@ const Wardrobe = props => {
       inventory && <div className='col-12'>
         <div className='row'>
           {inventory.data.map((v, i) => {
-            return <WardrobeEntry key={i} assetId={v.Item.AssetId} name={v.Item.Name} assetTypeId={v.Item.AssetType} assetTypeName={assetTypes[v.Item.AssetType]}></WardrobeEntry>
+            return <WardrobeEntry key={i} assetId={v.Item.AssetId} name={v.Item.Name} assetTypeId={v.Item.AssetType} assetTypeName={assetTypes[v.Item.AssetType]}/>
           })}
         </div>
         <div className='row mt-4'>
