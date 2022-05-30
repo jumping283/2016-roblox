@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import {useEffect, useRef} from "react";
 import { createUseStyles } from "react-jss";
 import CatalogPageStore from "../../stores/catalogPage";
 
@@ -52,11 +52,17 @@ const CatalogPageInput = props => {
   const input = useRef(null);
   const category = useRef(null);
 
+  useEffect(() => {
+    // for keyword updates from url param
+    if (input.current)
+      input.current.value = store.query;
+  }, [store.query]);
+
   return <div className='row'>
     <div className='col-12 col-lg-8 offset-lg-4'>
       <div className='row'>
         <div className={`col-12 col-md-6 ${s.col}`}>
-          <input type='text' className={`${s.input}`} ref={input}></input>
+          <input type='text' className={`${s.input}`} ref={input}/>
         </div>
         <div className={`col-6 col-md-3 ${s.col}`}>
           <select disabled={store.locked} className={s.select} ref={category}>

@@ -41,7 +41,6 @@ const useCatalogPageStyles = createUseStyles({
   },
   detailsWrapper: {
     position: 'absolute',
-    // marginTop: '-2px',
     display: 'none',
     background: '#fff',
     paddingBottom: '5px',
@@ -52,6 +51,7 @@ const useCatalogPageStyles = createUseStyles({
   },
   detailsOpen: {
     display: 'block',
+    marginTop: '-10px',
   },
   detailsKey: {
     fontSize: '10px',
@@ -68,10 +68,9 @@ const useCatalogPageStyles = createUseStyles({
     marginTop: '-5px',
   },
   overviewDetails: {
-    height: '40px',
+
   },
   itemName: {
-    maxHeight: '35px',
     overflow: 'hidden',
   },
 });
@@ -153,22 +152,39 @@ const CatalogPageCard = props => {
   const isSale = false; // TODO
   const hasTopOverlay = isNew || isSale;
 
+  const hasRobux = props.isForSale && props.price !== null;
+  const hasTickets = props.isForSale && props.priceTickets !== null;
+  const hasBeforePrice = !props.isForSale && (isLimited || isLimitedU);
+  const nameHeight = ((hasRobux && hasTickets) || hasBeforePrice) ? 18 : 36;
+  const nameRef = useRef(null);
+  const [cardMarginBottom, setCardMarginBottom] = useState(0);
+
+  useEffect(() => {
+    if (!nameRef.current)
+      return;
+    const totalHeight = nameRef.current.clientHeight;
+    if (nameHeight > totalHeight) {
+      const diff = nameHeight - totalHeight;
+      setCardMarginBottom(diff);
+    }
+  }, [hasTickets, hasBeforePrice]);
+
   return <div className={`${c}`} onMouseEnter={() => setShowDetails(true)} onMouseLeave={() => setShowDetails(false)}>
-    <div ref={cardRef} className={isLarge ? s.imageBig : s.imageSmall}>
+    <div ref={cardRef} className={isLarge ? s.imageBig : s.imageSmall} >
       <Link href={getItemUrl({assetId: props.id, name: props.name})}>
         <a>
           <div style={{ zIndex: showDetails ? 10 : 0, position: 'relative' }}>
-            {isTimedItem && <TimerOverlay/>}
+            {isTimedItem ? <TimerOverlay/> : null}
             {isNew ? <NewOverlay/> : isSale ? <SaleOverlay/> : null}
             <img alt={props.name} src={image} className={`${s.image} ${props.mode === 'large' ? s.imageBig : s.imageSmall}`} onError={e => {
               if (e.currentTarget.src !== thumbs.getPlaceholder()) {
                 setImage(thumbs.getPlaceholder());
               }
             }}/>
-            {isLimited && <LimitedOverlay/>}
-            {isLimitedU && <LimitedUniqueOverlay/>}
+            {isLimited ? <LimitedOverlay/> : null}
+            {isLimitedU ? <LimitedUniqueOverlay/> : null}
             <div className={s.overviewDetails} style={hasBottomOverlay ? { marginTop: '-18px' } : undefined}>
-              <p className={`mb-0 ${s.itemName}`}>{props.name}</p>
+              <p ref={nameRef} className={`mb-0 ${s.itemName}`} style={{maxHeight: nameHeight}}>{props.name}</p>
               <PriceText {...props}/>
             </div>
           </div>
@@ -181,10 +197,10 @@ const CatalogPageCard = props => {
           marginTop: '-' + cardRef.current.clientHeight + 'px',
         } : undefined}
         className={s.detailsWrapper + ' ' + (isLarge ? s.detailsLarge : s.detailsSmall) + ' ' + (showDetails ? s.detailsOpen : '')}>
-        <p className={s.detailsEntry + ' mt-2'}>
+        <p className={s.detailsEntry}>
           <span className={s.detailsKey}>Creator: </span>
           <span className={s.detailsValue}>
-            <CreatorLink id={props.creatorTargetId} name={props.creatorName} type={props.creatorType}></CreatorLink>
+            <CreatorLink id={props.creatorTargetId} name={props.creatorName} type={props.creatorType}/>
           </span>
         </p>
         <p className={s.detailsEntry}>
@@ -207,6 +223,9 @@ const CatalogPageCard = props => {
         </p>
       </div>
     </div>
+    <div style={{
+      marginBottom: cardMarginBottom,
+    }} />
   </div>
 }
 
