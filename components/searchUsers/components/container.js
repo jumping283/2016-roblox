@@ -7,6 +7,7 @@ import {createUseStyles} from "react-jss";
 const useStyles = createUseStyles({
   row: {
     background: '#fff',
+    minHeight: '100vh',
   }
 })
 
