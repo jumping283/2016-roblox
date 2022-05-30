@@ -11,6 +11,8 @@ const useEntryStyles = createUseStyles({
   itemName: {
     fontWeight: 700,
     marginBottom: 0,
+    height: '36px',
+    overflow: 'hidden',
   },
   image: {
     display: 'block',
