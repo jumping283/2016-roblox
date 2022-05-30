@@ -41,7 +41,7 @@ const CatalogPagination = props => {
         page={page}
         pageCount={pageCount}
         onClick={onClick}
-      ></GenericPagination>
+      />
     </div>
   </div>
 }
