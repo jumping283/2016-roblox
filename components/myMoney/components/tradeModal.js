@@ -1,37 +1,31 @@
 import dayjs from "dayjs";
-import { flatten } from "lodash";
 import { useEffect, useState } from "react";
-import { createUseStyles } from "react-jss";
-import { itemNameToEncodedName } from "../../../services/catalog";
-import { acceptTrade, declineTrade, getTradeDetails } from "../../../services/trades";
+import { getTradeDetails } from "../../../services/trades";
 import AuthenticationStore from "../../../stores/authentication";
-import useButtonStyles from "../../../styles/buttonStyles";
-import ActionButton from "../../actionButton";
-import Robux from "../../catalogDetailsPage/components/robux";
 import CreatorLink from "../../creatorLink";
-import ItemImage from "../../itemImage";
 import OldModal from "../../oldModal";
 import PlayerHeadshot from "../../playerHeadshot";
 import TradeStore from "../stores/tradeStore";
 import TradeButtons from "./tradeButtons";
 import TradeOfferEntry from "./tradeOfferEntry";
+import BcOverlay from "../../bcOverlay";
 
 const TradeBelowNameText = props => {
   const state = props.status;
   switch (state) {
     case 'Open':
       return <div>
-        <span>Trade with <CreatorLink id={props.user.id} name={props.user.name} type='User'></CreatorLink> has been opened.</span>
-        <br></br>
-        <br></br>
+        <span>Trade with <CreatorLink id={props.user.id} name={props.user.name} type='User'/> has been opened.</span>
+        <br/>
+        <br/>
         <span className='font-size-12 fw-700 lighten-3 mb-0'>Expires {dayjs(props.expiration).fromNow()}</span>
       </div>
     case 'Pending':
     case 'Expired':
     case 'Finished':
-      return <span>Trade with <CreatorLink id={props.user.id} name={props.user.name} type='User'></CreatorLink> is {state}</span>
+      return <span>Trade with <CreatorLink id={props.user.id} name={props.user.name} type='User'/> is {state}</span>
     default:
-      return <span>Trade with <CreatorLink id={props.user.id} name={props.user.name} type='User'></CreatorLink> was {state}!</span>
+      return <span>Trade with <CreatorLink id={props.user.id} name={props.user.name} type='User'/> was {state}!</span>
 
   }
 }
@@ -64,18 +58,19 @@ const TradeModal = props => {
   }}>
     <div className='row pt-3 pb-3 ps-4 pe-0'>
       <div className='col-3 divider-right'>
-        <PlayerHeadshot id={trade.user.id} name={trade.user.name}></PlayerHeadshot>
+        <PlayerHeadshot id={trade.user.id} name={trade.user.name}/>
+        <BcOverlay id={trade.user.id} />
         <p className='mb-0 font-size-15 fw-700 text-center'>
-          <TradeBelowNameText {...trade}></TradeBelowNameText>
+          <TradeBelowNameText {...trade}/>
         </p>
       </div>
       <div className='col-9'>
-        <TradeOfferEntry label={labelGiving} offer={authenticatedOffer}></TradeOfferEntry>
-        <div className='row'><div className='col-12 divider-top mb-2'></div></div>
-        <TradeOfferEntry label={labelReceiving} offer={otherOffer}></TradeOfferEntry>
+        <TradeOfferEntry label={labelGiving} offer={authenticatedOffer}/>
+        <div className='row'><div className='col-12 divider-top mb-2'/></div>
+        <TradeOfferEntry label={labelReceiving} offer={otherOffer}/>
       </div>
       <div className='col-12'>
-        {otherOffer && authenticatedOffer && details && <TradeButtons trade={details}></TradeButtons>}
+        {otherOffer && authenticatedOffer && details ? <TradeButtons trade={details}/> : null}
       </div>
     </div>
   </OldModal>
