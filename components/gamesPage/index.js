@@ -8,7 +8,7 @@ import Selector from "../selector";
 import GameRow from "./components/gameRow";
 
 const useStyles = createUseStyles({
-  container: {
+  authContainer: {
     '@media(min-width: 1300px)': {
       marginLeft: '180px',
     }
@@ -18,9 +18,9 @@ const useStyles = createUseStyles({
     float: 'left',
   },
   gamesContainer: {
-    backgroundColor: '##e3e3e3',
+    backgroundColor: '#e3e3e3',
     paddingTop: '8px',
-  }
+  },
 })
 
 const Games = props => {
@@ -32,7 +32,7 @@ const Games = props => {
   const showSortDropdown = getFlag('gameCustomSortDropdown', false);
 
   if (!store.sorts || !store.games || !store.icons) return null;
-  return <div className={'row ' + (auth.isAuthenticated ? s.container : '')}>
+  return <div className={'row ' + (auth.isAuthenticated ? s.authContainer : '')}>
     <div className='col-12'>
       <AdBanner context='gamesPage'/>
     </div>
