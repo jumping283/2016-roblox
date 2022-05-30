@@ -9,7 +9,7 @@ const useStyles = createUseStyles({
     fontWeight: 300,
     marginBottom: '10px',
     marginTop: '10px',
-    color: p => p.theme === themeType.obc2016 ? '#fff' : 'rgb(33, 37, 41)',
+    color: 'rgb(33, 37, 41)',
     marginLeft: '10px',
   },
   gameRow: {
@@ -73,9 +73,7 @@ const useStyles = createUseStyles({
  * @param {{title: string; games: any[]; icons: any; ads?: boolean;}} props 
  */
 const GameRow = props => {
-  const s = useStyles({
-    theme: getTheme(),
-  });
+  const s = useStyles();
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(0);
   const [offsetComp, setOffsetComp] = useState(0);
