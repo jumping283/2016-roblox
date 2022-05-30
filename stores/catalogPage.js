@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createContainer } from "unstated-next";
 import getFlag from "../lib/getFlag";
 import { getItemDetails, searchCatalog } from "../services/catalog";
+import {useRouter} from "next/dist/client/router";
 
 const stringToCategory = str => {
   // these are from catalog.roblox.com/v1/search/navigation-menu-items
@@ -69,7 +70,8 @@ const stringToSubCategory = str => {
 }
 
 const CatalogPageStore = createContainer(() => {
-  const [query, setQuery] = useState('');
+  const router = useRouter();
+  const [query, setQuery] = useState(router.query.keyword || '');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(getFlag('catalogPageLimit', 28));
   const [category, setCategory] = useState('Featured');
