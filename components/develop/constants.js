@@ -8,7 +8,7 @@ const developerPages = [
     id: 0,
     name: 'Games',
     url: '/develop?View=0',
-    element: () => <GamesSubPage></GamesSubPage>,
+    element: props => <GamesSubPage {...props}/>,
   },
   {
     id: 9,
@@ -32,7 +32,7 @@ const developerPages = [
     id: 102,
     name: 'Images',
     url: '/develop?View=102',
-    element: () => <Clothing id={1} />
+    element: props => <Clothing id={1} {...props} />
   },
   {
     id: 21,
@@ -50,8 +50,7 @@ const developerPages = [
     id: 3,
     name: 'Audio',
     url: '/develop?View=3',
-    element: () => <Clothing id={3}></Clothing>,
-
+    element: props => <Clothing id={3} {...props}/>,
   },
   {
     id: 24,
@@ -69,7 +68,7 @@ const developerPages = [
     id: 101,
     name: 'User Ads',
     url: '/develop?View=101',
-    element: () => <Ads></Ads>,
+    element: props => <Ads {...props}/>,
   },
   {
     id: 102,
@@ -81,19 +80,19 @@ const developerPages = [
     id: 11,
     name: 'Shirts',
     url: '/develop?View=11',
-    element: () => <Clothing id={11}></Clothing>,
+    element: props => <Clothing id={11} {...props}/>,
   },
   {
     id: 2,
     name: 'T-Shirts',
     url: '/develop?View=2',
-    element: () => <Clothing id={2}></Clothing>,
+    element: props => <Clothing id={2} {...props}/>,
   },
   {
     id: 12,
     name: 'Pants',
     url: '/develop?View=12',
-    element: () => <Clothing id={12}></Clothing>,
+    element: props => <Clothing id={12} {...props}/>,
   },
   {
     id: 38,
