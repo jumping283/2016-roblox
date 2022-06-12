@@ -9,8 +9,8 @@ export const uploadAdvertisement = ({ file, name, targetId, type }) => {
 
 
 // Note: Endpoint is temporary until Roblox actually adds a "get ads" endpoint
-export const getAds = ({ creatorId }) => {
-  return request('GET', getFullUrl('ads', '/v1/user-ads/User/' + creatorId)).then(d => d.data);
+export const getAds = ({ creatorId, creatorType }) => {
+  return request('GET', getFullUrl('ads', '/v1/user-ads/'+(creatorType === 'User' ? 'User' : 'Group')+'/' + creatorId)).then(d => d.data);
 }
 
 // Note: Endpoint is temporary until Roblox adds an ads.roblox.com "buy ads" endpoint

@@ -8,13 +8,15 @@ const Clothing = props => {
   const [ads, setAds] = useState(null);
   const auth = AuthenticationStore.useContainer();
   useEffect(() => {
-    if (!auth.userId) return;
+    if (!auth.userId && !props.groupId) return;
+    setAds(null);
     getAds({
-      creatorId: auth.userId,
+      creatorId: props.groupId || auth.userId,
+      creatorType: props.groupId ? 'Group' : 'User',
     }).then(d => {
       setAds(d);
     })
-  }, [auth.userId]);
+  }, [auth.userId, props.groupId]);
 
   if (!ads) return null;
   return <div className='row'>
