@@ -12,6 +12,7 @@ import GroupPageStore from "../stores/groupPageStore";
 import Button from "./button";
 import GroupWall from "./groupWall";
 import MembersRow from "./membersRow";
+import GroupStore from "./store";
 
 const useStyles = createUseStyles({
   icon: {
@@ -175,11 +176,11 @@ const GroupPage = props => {
         },
         {
           name: 'Members',
-          element: <MembersRow groupId={store.groupId}></MembersRow>,
+          element: <MembersRow groupId={store.groupId}/>,
         },
         {
           name: 'Store',
-          element: null,
+          element: <GroupStore groupId={store.groupId} />,
         }
       ].filter(v => !!v)} />
     </div>
