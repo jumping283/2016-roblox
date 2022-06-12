@@ -11,8 +11,13 @@ const Owners = props => {
   const [page, setPage] = useState(1);
   const [cursor, setCursor] = useState(null);
   const [owners, setOwners] = useState(null);
+  const [locked, setLocked] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
+    setLocked(true);
+    setFeedback(null);
+
     getCollectibleOwners({
       assetId,
       cursor,
@@ -20,45 +25,58 @@ const Owners = props => {
       limit: 50,
     }).then(d => {
       setOwners(d);
+    }).catch(e => {
+      setFeedback(e.message);
+    }).finally(() => {
+      setLocked(false);
     })
   }, [cursor]);
 
   return <div className='row'>
     <div className='col-12'>
+      {
+        feedback ? <p className='mb-4 mt-4 text-danger'>{feedback}</p> : null
+      }
       {owners && owners.data.map(v => {
         const owner = v.owner;
+
         return <div key={v.userAssetId} className='row'>
           <div className='col-2'>
-            {owner ? <PlayerImage id={owner.id} name={owner.name}></PlayerImage> : null}
+            {owner ? <PlayerImage id={owner.id} name={owner.name}/> : null}
           </div>
           <div className='col-8'>
-            <p className='mb-0 mt-2'>{owner ? <CreatorLink id={owner.id} name={owner.name} type='User'></CreatorLink> : 'Deleted/Private'}</p>
+            <p className='mb-0 mt-2'>{owner ? <CreatorLink id={owner.id} name={owner.name} type='User'/> : 'Deleted/Private'}</p>
             <p className='mt-1 mb-0'>Serial {v.serialNumber ? '#' + v.serialNumber : 'N/A'}</p>
             <p className='mt-1 mb-0'>Updated {dayjs(v.updated).fromNow()}</p>
+            {
+              !owner ? <div className='mb-4' /> : null
+            }
           </div>
           <div className='col-2'>
             <div className='mt-4'>
-              {owner && <ActionButton label='Trade' onClick={() => {
+              {owner ? <ActionButton label='Trade' onClick={() => {
                 window.open("/Trade/TradeWindow.aspx?TradePartnerID=" + owner.id, "_blank", "scrollbars=0, height=608, width=914");
-              }}></ActionButton>}
+              }}/> : null}
             </div>
           </div>
         </div>
       })}
     </div>
     <div className='col-12 col-lg-6 mx-auto'>
-      {owners && (owners.nextPageCursor || owners.previousPageCursor) && <GenericPagination page={page} onClick={newPage => {
+      {owners && (owners.nextPageCursor || owners.previousPageCursor) ? <GenericPagination page={page} onClick={newPage => {
         return e => {
           e.preventDefault();
           if (newPage === 1) {
-            if (!owners.nextPageCursor) return
+            if (!owners.nextPageCursor || locked) return
             setCursor(owners.nextPageCursor);
+            setPage(page + 1);
           } else if (newPage === -1) {
-            if (!owners.previousPageCursor) return;
+            if (!owners.previousPageCursor || locked) return;
             setCursor(owners.previousPageCursor);
+            setPage(page - 1);
           }
         }
-      }}></GenericPagination>}
+      }}/> : null}
     </div>
   </div>
 }
