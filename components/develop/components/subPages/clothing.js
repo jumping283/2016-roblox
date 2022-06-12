@@ -56,7 +56,7 @@ const useStyles = createUseStyles({
 })
 
 const Clothing = props => {
-  const { id } = props;
+  const { id, groupId } = props;
   const details = detailsMap[id];
 
   const auth = AuthenticationStore.useContainer();
@@ -84,6 +84,7 @@ const Clothing = props => {
       name: nameRef.current.value,
       assetTypeId: id,
       file: image,
+      groupId,
     }).then(() => {
       window.location.reload();
     }).catch(e => {
@@ -94,15 +95,16 @@ const Clothing = props => {
 
   useEffect(() => {
     setAssetList(null);
-    if (!auth.userId) return;
+    if (!auth.userId && !groupId) return;
     getCreatedItems({
       limit: 100,
       cursor: '',
       assetType: id,
+      groupId,
     }).then(d => {
       setAssetList(d);
     });
-  }, [auth.userId, id]);
+  }, [auth.userId, id, groupId]);
 
   const s = useStyles();
 
