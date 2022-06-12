@@ -1,11 +1,14 @@
 import getFlag from "../lib/getFlag";
 import request, { getBaseUrl, getFullUrl } from "../lib/request"
 
-export const uploadAsset = ({ name, assetTypeId, file }) => {
+export const uploadAsset = ({ name, assetTypeId, file, groupId }) => {
   let formData = new FormData();
   formData.append('name', name);
   formData.append('assetType', assetTypeId);
   formData.append('file', file);
+  if (groupId) {
+    formData.append('groupId', groupId);
+  }
   return request('POST', getBaseUrl() + '/develop/upload', formData);
 }
 
@@ -22,9 +25,12 @@ export const getCreatedAssetDetails = (assetIds) => {
   })
 }
 
-export const getCreatedItems = ({ assetType, limit, cursor }) => {
-  return request('GET', getFullUrl('itemconfiguration', '/v1/creations/get-assets?assetType=' + assetType + '&limit=' + limit + '&cursor=' + encodeURIComponent(cursor))).then(assets => {
-    console.log(assets.data.data)
+export const getCreatedItems = ({ assetType, limit, cursor, groupId }) => {
+  let url = '/v1/creations/get-assets?assetType=' + assetType + '&limit=' + limit + '&cursor=' + encodeURIComponent(cursor);
+  if (groupId) {
+    url = url +'&groupId=' + encodeURIComponent(groupId);
+  }
+  return request('GET', getFullUrl('itemconfiguration', url)).then(assets => {
     if (assets.data.data.length !== 0) {
       return getCreatedAssetDetails(assets.data.data.map(v => v.assetId)).then(d => {
         assets.data.data = d.data.sort((a, b) => a.assetId > b.assetId ? -1 : 1)
