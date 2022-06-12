@@ -27,7 +27,7 @@ const useFooterStyles = createUseStyles({
 const footerLinks = {
   '/about-us': 'About Us',
   '/jobs': 'Jobs',
-  'https://blog.roblox.com': 'Blog',
+  '/info/blog': 'Blog',
   '/privacy': 'Privacy',
   '/help': 'Help',
 };
