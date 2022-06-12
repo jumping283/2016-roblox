@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { getUserGames } from "../../../../services/games";
+import {getGroupGames, getUserGames} from "../../../../services/games";
 import AuthenticationStore from "../../../../stores/authentication";
 import useButtonStyles from "../../../../styles/buttonStyles";
 import ActionButton from "../../../actionButton";
@@ -15,20 +15,29 @@ const GamesSubPage = props => {
   const buttonStyles = useButtonStyles();
   const [games, setGames] = useState(null);
   const auth = AuthenticationStore.useContainer();
+
   useEffect(() => {
-    if (!auth.userId) return;
-    getUserGames({
-      userId: auth.userId,
-      cursor: '',
-    }).then(data => setGames(data));
-  }, [auth.userId]);
+    setGames(null);
+
+    if (props.groupId) {
+      getGroupGames({
+        groupId: props.groupId,
+        cursor: '',
+      }).then(data => setGames(data));
+    }else if (auth.userId) {
+      getUserGames({
+        userId: auth.userId,
+        cursor: '',
+      }).then(data => setGames(data));
+    }
+  }, [auth.userId, props.groupId]);
 
   return <div className='row'>
     <div className='col-12'>
-      <ActionButton className={buttonStyles.buyButton + ' w-auto ms-0'} label='Create New Game'></ActionButton>
+      <ActionButton className={buttonStyles.buyButton + ' w-auto ms-0'} label='Create New Game'/>
       <h2 className='mt-2'>Games</h2>
       {
-        games ? (games.length === 0 ? <p className='mt-4'>You haven't created any games.</p> : <AssetList assets={games.data.map(v => {
+        games ? (games.data.length === 0 ? <p className='mt-4'>You haven't created any games.</p> : <AssetList assets={games.data.map(v => {
           return {
             assetId: v.rootPlace.id,
             assetType: 9,
@@ -39,7 +48,7 @@ const GamesSubPage = props => {
             isPublic: true,
 
           }
-        })}></AssetList>) : null
+        })}/>) : null
       }
     </div>
   </div>
