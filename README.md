@@ -68,11 +68,10 @@ There are some duplicates here, like the 2015+ and before 2015 profile page. I i
 
 **Forums**
 This will be toggleable through configuration as Roblox does not have Forums anymore.
-- :x: `/Forums/Default.aspx` Default page
-- :x: `/Forums/ShowForum.aspx` Forum index page for a category
-- :x: `/Forums/ShowThread.aspx` Forum thread page
-- :x: `/Forums/CreateThread.aspx` Create thread
-- :x: `/Forums/CreatePost.aspx` Create post
+- ✔ `/Forums/Default.aspx` Default page
+- ✔ `/Forums/ShowForum.aspx` Forum index page for a category
+- ✔ `/Forums/ShowThread.aspx` Forum thread page
+- ✔ `/Forums/CreatePost.aspx` Create post
 
 **Catalog**
 - ✔️ `/catalog` Catalog Page
@@ -87,7 +86,7 @@ This will be toggleable through configuration as Roblox does not have Forums any
     - Find a web endpoint that returns if an asset has comments enabled, then hide "Comments" tab if they are disabled
 
 **Games**
-- :x: `/create` Create/develop page
+- ✔ `/create` Create/develop page
 - :x: `/games/{assetId}/game-name` 2015+ Game details page 
 - ✔️ `/game-name-place?id=1` Before 2015 game details page
 - ✔️ `/games` Games list page
