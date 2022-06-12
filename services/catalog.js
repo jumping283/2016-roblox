@@ -21,9 +21,21 @@ export const getItemUrl = ({ assetId, name }) => {
   return `/catalog/${assetId}/${itemNameToEncodedName(name)}`;
 }
 
-
-export const searchCatalog = ({ category, subCategory, query, limit, cursor, sort }) => {
-  return request('GET', getFullUrl('catalog', '/v1/search/items?category=' + category + '&subcategory=' + subCategory + '&keyword=' + encodeURIComponent(query || '') + '&limit=' + limit + '&cursor=' + encodeURIComponent(cursor || '') + '&sortType=' + sort)).then(d => d.data);
+export const searchCatalog = ({ category, subCategory, query, limit, cursor, sort, creatorType, creatorId }) => {
+  let url = '/v1/search/items?category=' + category + '&limit=' + limit + '&sortType=' + sort;
+  if (cursor) {
+    url += '&cursor=' + encodeURIComponent(cursor);
+  }
+  if (query) {
+    url += '&keyword='+encodeURIComponent(query);
+  }
+  if (subCategory) {
+    url += '&subcategory=' + encodeURIComponent(subCategory);
+  }
+  if (creatorType && creatorId) {
+    url += '&creatorTargetId=' + creatorId +'&creatorType=' + creatorType;
+  }
+  return request('GET', getFullUrl('catalog', url)).then(d => d.data);
 }
 
 /**
@@ -35,7 +47,7 @@ export const getProductInfoLegacy = async (assetId) => {
 }
 
 export const getItemDetails = async (assetIdArray) => {
-  if (assetIdArray.length === 0) return [];
+  if (assetIdArray.length === 0) return {data:{data: []}}
   while (true) {
     try {
       const res = await request('POST', getFullUrl('catalog', '/v1/catalog/items/details'), {
