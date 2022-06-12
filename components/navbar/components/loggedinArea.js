@@ -99,18 +99,18 @@ const LoggedInArea = props => {
   return <div className={`${s.linkContainerCol} `}>
     <div className='row'>
       <div className={`col-12 ${s.linkContainer}`}>
-        <p className={s.text}>
+        <p className={s.text} title={authStore.robux.toLocaleString()}>
           <Link href='/My/Money.aspx'>
             <a>
               <span className='icon-nav-robux'/>
             </a>
           </Link>
         </p>
-        <p className={s.text + ' ' + s.robuxText}>
+        <p className={s.text + ' ' + s.robuxText} title={authStore.robux.toLocaleString()}>
           <span>{abbreviateNumber(authStore.robux)}</span>
         </p>
         {getFlag('showTicketBalace', false) ? <>
-        <p className={s.text}>
+        <p className={s.text} title={authStore.tix.toLocaleString()}>
           <Link href='/My/Money.aspx'>
             <a>
               <span className='icon-nav-tix'/>
@@ -118,7 +118,7 @@ const LoggedInArea = props => {
           </Link>
         </p>
         <p className={s.text + ' ' + s.robuxText}>
-          <span>{abbreviateNumber(authStore.tix)}</span>
+          <span title={authStore.tix.toLocaleString()}>{abbreviateNumber(authStore.tix)}</span>
         </p>
         </> : null}
         <p className={s.text}>
