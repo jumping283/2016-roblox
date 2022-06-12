@@ -1,6 +1,6 @@
 import {createContainer} from "unstated-next";
 import {useReducer, useRef, useState} from "react";
-import {multiGetAssetThumbnails, multiGetUserThumbnails} from "../services/thumbnails";
+import {multiGetAssetThumbnails, multiGetGroupIcons, multiGetUserThumbnails} from "../services/thumbnails";
 
 const getKey = (id, type, size) => {
   return type + '_' + id + '_' + size;
@@ -84,6 +84,11 @@ const ThumbnailStore = createContainer(() => {
         format: 'png',
       });
     });
+    getAndProcessThumbnails('groupIcon', (items) => {
+      return multiGetGroupIcons({
+        groupIds: items.map(v => v.id),
+      });
+    });
   }
   const requestThumbnail = (id, type, size) => {
     if (!pendingState.current[type]) {
@@ -146,6 +151,7 @@ const ThumbnailStore = createContainer(() => {
 
     getUserThumbnail: getThumbnailHandler('userThumbnail'),
     getAssetThumbnail: getThumbnailHandler('asset'),
+    getGroupIcon: getThumbnailHandler('groupIcon'),
     removeUserThumbnail: getThumbnailRemovalHandler('userThumbnail'),
 
     getPlaceholder,
