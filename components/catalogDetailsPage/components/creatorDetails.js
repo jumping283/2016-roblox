@@ -4,6 +4,7 @@ import { createUseStyles } from "react-jss";
 import BcOverlay from "../../bcOverlay";
 import CreatorLink from "../../creatorLink";
 import PlayerImage from "../../playerImage";
+import GroupIcon from "../../groupIcon";
 
 const useStatEntryStyles = createUseStyles({
   text: {
@@ -30,12 +31,12 @@ const useStyles = createUseStyles({
 
 const CreatorDetails = props => {
   const s = useStyles();
-  if (props.type !== 1 && props.type !== 'User') {
-    throw new Error('Unsupported type ' + props.type); // todo: group support
-  }
+
   return <div className='row'>
     <div className='col-4 pe-0'>
-      <PlayerImage id={props.id} name={props.name}/>
+      {
+        props.type === 'User' ? <PlayerImage id={props.id} name={props.name}/> : <GroupIcon id={props.id} name={props.name} />
+      }
       <BcOverlay id={props.id}/>
     </div>
     <div className='col-8 ps-0'>
