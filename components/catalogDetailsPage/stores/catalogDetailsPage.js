@@ -75,6 +75,7 @@ const CatalogDetailsPage = createContainer(() => {
   const [resaleModalOpen, setResaleModalOpen] = useState(false);
   const [unlistModalOpen, setUnlistModalOpen] = useState(false);
   const [inCollection, setInCollection] = useState(false);
+  const [offsaleDeadline, setOffsaleDeadline] = useState(null);
 
   const getPurchaseDetails = (specificUaid = undefined) => {
     if (isResellable(details)) {
@@ -135,6 +136,9 @@ const CatalogDetailsPage = createContainer(() => {
     getPurchaseDetails,
 
     subCategoryDisplayName: details && subCatIdToName(details.assetType),
+
+    offsaleDeadline,
+    setOffsaleDeadline,
 
     unlistModalOpen,
     setUnlistModalOpen,
