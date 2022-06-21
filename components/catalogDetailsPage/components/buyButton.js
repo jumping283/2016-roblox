@@ -7,6 +7,7 @@ import CatalogDetailsPage from "../stores/catalogDetailsPage";
 import CatalogDetailsPageModal from "../stores/catalogDetailsPageModal";
 import BuyItemModal from "./buyItemModal";
 import Robux from "./robux";
+import OffsaleDeadline from "./offsaleDeadline";
 
 const useBestPriceStyles = createUseStyles({
   text: {
@@ -186,13 +187,17 @@ const BuyButton = props => {
   const isResellAsset = store.isResellable;
   const showBuyTicketsButton = store.details.priceTickets !== null;
   const showOrTab = !isResellAsset && showBuyButton && showBuyTicketsButton;
+  const hasOffsaleLabel = store.offsaleDeadline !== null && !isResellAsset && showBuyButton;
 
   return <div className={s.wrapper}>
     <div>
-      {isResellAsset ? <BestPriceEntry details={store.details}></BestPriceEntry> : null}
+      {hasOffsaleLabel ? <OffsaleDeadline offsaleDeadline={store.offsaleDeadline} /> : null}
     </div>
     <div>
-      {!isResellAsset  ? <div className='mt-2'></div> : null}
+      {isResellAsset ? <BestPriceEntry details={store.details}/> : null}
+    </div>
+    <div>
+      {!isResellAsset  ? <div className='mt-2'/> : null}
       {showBuyButton ? <BuyAction currency={1} /> : null}
     </div>
     <div>
@@ -200,13 +205,13 @@ const BuyButton = props => {
       {showBuyTicketsButton ? <BuyAction currency={2} /> : null}
     </div>
     <div>
-      {isResellAsset ? <PrivateSellersCount details={store.details}></PrivateSellersCount> : null}
+      {isResellAsset ? <PrivateSellersCount details={store.details}/> : null}
     </div>
     <div>
-      {isResellAsset ? <OwnedCount></OwnedCount> : null}
+      {isResellAsset ? <OwnedCount/> : null}
     </div>
     <div>
-      <SaleCount></SaleCount>
+      <SaleCount/>
     </div>
   </div >
 }
