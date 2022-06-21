@@ -106,7 +106,7 @@ const PriceText = (props) => {
   }
 
   if (props.isForSale && props.price !== 0 && props.price !== null) {
-    if (isLimited && copiesRemaining) {
+    if (copiesRemaining) {
       return <div>
         <>{priceElements.map((v, i) => <React.Fragment key={i}>{v}</React.Fragment>)}</>
         <span>
