@@ -24,27 +24,29 @@ const OffsaleDeadline = props => {
       setLabel(null);
       return;
     }
-    const time = offSaleTime.subtract(currentTime);
-    let months = offSaleTime.month() - currentTime.month();
-    if (currentTime.month() > offSaleTime.month()) {
-      months = currentTime.month() - offSaleTime.month();
+    // as you can probably tell, math is not my strongest skill. If anyone could rewrite this to use dayjs or something,
+    // that would be great :)
+    let diffInSeconds = offSaleTime.unix() - (Date.now() / 1000);
+    let days = diffInSeconds/86400;
+    if (days >= 1) {
+      diffInSeconds -= Math.floor(days)*86400;
     }
-    let days = offSaleTime.date() - currentTime.date();
-    if (currentTime.date() > offSaleTime.date()) {
-      days = currentTime.date() - offSaleTime.date();
+    let hours = diffInSeconds / 3600;
+    if (hours >= 1) {
+      diffInSeconds -= Math.floor(hours)*3600;
     }
-    let hours = offSaleTime.hour() - currentTime.hour();
-    if (currentTime.hour() > offSaleTime.hour()) {
-      hours = currentTime.hour() - offSaleTime.hour();
+    let minutes = diffInSeconds/60;
+    if (minutes >= 1) {
+      diffInSeconds -= Math.floor(minutes)*60;
     }
-    let minutes = time.minute();
-    let seconds = time.second();
+
+    days = Math.floor(days);
+    hours = Math.floor(hours);
+    minutes = Math.floor(minutes);
+    let seconds = Math.floor(diffInSeconds);
 
     let newLabel = ``;
-    if (months > 0) {
-      newLabel += `${months} month${months === 1 ? '' : 's'}`;
-    }
-    if (days > 0 || newLabel !== '') {
+    if (days > 0) {
       newLabel += `${days} day${days === 1 ? '' : 's'} `;
     }
     if (hours > 0 || newLabel !== '') {
