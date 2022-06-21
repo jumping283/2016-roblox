@@ -72,6 +72,16 @@ const CatalogDetails = props => {
 
   useEffect(() => {
     store.setDetails(props.details);
+    if (props.details.saleCount) {
+      store.setSaleCount(props.details.saleCount);
+    }else{
+      store.setSaleCount(0);
+    }
+    if (props.details.offsaleDeadline) {
+      store.setOffsaleDeadline(props.details.offsaleDeadline);
+    }else{
+      store.setOffsaleDeadline(null);
+    }
   }, [props]);
 
   useEffect(() => {
