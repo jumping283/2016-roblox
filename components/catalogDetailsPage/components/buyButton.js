@@ -187,7 +187,7 @@ const BuyButton = props => {
   const isResellAsset = store.isResellable;
   const showBuyTicketsButton = store.details.priceTickets !== null;
   const showOrTab = !isResellAsset && showBuyButton && showBuyTicketsButton;
-  const hasOffsaleLabel = store.offsaleDeadline !== null && !isResellAsset && showBuyButton;
+  const hasOffsaleLabel = store.offsaleDeadline !== null && !isResellAsset && (showBuyButton || showBuyTicketsButton);
 
   return <div className={s.wrapper}>
     <div>
