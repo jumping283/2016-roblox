@@ -9,6 +9,7 @@ const useStyles = createUseStyles({
 })
 
 const OffsaleDeadline = props => {
+  // This doesn't work if the off sale time is 1 month+ into the future.
   const s = useStyles();
   const timer = useRef(null);
   const [label, setLabel] = useState(null);
@@ -24,19 +25,23 @@ const OffsaleDeadline = props => {
       return;
     }
     const time = offSaleTime.subtract(currentTime);
+    const days = offSaleTime.date() - currentTime.date();
+    const hours = offSaleTime.hour() - currentTime.hour();
+    const minutes = time.minute();
+    const seconds = time.second();
 
     let newLabel = ``;
-    if (time.day() > 0 || newLabel !== '') {
-      newLabel += `${time.day()} day${time.day() === 1 ? '' : 's'}`;
+    if (days > 0) {
+      newLabel += `${days} day${days === 1 ? '' : 's'} `;
     }
-    if (time.hour() > 0 || newLabel !== '') {
-      newLabel += `, ${time.hour()} hour${time.hour() === 1 ? '' : 's'}`;
+    if (hours > 0 || newLabel !== '') {
+      newLabel += `${hours} hour${hours === 1 ? '' : 's'} `;
     }
-    if (time.minute() > 0 || newLabel !== '') {
-      newLabel += `, ${time.minute()} minute${time.minute() === 1 ? '' : 's'}`;
+    if (minutes > 0 || newLabel !== '') {
+      newLabel += `${minutes} minute${minutes === 1 ? '' : 's'} `;
     }
-    if (time.second() > 0 || newLabel !== '') {
-      newLabel += `, ${time.second()} second${time.second() === 1 ? '' : 's'}`;
+    if (seconds > 0 || newLabel !== '') {
+      newLabel += `${seconds} second${seconds === 1 ? '' : 's'} `;
     }
     if (newLabel === '') {
       setLabel(null);
