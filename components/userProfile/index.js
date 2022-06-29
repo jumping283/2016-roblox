@@ -15,6 +15,7 @@ import Statistics from "./components/stats";
 import Tabs from "./components/tabs";
 import TabSection from "./components/tabSection";
 import UserProfileStore from "./stores/UserProfileStore";
+import Favorites from "./components/favorites";
 
 const useStyles = createUseStyles({
   profileContainer: {
@@ -40,25 +41,25 @@ const UserProfile = props => {
     return null;
   }
   if (store.userInfo.isBanned) {
-    return <NotFoundPage></NotFoundPage>
+    return <NotFoundPage/>
   }
   return <div className='container'>
-    <AdBanner></AdBanner>
+    <AdBanner/>
     <div className={s.profileContainer}>
-      <ProfileHeader></ProfileHeader>
-      <Tabs></Tabs>
+      <ProfileHeader/>
+      <Tabs/>
       <TabSection tab="About">
-        <Description></Description>
-        <Avatar userId={store.userId}></Avatar>
-        <Friends></Friends>
-        <Collections userId={store.userId}></Collections>
-        <Groups></Groups>
-        {/* Favorites would go here */}
-        <RobloxBadges userId={store.userId}></RobloxBadges>
-        <Statistics></Statistics>
+        <Description/>
+        <Avatar userId={store.userId}/>
+        <Friends/>
+        <Collections userId={store.userId}/>
+        <Groups/>
+        <Favorites userId={store.userId} />
+        <RobloxBadges userId={store.userId}/>
+        <Statistics/>
       </TabSection>
       <TabSection tab="Creations">
-        <Creations></Creations>
+        <Creations/>
       </TabSection>
     </div>
   </div>
