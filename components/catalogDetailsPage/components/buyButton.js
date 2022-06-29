@@ -175,8 +175,11 @@ const PurchaseWithRobuxOrTicketsLabel = props => {
 const BuyButton = props => {
   const s = useBuyButtonStyles();
   const store = CatalogDetailsPage.useContainer();
+  const isResellAsset = store.isResellable;
   // Show buy button if item has ticket price and no sale price, or if item has sale price
   const showBuyButton = (() => {
+    if (isResellAsset) return true;
+
     if (store.details.priceTickets) {
       if (store.details.price === null) {
         return false;
@@ -184,8 +187,7 @@ const BuyButton = props => {
     }
     return true;
   })();
-  const isResellAsset = store.isResellable;
-  const showBuyTicketsButton = store.details.priceTickets !== null;
+  const showBuyTicketsButton = store.details.priceTickets !== null && !isResellAsset;
   const showOrTab = !isResellAsset && showBuyButton && showBuyTicketsButton;
   const hasOffsaleLabel = store.offsaleDeadline !== null && !isResellAsset && (showBuyButton || showBuyTicketsButton);
 
