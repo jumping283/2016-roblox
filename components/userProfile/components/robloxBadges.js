@@ -45,7 +45,7 @@ const RobloxBadges = props => {
     </div>
     <div className='col-6 col-lg-2'>
       {badges.length > 6 &&
-        <div className={s.buttonWrapper}>
+        <div className={s.buttonWrapper + ' mt-2'}>
           <SmallButtonLink onClick={(e) => {
             e.preventDefault();
             setShowAll(!showAll);
@@ -64,7 +64,7 @@ const RobloxBadges = props => {
                     <div className={s.imageWrapper}>
                       <span className={`icon-${v.name.toLowerCase().replace(/ /g, '-')}`}/>
                     </div>
-                    <p className={`${s.label} mb-0`}>{v.name}</p>
+                    <p className={`${s.label} mb-0 text-dark`}>{v.name}</p>
                   </a>
                 </Link>
               </div>
