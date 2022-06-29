@@ -39,7 +39,11 @@ const ModalDescription = props => {
       }
       return <p className={s.purchaseText}>Would you like to {action} the {store.details.name} {store.subCategoryDisplayName} from {sellerDetails.sellerName} for {priceElement}?</p>;
     case 'PURCHASE_OK':
-      return <p className={s.purchaseText}>You have successfully bought the {store.details.name} {store.subCategoryDisplayName} from {sellerDetails.sellerName} for <Robux inline={true}>{sellerDetails.price}</Robux>.</p>;
+      let priceStuff = modalStore.currency === 2 ?
+        <Tickets inline={true}>{sellerDetails.priceTickets}</Tickets> :
+        <Robux inline={true}>{sellerDetails.price}</Robux>;
+
+      return <p className={s.purchaseText}>You have successfully bought the {store.details.name} {store.subCategoryDisplayName} from {sellerDetails.sellerName} for {priceStuff}.</p>;
     case 'INSUFFICIENT_FUNDS':
       if (modalStore.currency === 1) {
         return <p className={s.purchaseText}>

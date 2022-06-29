@@ -138,7 +138,7 @@ const BuyAction = props => {
     }
     <ActionButton onClick={(e) => {
       modalStore.openPurchaseModal(store.getPurchaseDetails(), auth.robux, auth.tix, currency);
-    }} label={actionBuyText} disabled={isDisabled} tooltipText={tooltipTitle}></ActionButton>
+    }} label={actionBuyText} disabled={isDisabled} tooltipText={tooltipTitle}/>
   </div>
 }
 
