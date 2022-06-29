@@ -52,10 +52,12 @@ const useStyles = createUseStyles({
 
 /**
  * SmallGameCard
- * @param {{name: string; playerCount: number; likes: number; dislikes: number; creatorId: number; creatorType: string | number; creatorName: string; iconUrl: string; placeId: number; className?: string}} props 
+ * @param {{name: string; playerCount: number; likes: number; dislikes: number; creatorId: number; creatorType: string | number; creatorName: string; iconUrl: string; placeId: number; className?: string; hideVoting?: boolean;}} props
  * @returns 
  */
 const SmallGameCard = props => {
+  const {hideVoting} = props;
+
   const s = useStyles();
   const cardStyles = useCardStyles();
   const [showCreator, setShowCreator] = useState(false);
@@ -99,19 +101,22 @@ const SmallGameCard = props => {
         <p className={s.label + ' truncate'}>{props.name}</p>
         <p className={s.labelPlaying + ' truncate'}>{abbreviateNumber(props.playerCount)} Playing</p>
         {
-          !showCreator && <p className={s.thumbsUp + ' mt-2'}>
+          !showCreator && !hideVoting && <p className={s.thumbsUp + ' mt-2'}>
             <span className='icon-thumbs-up'/>
-          </p>
+          </p> || null
         }
         {
           showCreator && <div className={s.creatorDetailsCard + ' ' + cardStyles.card} style={colRef ? { width: colRef.current.clientWidth + 'px' } : undefined}>
-            <p className={s.thumbsUp + ' ps-2 pe-2 mt-2'}>
-              <span className='icon-thumbs-up'/>
-              <span className={'icon-thumbs-down ' + s.floatRight}/>
-            </p>
-            <div className='ps-1 pt-2 pe-1'>
-              <div className='divider-top'/>
-            </div>
+            {!hideVoting ?
+            <>
+              <p className={s.thumbsUp + ' ps-2 pe-2 mt-2'}>
+                <span className='icon-thumbs-up'/>
+                <span className={'icon-thumbs-down ' + s.floatRight}/>
+              </p>
+              <div className='ps-1 pt-2 pe-1'>
+                <div className='divider-top'/>
+              </div>
+            </> : null}
             <p className={'ps-2 pt-2 pb-0 ' + s.creatorText}>By <CreatorLink type={props.creatorType} name={props.creatorName} id={props.creatorId}/></p>
           </div>
         }
