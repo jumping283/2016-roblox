@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { getBaseUrl } from "../../../lib/request";
-import t from "../../../lib/t";
-import {getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
+import {getItemUrl} from "../../../services/catalog";
 import { getCollections } from "../../../services/inventory";
-import ItemImage from "../../itemImage";
 import useCardStyles from "../styles/card";
 import SmallButtonLink from "./smallButtonLink";
 import Subtitle from "./subtitle";
@@ -31,6 +29,19 @@ const useCollectionStyles = createUseStyles({
     width: '100px',
     float: 'right',
     marginTop: '10px',
+  },
+  labelWrapper: {
+    width: '100%',
+    marginTop: '-27px',
+    overflow: 'hidden',
+  },
+  overlayLimited: {
+    height: '28px',
+    marginLeft: '-14px',
+  },
+  overlayLimitedUnique: {
+    height: '28px',
+    marginLeft: '-14px',
   },
 });
 
@@ -62,10 +73,20 @@ const Collections = props => {
             collections.map((v, i) => {
               const assetId = v.Id;
               const url = assetId && getItemUrl({assetId: assetId, name: v.Name}) || v.AssetSeoUrl;
+              const isLimited = v.AssetRestrictionIcon && v.AssetRestrictionIcon.CssTag === "limited";
+              const isLimitedUnique = v.AssetRestrictionIcon && v.AssetRestrictionIcon.CssTag === "limited-unique";
+              const hasOverlay = isLimited || isLimitedUnique;
+
               return <div className='col-4 col-lg-2' key={i}>
                 <a href={url}>
                   <div className={s.imageWrapper}>
                     <img src={v.Thumbnail.Url.startsWith('http') ? v.Thumbnail.Url : getBaseUrl() + v.Thumbnail.Url} className={s.image}/>
+                    {hasOverlay ? <div className={s.labelWrapper}>
+                      {
+                        isLimited ? <img className={s.overlayLimited} src='/img/limitedOverlay_itemPage.png' />
+                          : isLimitedUnique ? <img className={s.overlayLimitedUnique} src='/img/limitedUniqueOverlay_itemPage.png' /> : null
+                      }
+                    </div> : null}
                   </div>
                   <p className={`mb-0 ${s.itemLabel}`}>{v.Name}</p>
                 </a>
