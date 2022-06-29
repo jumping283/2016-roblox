@@ -102,6 +102,7 @@ const BuyAction = props => {
   if (store.ownedCopies === null) return null;
   const isOwned = store.ownedCopies.length !== 0;
   const showPriceText = store.details.isForSale;
+  const isResaleItem = store.isResellable;
   const isDisabled = !store.isResellable && !store.details.isForSale ||
     (isOwned && !store.isResellable) ||
     (store.isResellable && !productInfo ||
@@ -111,7 +112,7 @@ const BuyAction = props => {
 
   const tooltipTitle = isOwned ? 'You already own this item.' : 'This item is not for sale';
   const actionBuyText = (() => {
-      if (isFree)
+      if (isFree && !isResaleItem)
         return 'Take One';
 
       if (currency === 2) {
