@@ -23,6 +23,7 @@ import { addOrRemoveFromCollections } from "../../services/catalog";
 import { getCollections } from "../../services/inventory";
 import getFlag from "../../lib/getFlag";
 import Owners from "./components/owners";
+import Favorite from "./components/favorite";
 
 const emptyDescriptionMessage = 'No description available.';
 const filterTextForEmpty = str => {
@@ -188,6 +189,7 @@ const CatalogDetails = props => {
               </div>
               <div className='col-12 col-lg-3'>
                 <BuyButton/>
+                <Favorite assetId={details.id} favoriteCount={details.favoriteCount} />
               </div>
             </div>
             {store.isResellable &&
