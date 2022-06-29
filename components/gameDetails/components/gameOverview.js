@@ -9,6 +9,7 @@ import GameStats from "./gameStats";
 import GameThumbnails from "./gameThumbnails";
 import PlayButton from "./playButton";
 import Vote from "./vote";
+import Favorite from "../../catalogDetailsPage/components/favorite";
 
 const useStyles = createUseStyles({
   gameTitle: {
@@ -50,7 +51,9 @@ const GameOverview = props => {
       <div className='divider-top mb-3'/>
       <PlayButton placeId={store.details.id}/>
       <GameStats/>
-      <div className='divider-top mb-0'/>
+      <div className='divider-top mb-2'/>
+      {/*TODO: What did this actually look like?*/}
+      {store.universeDetails ? <Favorite assetId={store.details.id} favoriteCount={store.universeDetails.favoritedCount} /> : null}
     </div>
   </div>
 }
