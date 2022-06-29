@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import GameDetailsStore from "../stores/gameDetailsStore";
+import {useEffect, useState} from "react";
 
 const StatEntry = props => {
   return <p className='mb-0 font-size-12 mb-1'><span className='fw-600'>{props.name}:</span> {props.value}</p>
@@ -19,7 +20,7 @@ const GameStats = props => {
     },
     {
       name: 'Favorited',
-      value: 0, // TODO
+      value: store.universeDetails.favoritedCount.toLocaleString(),
     },
     {
       name: 'Visited',
@@ -34,7 +35,7 @@ const GameStats = props => {
     <div className='col-12'>
       {
         stats.map(v => {
-          return <StatEntry key={v.name} {...v}></StatEntry>
+          return <StatEntry key={v.name} {...v}/>
         })
       }
     </div>
