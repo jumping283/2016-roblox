@@ -2,6 +2,7 @@ import userInventoryStore from "../stores/userInventoryStore";
 import {createUseStyles} from "react-jss";
 import InventoryItemEntry from "./inventoryItemEntry";
 import Paging from "./paging";
+import getFlag from "../../../lib/getFlag";
 
 const useStyles = createUseStyles({
   categoryValue: {
@@ -20,7 +21,11 @@ const InventoryGrid = props => {
   const myPage = store.data ? store.data.Page : null;
   const isEmpty = store.data && store.data.Items.length === 0 && !store.previousPageAvailable();
   const showPaging = store.data && !isEmpty;
-  const total = store.data ? (store.data?.TotalItems?.toLocaleString() || 'many') : null; // roblox started returning "null" for TotalItems :(
+
+  let total = store.data ? (store.data?.TotalItems?.toLocaleString() || 'many') : null; // roblox started returning "null" for TotalItems :(
+  if (myPage === 1 && store.data.Items.length <= getFlag('inventoryPageLimit', 24)) {
+    total = '1';
+  }
 
   return <div className='col-12 col-lg-10'>
     <div className='row'>

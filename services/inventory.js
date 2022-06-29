@@ -18,6 +18,15 @@ export const getInventory = ({ userId, limit, cursor, assetTypeId }) => {
   return request('GET', getBaseUrl() + `/users/inventory/list-json?userId=${userId}&assetTypeId=${assetTypeId}&cursor=${encodeURIComponent(cursor || '')}&itemsPerPage=${limit}`).then(d => d.data);
 }
 
+export const getFavorites = ({ userId, limit, cursor, assetTypeId }) => {
+  return request('GET', getBaseUrl() + `/users/favorites/list-json?userId=${userId}&assetTypeId=${assetTypeId}&pageNumber=${cursor || 1}&itemsPerPage=${limit}`).then(d => d.data).then(d => {
+    // we have to add cursors because roblox uses pageNumber for this endpoint.
+    d.Data.nextPageCursor = cursor + 1;
+    d.Data.previousPageCursor = cursor - 1;
+    return d;
+  });
+}
+
 export const getCollections = ({ userId }) => {
   return request('GET', getBaseUrl() + `/users/profile/robloxcollections-json?userId=${userId}`).then(d => d.data.CollectionsItems)
 }

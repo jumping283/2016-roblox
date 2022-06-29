@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createContainer } from "unstated-next";
 import {getUserInfo} from "../../../services/users";
-import {getInventory} from "../../../services/inventory";
+import {getFavorites, getInventory} from "../../../services/inventory";
 import getFlag from "../../../lib/getFlag";
 
 const UserInventoryStore = createContainer(() => {
@@ -12,9 +12,11 @@ const UserInventoryStore = createContainer(() => {
    value: 8});
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [mode, setMode] = useState(null);
 
   const requestInventory = (userId, category, cursor) => {
-    getInventory({userId, limit, cursor, assetTypeId: category}).then(data => {
+    const func = mode === 'Inventory' ? getInventory : getFavorites;
+    func({userId, limit, cursor, assetTypeId: category}).then(data => {
       setData(data.Data);
     }).catch(e => {
       setError(e);
@@ -33,6 +35,9 @@ const UserInventoryStore = createContainer(() => {
 
     userInfo,
     setUserInfo,
+
+    mode,
+    setMode,
 
     error,
     setError,

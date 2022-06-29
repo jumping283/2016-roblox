@@ -20,12 +20,14 @@ const Container = props => {
   const store = UserInventoryStore.useContainer();
   const s = useStyles();
   useEffect(() => {
+    store.setMode(props.mode);
     store.setUserId(props.userId);
   }, [props]);
+
   return <div className={'container ' + s.container}>
     <div className='row'>
       <div className='col-12'>
-        <h1 className={s.title}>{store.userInfo?.name}'s Inventory</h1>
+        <h1 className={s.title}>{store.userInfo?.name}'s {props.mode}</h1>
       </div>
       <CategorySelection />
       <InventoryGrid />

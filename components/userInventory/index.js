@@ -6,7 +6,7 @@ const UserInventory = props => {
   const {userId} = props;
   return <Theme2016>
     <UserInventoryStore.Provider>
-      <Container userId={userId}/>
+      <Container userId={userId} mode={props.mode}/>
     </UserInventoryStore.Provider>
   </Theme2016>
 }
