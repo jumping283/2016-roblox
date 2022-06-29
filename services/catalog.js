@@ -100,3 +100,15 @@ export const addOrRemoveFromCollections = ({ assetId, addToProfile }) => {
     addToProfile,
   })
 }
+
+export const getIsFavorited = async ({assetId, userId}) => {
+  return await request('GET', getFullUrl('catalog', '/v1/favorites/users/'+userId+'/assets/'+assetId+'/favorite')).then(d => d.data);
+}
+
+export const createFavorite = async ({assetId, userId}) => {
+  return await request('POST', getFullUrl('catalog', '/v1/favorites/users/'+userId+'/assets/'+assetId+'/favorite'));
+}
+
+export const deleteFavorite = async ({assetId, userId}) => {
+  return await request('DELETE', getFullUrl('catalog', '/v1/favorites/users/'+userId+'/assets/'+assetId+'/favorite'));
+}
