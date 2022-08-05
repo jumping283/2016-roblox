@@ -144,10 +144,9 @@ const Color = props => {
           id: 'headColorId',
           name: 'Head',
         });
-      }}></div>
+      }}/>
       <div className={s.torso} style={{ backgroundColor: idToHex(store.colors.torsoColorId) }} onClick={(e) => {
         e.stopPropagation();
-        console.log('torso click')
         setColorMode({
           id: 'torsoColorId',
           name: 'Torso',
@@ -159,15 +158,14 @@ const Color = props => {
             id: 'leftArmColorId',
             name: 'Left Arm',
           });
-        }}></div>
+        }}/>
         <div className={s.rightArm} style={{ backgroundColor: idToHex(store.colors.rightArmColorId) }} onClick={(e) => {
           e.stopPropagation();
-          console.log('Right arm click')
           setColorMode({
             id: 'rightArmColorId',
             name: 'Right Arm',
           });
-        }}></div>
+        }}/>
       </div>
       <div className={s.legs}>
         <div className={s.leftLeg} style={{ backgroundColor: idToHex(store.colors.leftLegColorId) }} onClick={(e) => {
@@ -176,14 +174,14 @@ const Color = props => {
             id: 'leftLegColorId',
             name: 'Left Leg',
           });
-        }}></div>
+        }}/>
         <div className={s.rightLeg} style={{ backgroundColor: idToHex(store.colors.rightLegColorId) }} onClick={(e) => {
           e.stopPropagation();
           setColorMode({
             id: 'rightLegColorId',
             name: 'Right Leg',
           });
-        }}></div>
+        }}/>
       </div>
     </div>
   </div>
