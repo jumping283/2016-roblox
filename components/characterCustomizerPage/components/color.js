@@ -100,7 +100,7 @@ const Color = props => {
   const s = useColorStyles();
   const store = CharacterCustomizationStore.useContainer();
   const [colorMode, setColorMode] = useState(null);
-  if (!store.colors) return null;
+  if (!store.colors || !store.rules || !store.rules.bodyColorsPalette) return null;
 
   const idToHex = (id) => {
     return store.rules.bodyColorsPalette.find(v => v.brickColorId === id).hexColor;
