@@ -24,7 +24,6 @@ const CharacterCustomizationStore = createContainer(() => {
         }
       }));
       setColors(result.bodyColors);
-      console.log(result);
     })
   }, [userId]);
 
