@@ -29,7 +29,7 @@ const GroupControls = props => {
     <div className='pe-2 ps-2 pb-2'>
       <p className='fw-700 font-size-18 mb-2 lighten-2'>Controls</p>
       {isAdmin && <Button href={`/groups/configure?id=${store.groupId}`} className={s.button}>Group Admin</Button>}
-      {canAdvertise && <Button href='#' className={s.button}>Advertise Group</Button>}
+      {canAdvertise && <Button href={`/My/CreateUserAd.aspx?targetId=${store.groupId}&targetType=group`} className={s.button}>Advertise Group</Button>}
       <Button href='#' className={s.button} onClick={() => {
         if (isPrimary) {
           removePrimaryGroup().then(() => {
