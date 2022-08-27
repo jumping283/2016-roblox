@@ -5,6 +5,7 @@ import BasicSettings from "./components/basicSettings";
 import {multiGetPlaceDetails} from "../../services/games";
 import Icon from "./components/icon";
 import UploadPlace from "./components/uploadPlace";
+import Access from "./components/access";
 
 const Container = props => {
   const store = updatePlaceStore.useContainer();
@@ -47,8 +48,8 @@ const Container = props => {
     {
       name: 'Access',
       url: '#',
-      disabled: true,
-      el: () => null,
+      disabled: false,
+      el: () => <Access />,
     },
     {
       name: 'Permissions',
@@ -79,9 +80,8 @@ const Container = props => {
     return v;
   });
   const selected = options.find(v => v.name === store.tab);
-  console.log('sel',selected);
 
-  return <div className='container'>
+  return <div className='container card pb-4 br-none'>
     <div className='row'>
       <div className='col-12'>
         <h2 className='fw-bolder ms-2'>Configure Place</h2>
