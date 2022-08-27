@@ -1,7 +1,6 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document'
+import Document from 'next/document'
 import React from 'react'
 import { SheetsRegistry, JssProvider, createGenerateId } from 'react-jss'
-import { getTheme, themeType } from '../services/theme'
 
 export default class JssDocument extends Document {
   static async getInitialProps(ctx) {
