@@ -58,6 +58,60 @@ export const getTransactionSummary = ({ userId, timePeriod }) => {
   return request('GET', getFullUrl('economy', `/v2/users/${userId}/transaction-totals?timeFrame=${timePeriod}&transactionType=summary`)).then(d => d.data);
 }
 
+export const getGroupTransactionSummary = ({ groupId, timePeriod }) => {
+  return request('GET', getFullUrl('economy', `/v2/groups/${groupId}/transaction-totals?timeFrame=${timePeriod}&transactionType=summary`)).then(d => d.data);
+}
+
+
+const fNum = (num) => {
+  if (!num) return '';
+  return num.toLocaleString();
+}
+
+export const formatSummaryResponse = (resp, type = 'User') => {
+  const isUser = type === 1 || type === 'User';
+
+  const result = [
+    isUser && [
+      'Builders Club Stipend',
+      fNum(resp.premiumStipendsTotal),
+    ],
+    isUser && [
+      'Builders Club Stipend Bonus',
+      '',
+    ],
+    [
+      'Sale of Goods',
+      fNum(resp.salesTotal),
+    ],
+    isUser && [
+      'Currency Purchase',
+      fNum(resp.currencyPurchasesTotal),
+    ],
+    isUser && [
+      'Trade System Trades',
+      fNum(resp.tradeSystemEarningsTotal),
+    ],
+    [
+      'Promoted Page Conversion Revenue',
+      '',
+    ],
+    [
+      'Game Page Conversion Revenue',
+      '',
+    ],
+    [
+      'Pending Sales',
+      fNum(resp.pendingRobuxTotal),
+    ],
+    isUser && [
+      'Group Payouts',
+      fNum(resp.groupPayoutsTotal),
+    ],
+  ].filter(v => !!v);
+  return result;
+};
+
 // Extension - these don't exist on real roblox
 
 export const getMarketActivity = () => {
