@@ -46,3 +46,12 @@ export const getMembershipType = async ({userId}) => {
     return data;
   })
 }
+
+export const getUserIdByUsername = async (username) => {
+  let result = await request('POST', getFullUrl('users', `/v1/usernames/users`), {
+    usernames: [username],
+  });
+  if (!result.data.data.length)
+    throw new Error('Invalid username');
+  return result.data.data[0].id;
+}
