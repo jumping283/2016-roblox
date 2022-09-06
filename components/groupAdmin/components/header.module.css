@@ -1,0 +1,9 @@
+.labelName {
+    color: #c3c3c3;
+}
+
+.line {
+    width: 100%;
+    border-bottom: 1px solid #535353;
+    height: 0;
+}
