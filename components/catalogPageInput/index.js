@@ -1,6 +1,7 @@
 import {useEffect, useRef} from "react";
 import { createUseStyles } from "react-jss";
 import CatalogPageStore from "../../stores/catalogPage";
+import buttonStyles from '../../styles/buttons.module.css';
 
 const useInputStyles = createUseStyles({
   input: {
@@ -29,15 +30,6 @@ const useInputStyles = createUseStyles({
     paddingLeft: '3px',
     paddingRight: '1px',
     background: 'linear-gradient(90deg, rgba(224,224,224,1) 0%, rgba(255,255,255,1) 100%)',
-  },
-  btn: {
-    fontSize: '15px',
-    border: '1px solid black',
-    width: '100%',
-    background: 'linear-gradient(0deg, rgba(224,224,224,1) 0%, rgba(255,255,255,1) 100%)',
-    '&:hover': {
-      background: 'linear-gradient(0deg, rgba(203,216,255,1) 0%, rgba(255,255,255,1) 100%)',
-    },
   },
 })
 
@@ -71,7 +63,7 @@ const CatalogPageInput = props => {
           <span className={s.caret}>►</span>
         </div>
         <div className={`col-6 col-md-2 ${s.col}`}>
-          <button disabled={store.locked} className={s.btn} onClick={(e) => {
+          <button disabled={store.locked} className={`${buttonStyles.legacyButton} w-100`} onClick={(e) => {
             e.preventDefault();
             store.setQuery(input.current.value);
           }}>Search</button>
