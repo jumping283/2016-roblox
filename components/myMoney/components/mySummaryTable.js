@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { getItemDetails, itemNameToEncodedName } from "../../../services/catalog";
-import { getTransactions, getTransactionSummary } from "../../../services/economy";
+import {formatSummaryResponse, getTransactions, getTransactionSummary} from "../../../services/economy";
 import AuthenticationStore from "../../../stores/authentication";
 import Robux from "../../catalogDetailsPage/components/robux";
 import PlayerHeadshot from "../../playerHeadshot";
@@ -17,53 +17,6 @@ const useStyles = createUseStyles({
   },
 });
 
-const fNum = (num) => {
-  if (!num) return '';
-  return num.toLocaleString();
-}
-
-const formatResponse = (resp) => {
-  const result = [
-    [
-      'Builders Club Stipend',
-      fNum(resp.premiumStipendsTotal),
-    ],
-    [
-      'Builders Club Stipend Bonus',
-      '',
-    ],
-    [
-      'Sale of Goods',
-      fNum(resp.salesTotal),
-    ],
-    [
-      'Currency Purchase',
-      fNum(resp.currencyPurchasesTotal),
-    ],
-    [
-      'Trade System Trades',
-      fNum(resp.tradeSystemEarningsTotal),
-    ],
-    [
-      'Promoted Page Conversion Revenue',
-      '',
-    ],
-    [
-      'Game Page Conversion Revenue',
-      '',
-    ],
-    [
-      'Pending Sales',
-      fNum(resp.pendingRobuxTotal),
-    ],
-    [
-      'Group Payouts',
-      fNum(resp.groupPayoutsTotal),
-    ],
-  ];
-  return result;
-}
-
 const MySummaryTable = props => {
   const s = useStyles();
   const [period, setPeriod] = useState('day');
@@ -76,7 +29,7 @@ const MySummaryTable = props => {
       timePeriod: period,
       userId: auth.userId,
     }).then(values => {
-      setEntries(formatResponse(values));
+      setEntries(formatSummaryResponse(values));
       setResponse(values);
     })
   }, [auth.userId, auth.isPending, period]);
