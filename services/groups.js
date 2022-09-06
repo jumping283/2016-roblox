@@ -1,4 +1,3 @@
-import axios from "axios";
 import request, { getFullUrl } from "../lib/request"
 
 export const getUserGroups = ({ userId }) => {
@@ -33,6 +32,10 @@ export const createGroup = ({ name, description, iconElement }) => {
 
 export const getRoles = ({ groupId }) => {
   return request('GET', getFullUrl('groups', `/v1/groups/${groupId}/roles`)).then(d => d.data.roles);
+}
+
+export const getMembers = ({groupId, cursor, limit = 10, sortOrder}) => {
+  return request('GET', getFullUrl('groups', `/v1/groups/${groupId}/users?cursor=${encodeURIComponent(cursor || '')}&limit=${limit}&sortOrder=${sortOrder}`)).then(d => d.data);
 }
 
 export const getRolesetMembers = ({ groupId, roleSetId, cursor, limit = 10, sortOrder }) => {
@@ -71,4 +74,38 @@ export const removePrimaryGroup = () => {
 
 export const getPrimaryGroup = ({ userId }) => {
   return request('GET', getFullUrl('groups', `/v1/users/${userId}/groups/primary/role`)).then(d => d.data);
+}
+
+export const setUserRole = ({groupId, userId, roleId}) => {
+  return request('PATCH', getFullUrl('groups', `/v1/groups/${groupId}/users/${userId}`), {
+    roleId: roleId,
+  });
+}
+
+export const setGroupIcon = ({groupId, icon}) => {
+  const f = new FormData();
+  f.append('file', icon);
+  return request('PATCH', getFullUrl('groups', `/v1/groups/icon?groupId=${groupId}`), f).then(d => d.data);
+}
+
+export const setGroupDescription = ({groupId, description}) => {
+  return request('PATCH', getFullUrl('groups', `/v1/groups/${groupId}/description`), {
+    description,
+  });
+}
+
+export const getGroupSettings = ({groupId}) => {
+  return request('GET', getFullUrl('groups', `/v1/groups/${groupId}/settings`)).then(d => d.data);
+}
+
+export const setGroupSettings = ({groupId, isApprovalRequired, areEnemiesAllowed, areGroupFundsVisible, areGroupGamesVisible}) => {
+  return request('PATCH', getFullUrl('groups', `/v1/groups/${groupId}/settings`), {
+    isApprovalRequired, areEnemiesAllowed, areGroupFundsVisible, areGroupGamesVisible
+  })
+}
+
+export const changeGroupOwner = async ({groupId, userId}) => {
+  return request('PATCH', getFullUrl('groups', `/v1/groups/${groupId}/change-owner`), {
+    userId,
+  })
 }
