@@ -86,14 +86,33 @@ const selectorSorts = [
 const GamesPageStore = createContainer(() => {
   const [sorts, setSorts] = useState(null);
   const [games, setGames] = useState(null);
+  const [infiniteGamesGrid, setInfiniteGamesGrid] = useState(null); // for genre and keyword searches
+
   const iconsRef = useRef({})
   const [icons, setIconsInternal] = useState({});
+  const [query, setQuery] = useState(null);
   const setIcons = newIcons => {
     setIconsInternal(newIcons);
     iconsRef.current = newIcons;
   }
   const [genreFilter, setGenreFilter] = useState(null);
   const genreFilterMethod = getFlag('gameGenreFilterMethod', 'default'); // default = genre query param, keyword = add to search keyword
+
+  const loadIcons = (pendingIconUniverseIds) => {
+    let split = chunk(pendingIconUniverseIds, 100);
+    for (const pendingIconUniverseIds of split) {
+      multiGetUniverseIcons({
+        universeIds: pendingIconUniverseIds,
+        size: '150x150',
+      }).then(result => {
+        let obj = { ... (iconsRef.current || {}) }
+        for (const item of result) {
+          obj[item.targetId] = item.imageUrl;
+        }
+        setIcons({ ...obj });
+      })
+    }
+  }
 
   const setInitialSorts = () => {
     getGameSorts({ gameSortsContext: 'GamesDefaultSorts' }).then(d => {
@@ -105,6 +124,7 @@ const GamesPageStore = createContainer(() => {
         promises.push(getGameList({
           sortToken: item.token,
           limit: 100,
+          keyword: '',
         }).then(d => {
           games[item.token] = d.games;
           d.games.forEach(v => {
@@ -115,50 +135,63 @@ const GamesPageStore = createContainer(() => {
       }
       Promise.all(promises).then(() => {
         setGames(games);
-        let split = chunk(pendingIconUniverseIds, 100);
-        for (const pendingIconUniverseIds of split) {
-          multiGetUniverseIcons({
-            universeIds: pendingIconUniverseIds,
-            size: '150x150',
-          }).then(result => {
-            let obj = { ... (iconsRef.current || {}) }
-            for (const item of result) {
-              obj[item.targetId] = item.imageUrl;
-            }
-            setIcons({ ...obj });
-          })
-        }
+        loadIcons(pendingIconUniverseIds);
       })
     });
   }
 
   useEffect(() => {
+    if (query) {
+      // lookup
+      setSorts(null);
+      setGames(null);
+      getGameList({
+        sortToken: '',
+        limit: 100,
+        genre: [],
+        keyword: query,
+      }).then(d => {
+        setInfiniteGamesGrid(d);
+
+        let universeIds = [];
+        for (const item of d.games) {
+          if (!universeIds.includes(item.universeId))
+            universeIds.push(item.universeId);
+        }
+        loadIcons(universeIds);
+      })
+      return
+    }
     if (genreFilter === 'default' || genreFilter === null || genreFilter === 'all') {
       setInitialSorts();
     } else {
-      setSorts([
-        {
-          displayName: '',
-          token: 'fakeListGenreFilter',
-        }
-      ]);
       getGameList({
-        sortToken: 'fakeListGenreFilter',
+        sortToken: '',
+        keyword: genreFilterMethod === 'keyword' ? genreFilter : '',
         limit: 100,
         genre: selectorSorts.find(v => v.value === genreFilter).id,
       }).then(newGames => {
-        setGames({
-          fakeListGenreFilter: newGames.games,
-        });
-      })
+        setInfiniteGamesGrid(newGames.data);
 
+        let universeIds = [];
+        for (const item of newGames.games) {
+          if (!universeIds.includes(item.universeId))
+            universeIds.push(item.universeId);
+        }
+        loadIcons(universeIds);
+      })
     }
-  }, [genreFilter]);
+  }, [genreFilter, query]);
 
   return {
     sorts,
     games,
     icons,
+
+    infiniteGamesGrid,
+
+    query,
+    setQuery,
 
     genreFilter,
     setGenreFilter,
