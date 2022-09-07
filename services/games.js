@@ -20,8 +20,8 @@ export const getGameSorts = ({ gameSortsContext }) => {
   return request('GET', getFullUrl('games', `/v1/games/sorts?gameSortsContext=${encodeURIComponent(gameSortsContext || '')}`)).then(d => d.data)
 }
 
-export const getGameList = ({ sortToken, limit, genre = 0 }) => {
-  return request('GET', getFullUrl('games', `/v1/games/list?sortToken=${encodeURIComponent(sortToken)}&maxRows=${limit}&genre=${genre}`)).then(d => d.data)
+export const getGameList = ({ sortToken, limit, genre = 0, keyword }) => {
+  return request('GET', getFullUrl('games', `/v1/games/list?sortToken=${encodeURIComponent(sortToken)}&maxRows=${limit}&genre=${genre}&keyword=${keyword}`)).then(d => d.data)
 }
 
 export const getGameMedia = ({ universeId }) => {
