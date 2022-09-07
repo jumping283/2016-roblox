@@ -107,10 +107,10 @@ const GameRow = props => {
       setOffsetComp(0);
     }
   }, [rowRef, dimensions]);
+  if (!props.games) return null;
 
   const remainingGames = props.games.length - (offset-offsetComp);
   const showForward = remainingGames >= limit;
-  if (!props.games) return null;
   return <div className='row'>
     <div className='col-12'>
       <h3 className={s.title}>{props.title.toUpperCase()}</h3>
