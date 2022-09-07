@@ -37,7 +37,7 @@ const Header = props => {
 
     <div className='col-12'>
       {
-        store.feedback ? <p className='text-danger'>{store.feedback}</p> : null
+        store.feedback ? <p className={styles.feedbackBox}>{store.feedback}</p> : null
       }
       <div className={styles.line + ' pt-3 mb-2'} />
     </div>
