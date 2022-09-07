@@ -23,12 +23,12 @@ const Members = props => {
     refreshMembers();
   }, [roleFilter]);
 
-  const refreshMembers = () => {
+  const refreshMembers = (cursor = '') => {
     if (roleFilter) {
       getRolesetMembers({
         groupId: props.groupId,
         roleSetId: roleFilter,
-        cursor: '',
+        cursor,
         limit: 12,
         sortOrder: 'desc',
       }).then(d => {
@@ -48,7 +48,7 @@ const Members = props => {
         })
       })
     }else{
-      getMembers({groupId: props.groupId, cursor: '', limit: 12, sortOrder: 'desc'}).then(mems => {
+      getMembers({groupId: props.groupId, cursor, limit: 12, sortOrder: 'desc'}).then(mems => {
         setMembers(mems);
       })
     }
@@ -59,6 +59,21 @@ const Members = props => {
       <h3>Members</h3>
       <MemberFilters roles={roles} setRoleFilter={setRoleFilter} />
       <MembersList groupId={props.groupId} members={members} roles={roles} refreshMembers={refreshMembers} />
+      <p className='text-center mt-4'>
+        {
+          members && members.previousPageCursor ? <a className='ms-4 me-4' href='#' onClick={e => {
+            e.preventDefault();
+            refreshMembers(members.previousPageCursor);
+          }}>Previous</a> : null
+        }
+
+        {
+          members && members.nextPageCursor ? <a className='ms-4 me-4' href='#' onClick={e => {
+            e.preventDefault();
+            refreshMembers(members.nextPageCursor);
+          }}>Next</a> : null
+        }
+      </p>
     </div>
   </div>
 }

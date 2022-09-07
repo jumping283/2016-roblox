@@ -23,7 +23,7 @@ const MemberFilters = props => {
         <option value='Filter By Rank'>Filter By Rank</option>
         {
           props.roles ? props.roles.filter(a => a.rank !== 0).map(v => {
-            return <option value={v.id} key={v.id}>{v.name}</option>
+            return <option value={v.id} key={v.id}>{v.name} ({v.memberCount.toLocaleString()})</option>
           }) : null
         }
       </select>
