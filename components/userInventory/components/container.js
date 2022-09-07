@@ -3,7 +3,7 @@ import UserInventoryStore from "../stores/userInventoryStore"
 import {createUseStyles} from "react-jss";
 import CategorySelection from "./categorySelection";
 import InventoryGrid from "./inventoryGrid";
-import Paging from "./paging";
+import {getUserInfo} from "../../../services/users";
 
 const useStyles = createUseStyles({
   title: {
@@ -22,6 +22,10 @@ const Container = props => {
   useEffect(() => {
     store.setMode(props.mode);
     store.setUserId(props.userId);
+
+    if (!props.userId) return;
+    getUserInfo({userId: props.userId}).then(data => store.setUserInfo(data));
+    store.requestInventory(props.mode, props.userId, store.category.value, '');
   }, [props]);
 
   return <div className={'container ' + s.container}>

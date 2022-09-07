@@ -14,7 +14,7 @@ const UserInventoryStore = createContainer(() => {
   const [error, setError] = useState(null);
   const [mode, setMode] = useState(null);
 
-  const requestInventory = (userId, category, cursor) => {
+  const requestInventory = (mode, userId, category, cursor) => {
     const func = mode === 'Inventory' ? getInventory : getFavorites;
     func({userId, limit, cursor, assetTypeId: category}).then(data => {
       setData(data.Data);
@@ -28,9 +28,6 @@ const UserInventoryStore = createContainer(() => {
     setUserId: (id) => {
       setUserId(id);
       setUserInfo(null);
-      if (!id) return;
-      getUserInfo({userId: id}).then(data => setUserInfo(data));
-      requestInventory(id, category.value, '');
     },
 
     userInfo,
@@ -49,21 +46,23 @@ const UserInventoryStore = createContainer(() => {
     setCategory: (newCategory) => {
       setCategory(newCategory);
       setData(null);
-      requestInventory(userId, newCategory.value, '');
+      requestInventory(mode, userId, newCategory.value, '');
     },
 
     loadNextPage: () => {
-      requestInventory(userId, category.value, data.nextPageCursor);
+      requestInventory(mode, userId, category.value, data.nextPageCursor);
     },
     loadPreviousPage: () => {
-      requestInventory(userId, category.value, data.previousPageCursor);
+      requestInventory(mode, userId, category.value, data.previousPageCursor);
     },
     nextPageAvailable: () => {
       return data && data.nextPageCursor !== null;
     },
     previousPageAvailable: () => {
       return data && data.previousPageCursor !== null;
-    }
+    },
+
+    requestInventory,
   };
 });
 
