@@ -129,3 +129,16 @@ export const editRole = async ({groupId, roleId, name, description, rank}) => {
 export const setRolePermissions = async (groupId, roleId, permissions) => {
   return request('PATCH',getFullUrl('groups', `/v1/groups/${groupId}/roles/${roleId}/permissions`), {permissions: permissions});
 }
+
+export const oneTimePayout = async ({groupId, userId, amount}) => {
+  return request('POST', getFullUrl('groups', `/v1/groups/${groupId}/payouts`), {
+    PayoutType: 'FixedAmount',
+    Recipients: [
+      {
+        recipientId: userId,
+        recipientType: 'User',
+        amount,
+      }
+    ],
+  });
+}
