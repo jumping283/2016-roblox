@@ -4,7 +4,7 @@ import SmallGameCard from "../../smallGameCard";
 import UserAdvertisement from "../../userAdvertisement";
 import {getTheme, themeType} from "../../../services/theme";
 
-const useStyles = createUseStyles({
+export const useStyles = createUseStyles({
   title: {
     fontWeight: 300,
     marginBottom: '10px',
@@ -27,6 +27,11 @@ const useStyles = createUseStyles({
     paddingRight: '5px',
   },
   pagerButton: {
+    border: '1px solid #c3c3c3',
+    width: '40px',
+    height: 'calc(100% - 34px)',
+    background: 'rgba(255,255,255,1)',
+    position: 'relative',
     cursor: 'pointer',
     color: '#666',
     boxShadow: '0 0 3px 0 #ccc',
@@ -35,20 +40,12 @@ const useStyles = createUseStyles({
     },
   },
   goBack: {
-    width: '40px',
-    height: '100%',
-    background: 'rgba(255,255,255,0.5)',
-    position: 'relative',
     float: 'left',
-    marginRight: '-35px',
+    marginLeft: '10px',
   },
   goForward: {
-    width: '40px',
-    height: '100%',
-    background: 'rgba(255,255,255,0.8)',
-    position: 'relative',
     float: 'right',
-    marginLeft: '-35px',
+    marginLeft: '10px',
   },
   pagerCaret: {
     textAlign: 'center',
@@ -70,18 +67,18 @@ const useStyles = createUseStyles({
 
 /**
  * A game row
- * @param {{title: string; games: any[]; icons: any; ads?: boolean;}} props 
+ * @param {{title: string; games: any[]; icons: any; ads?: boolean;}} props
  */
 const GameRow = props => {
   const s = useStyles();
   const [offset, setOffset] = useState(0);
-  const [limit, setLimit] = useState(0);
+  const [limit, setLimit] = useState(1);
   const [offsetComp, setOffsetComp] = useState(0);
   const rowRef = useRef(null);
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth
-  })
+  });
   useEffect(() => {
     window.addEventListener('resize', () => {
       setDimensions({
@@ -91,22 +88,25 @@ const GameRow = props => {
     });
   }, []);
   useEffect(() => {
-    if (!rowRef.current)
-      return;
+    if (!rowRef.current) {
+      console.log('no rowRef, ignore');
+      return
+    }
     // width = 170px
+    // sub 80 for pagination buttons
     let windowWidth = rowRef.current.clientWidth;
     // breakpoints: 992, 1300 for side nav
-    let offsetNotRounded = windowWidth / 170;
+    let offsetNotRounded = (windowWidth - 80) / 170;
     let newLimit = Math.floor(offsetNotRounded);
 
-    // console.log('usable limit', newLimit);
+    console.log('useable limit', newLimit);
     setLimit(newLimit);
     if (offsetNotRounded !== newLimit) {
       setOffsetComp(1);
     }else{
       setOffsetComp(0);
     }
-  }, [rowRef, dimensions]);
+  }, [dimensions, props.games]);
   if (!props.games) return null;
 
   const remainingGames = props.games.length - (offset-offsetComp);
@@ -116,11 +116,15 @@ const GameRow = props => {
       <h3 className={s.title}>{props.title.toUpperCase()}</h3>
     </div>
     <div className={props.ads ? 'col-12 col-lg-9' : 'col-12'} ref={rowRef}>
-      {offset !== 0 && <div className={s.goBack + ' ' + s.pagerButton} onClick={() => {
+      <div className={s.goBack + ' ' + s.pagerButton + ' ' + (offset === 0 ? 'opacity-25' : '')} onClick={() => {
+        if (offset === 0)
+          return;
+
         setOffset((offset - limit));
       }}>
         <p className={s.pagerCaret}><span className={s.caretRight}>^</span></p>
-      </div>}
+      </div>
+
       {showForward ? <div className={s.goForward + ' ' + s.pagerButton} onClick={() => {
         let newOffset = ((offset) + (limit));
         setOffset(newOffset);
@@ -139,8 +143,8 @@ const GameRow = props => {
               creatorType={v.creatorType}
               creatorName={v.creatorName}
               iconUrl={props.icons[v.universeId]}
-              likes={v.totalUpvotes}
-              dislikes={v.totalDownvotes}
+              likes={v.totalUpVotes}
+              dislikes={v.totalDownVotes}
               name={v.name}
               playerCount={v.playerCount}
             />

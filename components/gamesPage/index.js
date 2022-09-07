@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { createUseStyles } from "react-jss";
 import getFlag from "../../lib/getFlag";
 import AuthenticationStore from "../../stores/authentication";
 import GamesPageStore from "../../stores/gamesPage";
 import AdBanner from "../ad/adBanner";
 import Selector from "../selector";
-import GameRow from "./components/gameRow";
+import GameRow, {useStyles as useGameRowStyles} from "./components/gameRow";
+import {useRouter} from "next/dist/client/router";
+import SmallGameCard from "../smallGameCard";
 
 const useStyles = createUseStyles({
   authContainer: {
@@ -20,18 +22,28 @@ const useStyles = createUseStyles({
   gamesContainer: {
     backgroundColor: '#e3e3e3',
     paddingTop: '8px',
+    marginLeft: '15px',
+    marginRight: '15px',
   },
 })
 
 const Games = props => {
+  const router = useRouter();
   const store = GamesPageStore.useContainer();
   const auth = AuthenticationStore.useContainer();
   const s = useStyles();
+  const gameS = useGameRowStyles();
   let existingGames = {}
-  const showGenre = getFlag('gameGenreFilterSupported', false);
-  const showSortDropdown = getFlag('gameCustomSortDropdown', false);
+  const showGenre = getFlag('gameGenreFilterSupported', false) && !store.infiniteGamesGrid;
+  const showSortDropdown = getFlag('gameCustomSortDropdown', false) && !store.infiniteGamesGrid;
 
-  if (!store.sorts || !store.games || !store.icons) return null;
+  useEffect(() => {
+    if (router.query.keyword)
+      store.setQuery(router.query.keyword);
+
+  }, [router.query]);
+
+  // if (!store.sorts || !store.games || !store.icons) return null;
   return <div className={'row ' + (auth.isAuthenticated ? s.authContainer : '')}>
     <div className='col-12'>
       <AdBanner context='gamesPage'/>
@@ -96,14 +108,34 @@ const Games = props => {
         </div>
         <div className='col-12'>
           <div className='row'>
-            {store.sorts.map(v => {
-              if (existingGames[v.token]) {
-                return null;
+            {
+              store.infiniteGamesGrid ? <>
+              {
+                store.infiniteGamesGrid.games.map(v => {
+                  return <SmallGameCard
+                    key={v.universeId}
+                    className={gameS.gameCard + ' mb-3'}
+                    placeId={v.placeId}
+                    creatorId={v.creatorId}
+                    creatorType={v.creatorType}
+                    creatorName={v.creatorName}
+                    iconUrl={store.icons[v.universeId]}
+                    likes={v.totalUpVotes}
+                    dislikes={v.totalDownVotes}
+                    name={v.name}
+                    playerCount={v.playerCount}
+                  />
+                })
               }
-              existingGames[v.token] = true;
-              let games = store.games && store.games[v.token] || null;
-              return <GameRow ads={true} key={'row ' + v.token} title={v.displayName} games={games} icons={store.icons}/>
-            })}
+              </> : store.sorts ? store.sorts.map(v => {
+                  if (existingGames[v.token]) {
+                    return null;
+                  }
+                  existingGames[v.token] = true;
+                  let games = store.games && store.games[v.token] || null;
+                  return <GameRow ads={true} key={'row ' + v.token} title={v.displayName} games={games} icons={store.icons}/>
+                }) : null
+            }
           </div>
         </div>
       </div>

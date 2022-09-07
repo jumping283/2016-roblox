@@ -19,7 +19,7 @@ const useStyles = createUseStyles({
     color: '#757575',
   },
   imageWrapper: {
-
+    padding: '8px',
   },
   image: {
     width: '100%',
@@ -48,6 +48,37 @@ const useStyles = createUseStyles({
   floatRight: {
     float: 'right',
   },
+
+  ratioBox: {
+    width: '20px',
+    height: '5px',
+    background: '#c3c3c3',
+    display: 'inline-block',
+    marginLeft: '3px',
+  },
+  ratioBoxPart: {
+    height: '5px',
+    display: 'inline-block',
+  },
+  radioBoxPartContainer: {
+    display: 'inline-block',
+    marginLeft: '3px',
+  },
+  ratioContainer: {
+    display: 'inline-block',
+  },
+  solidGreen: {
+    background: '#757575',
+  },
+  solidRed: {
+    background: '#c3c3c3',
+  },
+  solidGreenColor: {
+    background: '#02b757',
+  },
+  solidRedColor: {
+    background: '#E27676',
+  },
 });
 
 /**
@@ -58,10 +89,58 @@ const useStyles = createUseStyles({
 const SmallGameCard = props => {
   const {hideVoting} = props;
 
+  const [dimensions, setDimensions] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth
+  });
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
+    });
+  }, []);
+
   const s = useStyles();
   const cardStyles = useCardStyles();
   const [showCreator, setShowCreator] = useState(false);
   const [iconUrl, setIconUrl] = useState('/img/empty.png');
+  const [boxWidth, setBoxWidth] = useState(0);
+  const cardRef = useRef(null);
+
+  let likePercent = (props.likes / (props.likes+props.dislikes));
+  if (isNaN(likePercent) || likePercent < 0) {
+    likePercent = 0;
+  }
+  let numSolidGreen = Math.trunc(likePercent * 5);
+  let numSolidRed = Math.max(0, 5 - numSolidGreen);
+  const squares = [];
+  for (let i = 0; i < numSolidGreen; i++) {
+    squares.push({
+      solidGreen: true,
+    });
+  }
+  if (numSolidGreen !== likePercent * 5) {
+    let remainder = (likePercent * 5) - numSolidGreen;
+    numSolidRed--;
+    squares.push({
+      percentGreen: remainder,
+    });
+  }
+  for (let i = 0; i < numSolidRed; i++) {
+    squares.push({
+      solidRed: true,
+    });
+  }
+
+  useEffect(() => {
+    if (cardRef.current) {
+      const width = cardRef.current.clientWidth;
+      setBoxWidth((width - 75) / 5);
+    }
+  }, [dimensions]);
+
   useEffect(() => {
     if (!props.iconUrl) {
       setIconUrl('/img/empty.png');
@@ -69,13 +148,34 @@ const SmallGameCard = props => {
     }
     setIconUrl(props.iconUrl);
   }, [props.iconUrl]);
+
   const colRef = useRef(null);
   const url = getGameUrl({
     placeId: props.placeId,
     name: props.name,
   });
 
-  return <div className={props.className || 'col-6 col-lg-2 ps-1 pe-1'} onMouseEnter={() => {
+  const Voting = (props) => {
+    const {color} = props;
+    const sGreen = color ? s.solidGreenColor : s.solidGreen;
+    const sRed = color ? s.solidRedColor : s.solidRed;
+
+    return <div className={s.ratioContainer + ' '}>
+      {squares.map((v, i) => {
+        if (v.percentGreen) {
+          const widthGreen = boxWidth * v.percentGreen;
+          const widthRed = boxWidth - widthGreen;
+          return <div key={i} className={s.radioBoxPartContainer}>
+            <div className={s.ratioBoxPart + ' ' + sGreen} style={{width: widthGreen}} />
+            <div className={s.ratioBoxPart + ' ' + sRed} style={{width: widthRed}} />
+          </div>
+        }
+        return <div key={i} className={s.ratioBox + ' ' + (v.solidGreen ? sGreen : v.solidRed ? sRed : '')} style={{width: boxWidth}} />
+      })}
+    </div>
+  }
+
+  return <div ref={cardRef} className={props.className || 'col-6 col-lg-2 ps-1 pe-1'} onMouseEnter={() => {
     setShowCreator(true);
   }} onMouseLeave={() => {
     setShowCreator(false);
@@ -85,14 +185,12 @@ const SmallGameCard = props => {
         <a>
           <div className={s.imageWrapper}>
             <img className={s.image} src={iconUrl} alt={props.name} onLoad={(e) => {
-              // console.log('on load', e)
             }} onError={(e) => {
-              console.log('[info] icon load error');
               if (!iconUrl || iconUrl.indexOf('empty.png') !== -1) return;
               setIconUrl('/img/empty.png');
               setTimeout(() => {
                 setIconUrl(props.iconUrl);
-              }, 1000);f
+              }, 1000);
             }}/>
           </div>
         </a>
@@ -101,16 +199,22 @@ const SmallGameCard = props => {
         <p className={s.label + ' truncate'}>{props.name}</p>
         <p className={s.labelPlaying + ' truncate'}>{abbreviateNumber(props.playerCount)} Playing</p>
         {
-          !showCreator && !hideVoting && <p className={s.thumbsUp + ' mt-2'}>
+          !showCreator && !hideVoting && <p className={s.thumbsUp + ' mt-2 d-inline-block'}>
             <span className='icon-thumbs-up'/>
           </p> || null
         }
+
+        {
+          !showCreator && !hideVoting ?  <Voting /> : null
+        }
+
         {
           showCreator && <div className={s.creatorDetailsCard + ' ' + cardStyles.card} style={colRef ? { width: colRef.current.clientWidth + 'px' } : undefined}>
             {!hideVoting ?
             <>
               <p className={s.thumbsUp + ' ps-2 pe-2 mt-2'}>
                 <span className='icon-thumbs-up'/>
+                <Voting color={true} />
                 <span className={'icon-thumbs-down ' + s.floatRight}/>
               </p>
               <div className='ps-1 pt-2 pe-1'>
