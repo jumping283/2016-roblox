@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {editRole, getRoles} from "../../../../../services/groups";
+import {deleteRole, editRole, getRoles} from "../../../../../services/groups";
 import Table from "../../../../myMoney/components/table";
 import btn from '../../../../../styles/buttons.module.css';
 import ActionButton from "../../../../actionButton";
@@ -72,6 +72,11 @@ const GroupRoles = props => {
             v.rank !== 0 ? <div className='ms-2 d-inline-block'>
             <span className={btn.delete} onClick={() => {
               // Delete role
+              deleteRole({groupId: props.groupId, roleId: v.id}).then(() => {
+                window.location.reload();
+              }).catch(e => {
+                store.setFeedback('Error deleting role: ' + e.message);
+              })
             }}>X</span>
             </div> : null
           }
