@@ -37,6 +37,7 @@ const ComposeMessagePage = props => {
   const userIdStr = router.query['recipientId'];
   const [error, setError] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [locked, setLocked] = useState(false);
   useEffect(() => {
     if (typeof userIdStr !== 'string') return
     let userId = parseInt(userIdStr, 10);
@@ -66,8 +67,11 @@ const ComposeMessagePage = props => {
         <input ref={subjectRef} maxLength={256} className={s.input + ' mt-2'} placeholder='Subject:'></input>
         <textarea ref={bodyRef} maxLength={1000} className={s.input + ' mt-2 ' + s.textArea} rows={8} placeholder='Write your message...'></textarea>
         <div className={s.sendWrapper}>
-          <ActionButton label='Send' className={buttonStyles.continueButton} onClick={() => {
+          <ActionButton disabled={locked} label='Send' className={buttonStyles.continueButton} onClick={() => {
+            if (locked) return;
+
             setError(null);
+            setLocked(true);
             sendMessage({
               userId: userInfo.id,
               subject: subjectRef.current.value,
@@ -75,8 +79,9 @@ const ComposeMessagePage = props => {
               replyMessageId: undefined,
               includePreviousMessage: undefined,
             }).then(() => {
-              window.location.href = '/My/Messages';
+              router.push('/My/Messages');
             }).catch(e => {
+              setLocked(false);
               setError(e.message);
             })
           }}></ActionButton>
