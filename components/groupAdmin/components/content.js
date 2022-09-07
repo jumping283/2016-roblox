@@ -6,6 +6,7 @@ import Members from "./tabs/members";
 import GroupInfo from "./tabs/groupInfo";
 import GroupSettings from "./tabs/settings";
 import GroupRevenue from "./tabs/revenue";
+import GroupRoles from "./tabs/roles";
 
 const Content = props => {
   const store = groupAdminStore.useContainer();
@@ -46,6 +47,9 @@ const Content = props => {
         }
         {
           store.tab === 'Settings' ? <GroupSettings groupId={store.groupId} info={store.info} /> : null
+        }
+        {
+          store.tab === 'Roles' ? <GroupRoles groupId={store.groupId} info={store.info} /> : null
         }
         {
           store.tab === 'Revenue' ? <GroupRevenue groupId={store.groupId} info={store.info} /> : null

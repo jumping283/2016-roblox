@@ -109,3 +109,23 @@ export const changeGroupOwner = async ({groupId, userId}) => {
     userId,
   })
 }
+
+export const createRole = async ({groupId, name, description, rank}) => {
+  return request('POST', getFullUrl('groups', `/v1/groups/${groupId}/rolesets/create`), {
+    name,
+    description,
+    rank,
+  });
+}
+
+export const editRole = async ({groupId, roleId, name, description, rank}) => {
+  return request('PATCH', getFullUrl('groups', `/v1/groups/${groupId}/rolesets/${roleId}`), {
+    name,
+    description,
+    rank,
+  });
+}
+
+export const setRolePermissions = async (groupId, roleId, permissions) => {
+  return request('PATCH',getFullUrl('groups', `/v1/groups/${groupId}/roles/${roleId}/permissions`), {permissions: permissions});
+}

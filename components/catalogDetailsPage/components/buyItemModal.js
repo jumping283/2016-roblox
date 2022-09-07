@@ -168,7 +168,7 @@ const ModalTitle = () => {
   }
 }
 
-const useStyles = createUseStyles({
+export const useModalStyles = createUseStyles({
   modalBg: {
     background: 'rgba(0,0,0,0.8)',
     position: 'fixed',
@@ -209,7 +209,7 @@ const useStyles = createUseStyles({
   },
 });
 const BuyItemModal = props => {
-  const s = useStyles();
+  const s = useModalStyles();
   const store = CatalogDetailsPage.useContainer();
   const modalStore = CatalogDetailsPageModal.useContainer();
   const authStore = AuthenticationStore.useContainer();

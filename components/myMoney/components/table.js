@@ -44,7 +44,7 @@ const useStyles = createUseStyles({
 
 /**
  * Money page table
- * @param {{keys: string[]; entries: (JSX.Element | string)[][]; children?: JSX.Element; ad: boolean}} props
+ * @param {{keys: (string | JSX.Element)[]; entries: (JSX.Element | string)[][]; children?: JSX.Element; ad: boolean}} props
  */
 const Table = props => {
   const s = useStyles();
