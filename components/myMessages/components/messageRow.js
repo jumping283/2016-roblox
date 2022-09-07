@@ -43,6 +43,7 @@ const MessageRow = props => {
   });
   const archiveOrUnarchive = props.tab === 'archive' ? 'Unarchive' : 'Archive';
   const showButtons = store.tab !== 'sent' && store.tab !== 'notifications';
+  const reverseSender = store.tab === 'sent';
 
   const toggleReadStatusClick = readStatus => {
     return (e) => {
@@ -114,13 +115,14 @@ const MessageRow = props => {
     <div className={`col-12 ${s.row}`}>
       {
         store.messages.map(v => {
+          const userData = reverseSender ? v.recipient : v.sender;
           return <MessageEntry key={v.id}
-            fromUserId={v.sender.id}
-            fromUserName={v.sender.name}
+            fromUserId={userData.id}
+            fromUserName={userData.name}
             body={v.body}
             subject={v.subject}
             created={v.updated}
-            read={v.isRead}
+            read={reverseSender ? true : v.isRead} // prevent "is read" request from being sent, which will always fail
             archived={store.tab === 'archive'}
             id={v.id}
           ></MessageEntry>
