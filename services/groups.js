@@ -146,3 +146,11 @@ export const oneTimePayout = async ({groupId, userId, amount}) => {
     ],
   });
 }
+
+export const getGroupInfo = ({ groupId }) => {
+  return request('GET', getFullUrl('groups', `/v1/groups/${groupId}`)).then(d => d.data);
+}
+
+export const getGroupAuditLog = ({ groupId, cursor, userId, action }) => {
+  return request('GET', getFullUrl('groups', `/v1/groups/${groupId}/audit-log?cursor=${cursor}&action=${action}&userId=${userId}&sortOrder=desc&limit=100`)).then(d => d.data);
+}
