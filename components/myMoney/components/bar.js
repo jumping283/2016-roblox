@@ -12,7 +12,7 @@ const Bar = props => {
   const options = [
     {
       name: 'My Transactions',
-      element: <MyTransactionsTable></MyTransactionsTable>,
+      element: <MyTransactionsTable creatorType='User'></MyTransactionsTable>,
     },
     {
       name: 'Summary',
