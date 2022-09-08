@@ -70,7 +70,7 @@ const MessageRow = props => {
       {showButtons &&
         <>
           <div className={s.buttonWrapper}>
-            <input type='checkbox' className='mt-2 me-2' checked={store.messages && store.messages.length !== 0 && store.checked.length === store.messages.length || false} onClick={e => {
+            <input type='checkbox' className='mt-2 me-2' checked={store.messages && store.messages.length !== 0 && store.checked.length === store.messages.length || false} onChange={e => {
               let checked = e.currentTarget.checked;
               if (!checked) {
                 return store.setChecked([]);
@@ -116,6 +116,8 @@ const MessageRow = props => {
       {
         store.messages.map(v => {
           const userData = reverseSender ? v.recipient : v.sender;
+          if (!userData) return null; // can be undefined when switch from Notifications tab to Sent tab
+
           return <MessageEntry key={v.id}
             fromUserId={userData.id}
             fromUserName={userData.name}

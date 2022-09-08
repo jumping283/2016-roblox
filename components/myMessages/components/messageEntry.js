@@ -74,7 +74,7 @@ const MessageEntry = props => {
   }}>
     <div className={s.userCheckAndImage}>
       <div className={s.markReadWrapper}>
-        <input type='checkbox' checked={isChecked} className={s.markRead} onClick={(e) => {
+        <input type='checkbox' checked={isChecked} className={s.markRead} onChange={() => {}} onClick={(e) => {
           e.stopPropagation();
           if (isChecked) {
             store.setChecked(store.checked.filter(v => {
