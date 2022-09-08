@@ -54,6 +54,10 @@ export const getTransactions = ({ userId, cursor, type }) => {
   return request('GET', getFullUrl('economy', `/v2/users/${userId}/transactions?cursor=${encodeURIComponent(cursor || '')}&transactionType=${encodeURIComponent(type)}`)).then(d => d.data);
 }
 
+export const getGroupTransactions = ({ groupId, cursor, type }) => {
+  return request('GET', getFullUrl('economy', `/v2/groups/${groupId}/transactions?cursor=${encodeURIComponent(cursor || '')}&transactionType=${encodeURIComponent(type)}`)).then(d => d.data);
+}
+
 export const getTransactionSummary = ({ userId, timePeriod }) => {
   return request('GET', getFullUrl('economy', `/v2/users/${userId}/transaction-totals?timeFrame=${timePeriod}&transactionType=summary`)).then(d => d.data);
 }
