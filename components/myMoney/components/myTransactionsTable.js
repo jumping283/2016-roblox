@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import {getItemDetails, getItemUrl, itemNameToEncodedName} from "../../../services/catalog";
-import { getTransactions } from "../../../services/economy";
+import {getGroupTransactions, getTransactions} from "../../../services/economy";
 import AuthenticationStore from "../../../stores/authentication";
 import Robux from "../../catalogDetailsPage/components/robux";
 import PlayerHeadshot from "../../playerHeadshot";
@@ -106,19 +106,33 @@ const applyAssetDetails = (transactionsArray, detailsArray) => {
   }
 }
 
+/**
+ * Transactions table
+ * @param props {{creatorType: string, creatorId: number, hideTransactionTypeSelector: boolean}}
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const MyTransactionsTable = props => {
+  const hideSelector = props.hideTransactionTypeSelector === true;
+
   const s = useStyles();
-  const [type, setType] = useState('purchase');
+  const [type, setType] = useState(props.creatorType === 'Group' ? 'sale' : 'purchase');
   const [cursor, setCursor] = useState(null);
   const [entries, setEntries] = useState(null);
   const auth = AuthenticationStore.useContainer();
   useEffect(() => {
     if (auth.isPending) return;
-    getTransactions({
+    let f = props.creatorType === 'User' ? getTransactions({
+        cursor,
+        type: type,
+        userId: auth.userId,
+      }) :getGroupTransactions({
       cursor,
-      type: type,
-      userId: auth.userId,
-    }).then(values => {
+      type,
+      groupId: props.creatorId,
+    });
+
+    f.then(values => {
       let existing = entries;
       if (!existing) {
         existing = {
@@ -143,10 +157,10 @@ const MyTransactionsTable = props => {
         setEntries({ ...existing });
       }
     })
-  }, [cursor, auth.userId, auth.isPending, type]);
+  }, [cursor, auth.userId, auth.isPending, type, props]);
 
   return <div className='row'>
-    <div className='col-12 mb-3 mt-3'>
+    {!hideSelector ? <div className='col-12 mb-3 mt-3'>
       <div className={s.inline}>
         <p className='mb-0 fw-700 lighten-1 pe-2'>Transaction Type: </p>
       </div>
@@ -163,7 +177,7 @@ const MyTransactionsTable = props => {
           <option value='group-payout'>Group Payouts</option>
         </select>
       </div>
-    </div>
+    </div> : null}
     <div className='col-12'>
       <Table
         keys={
