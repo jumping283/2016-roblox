@@ -84,6 +84,7 @@ const MyDashboard = props => {
           getGameList({
             sortToken: item.token,
             limit: 100,
+            keyword: '',
           }).then(games => {
             item.games = games.games;
             games.games.forEach(v => idsForIcons.push(v.universeId));
