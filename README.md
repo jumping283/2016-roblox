@@ -26,7 +26,6 @@ There are some duplicates here, like the 2015+ and before 2015 profile page. I i
 
 - :x: `/` Unauthenticated Homepage
 - ✔️ `/home` Authenticated Homepage
-  - TODO: add feed
 - ✔️ `/my/character.aspx` Avatar customization page
    - Some rules are a bit messed up, so you can wear more than one shirt, however, this will fail once you click the update button.
 
@@ -48,7 +47,6 @@ There are some duplicates here, like the 2015+ and before 2015 profile page. I i
 
 - ✔️ `/users/{userId}/profile` Late 2015+ Profile Page
   - TODO:
-    - Add favorited games
     - Add player badges
     - Add created models and clothing to Creations tab
 - :x: `/User.aspx?ID=1` Before 2015 Profile Page
@@ -64,10 +62,11 @@ There are some duplicates here, like the 2015+ and before 2015 profile page. I i
 - :x: `/Group/Groups.aspx` Group list/searching
 - ✔️ `/My/Groups.aspx` Authenticated user groups
 - ✔️ `/Groups/Group.aspx?gid=1` Group page
-- :x: `/Groups/Admin.aspx?gid=1` Group admin page
+- ✔ `/Groups/Admin.aspx?gid=1` Group admin page
+  - TODO: Member approval, relationship management
 
 **Forums**
-This will be toggleable through configuration as Roblox does not have Forums anymore.
+This is toggleable through configuration as Roblox does not have Forums anymore. I'd like to add support for multiple forum "providers" in the future (e.g. Reddit, custom MyBB/discourse instance, etc).
 - ✔ `/Forums/Default.aspx` Default page
 - ✔ `/Forums/ShowForum.aspx` Forum index page for a category
 - ✔ `/Forums/ShowThread.aspx` Forum thread page
@@ -91,8 +90,8 @@ This will be toggleable through configuration as Roblox does not have Forums any
 - ✔️ `/game-name-place?id=1` Before 2015 game details page
 - ✔️ `/games` Games list page
   - Genre filters and sort have no effect at this time.
-- :x: `/places/{placeId}/update` Update place page
-  - Nearly identical to modern Roblox
+- ✔ `/places/{placeId}/update` Update place page
+  - TODO: Only like 20% done, a lot of features are missing
 
 **Economy**
 - ✔️ `/My/Money.aspx` Transactions and trades page
