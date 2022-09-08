@@ -5,9 +5,8 @@ import AuthenticationStore from "../../stores/authentication";
 import GamesPageStore from "../../stores/gamesPage";
 import AdBanner from "../ad/adBanner";
 import Selector from "../selector";
-import GameRow, {useStyles as useGameRowStyles} from "./components/gameRow";
-import SmallGameCard from "../smallGameCard";
 import {getQueryParams} from "../../lib/getQueryParams";
+import GamesList from './components/games';
 
 const useStyles = createUseStyles({
   authContainer: {
@@ -32,10 +31,8 @@ const Games = props => {
   const store = GamesPageStore.useContainer();
   const auth = AuthenticationStore.useContainer();
   const s = useStyles();
-  const gameS = useGameRowStyles();
-  let existingGames = {}
-  const showGenre = getFlag('gameGenreFilterSupported', false) && !store.infiniteGamesGrid;
-  const showSortDropdown = getFlag('gameCustomSortDropdown', false) && !store.infiniteGamesGrid;
+  const showGenre = getFlag('gameGenreFilterSupported', false) && !query.keyword;
+  const showSortDropdown = getFlag('gameCustomSortDropdown', false) && !query.keyword;
 
   useEffect(() => {
     if (query.keyword)
@@ -111,36 +108,7 @@ const Games = props => {
           }
         </div>
         <div className='col-12'>
-          <div className='row'>
-            {
-              store.infiniteGamesGrid ? <>
-              {
-                store.infiniteGamesGrid.games.map(v => {
-                  return <SmallGameCard
-                    key={v.universeId}
-                    className={gameS.gameCard + ' mb-3'}
-                    placeId={v.placeId}
-                    creatorId={v.creatorId}
-                    creatorType={v.creatorType}
-                    creatorName={v.creatorName}
-                    iconUrl={store.icons[v.universeId]}
-                    likes={v.totalUpVotes}
-                    dislikes={v.totalDownVotes}
-                    name={v.name}
-                    playerCount={v.playerCount}
-                  />
-                })
-              }
-              </> : store.sorts ? store.sorts.map(v => {
-                  if (existingGames[v.token]) {
-                    return null;
-                  }
-                  existingGames[v.token] = true;
-                  let games = store.games && store.games[v.token] || null;
-                  return <GameRow ads={true} key={'row ' + v.token} title={v.displayName} games={games} icons={store.icons}/>
-                }) : null
-            }
-          </div>
+          <GamesList />
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import { createUseStyles } from "react-jss";
 import SmallGameCard from "../../smallGameCard";
 import UserAdvertisement from "../../userAdvertisement";
-import {getTheme, themeType} from "../../../services/theme";
+import useDimensions from "../../../lib/useDimensions";
 
 export const useStyles = createUseStyles({
   title: {
@@ -75,18 +75,10 @@ const GameRow = props => {
   const [limit, setLimit] = useState(1);
   const [offsetComp, setOffsetComp] = useState(0);
   const rowRef = useRef(null);
-  const [dimensions, setDimensions] = useState({
-    height: window.innerHeight,
-    width: window.innerWidth
-  });
-  useEffect(() => {
-    window.addEventListener('resize', () => {
-      setDimensions({
-        height: window.innerHeight,
-        width: window.innerWidth
-      });
-    });
-  }, []);
+  const gameRowRef = useRef(null);
+  const [rowHeight, setRowHeight] = useState(0);
+
+  const [dimensions] = useDimensions();
   useEffect(() => {
     if (!rowRef.current) {
       return
@@ -104,7 +96,16 @@ const GameRow = props => {
     }else{
       setOffsetComp(0);
     }
-  }, [dimensions, props.games]);
+  }, [dimensions, props.games, props.icons]);
+
+  useEffect(() => {
+    if (!gameRowRef.current)
+      return;
+    const newHeight = Math.max(236, gameRowRef.current.clientHeight);
+    if (newHeight === rowHeight) return;
+
+    setRowHeight(newHeight);
+  });
   if (!props.games) return null;
 
   const remainingGames = props.games.length - (offset-offsetComp);
@@ -119,18 +120,18 @@ const GameRow = props => {
           return;
 
         setOffset((offset - limit));
-      }}>
+      }} style={{height: rowHeight}}>
         <p className={s.pagerCaret}><span className={s.caretRight}>^</span></p>
       </div>
 
       {showForward ? <div className={s.goForward + ' ' + s.pagerButton} onClick={() => {
         let newOffset = ((offset) + (limit));
         setOffset(newOffset);
-      }}>
+      }} style={{height: rowHeight}}>
         <p className={s.pagerCaret}><span className={s.caretLeft}>^</span></p>
       </div> : null
       }
-      <div className={'row ' + s.gameRow}>
+      <div className={'row ' + s.gameRow} ref={gameRowRef}>
         {
           props.games.slice(offset, offset+100).map((v, i) => {
             return <SmallGameCard

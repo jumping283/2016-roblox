@@ -141,10 +141,12 @@ const GamesPageStore = createContainer(() => {
   }
 
   const loadGames = ({query, genreFilter}) => {
+    setSorts(null);
+    setGames(null);
+    setInfiniteGamesGrid(null);
+
     if (query) {
       // lookup
-      setSorts(null);
-      setGames(null);
       getGameList({
         sortToken: '',
         limit: 100,
@@ -171,7 +173,7 @@ const GamesPageStore = createContainer(() => {
         limit: 100,
         genre: selectorSorts.find(v => v.value === genreFilter).id,
       }).then(newGames => {
-        setInfiniteGamesGrid(newGames.data);
+        setInfiniteGamesGrid(newGames);
 
         let universeIds = [];
         for (const item of newGames.games) {
