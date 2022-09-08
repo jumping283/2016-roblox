@@ -1146,7 +1146,7 @@ a:hover .icon-lock {
 	background-position: 0 0;
 }
 
-.icon-thumbs-up:hover {
+.icon-thumbs-up:hover, .icon-thumbs-up.colored {
 	background-position: -16px 0;
 }
 
@@ -1159,7 +1159,7 @@ a:hover .icon-thumbs-up {
 	background-position: 0 -16px;
 }
 
-.icon-thumbs-down:hover {
+.icon-thumbs-down:hover, .icon-thumbs-down.colored {
 	background-position: -16px -16px;
 }
 

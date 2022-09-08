@@ -213,9 +213,9 @@ const SmallGameCard = props => {
             {!hideVoting ?
             <>
               <p className={s.thumbsUp + ' ps-2 pe-2 mt-2'}>
-                <span className='icon-thumbs-up'/>
+                <span className='icon-thumbs-up colored'/>
                 <Voting color={true} />
-                <span className={'icon-thumbs-down ' + s.floatRight}/>
+                <span className={'icon-thumbs-down colored ' + s.floatRight}/>
               </p>
               <div className='ps-1 pt-2 pe-1'>
                 <div className='divider-top'/>
