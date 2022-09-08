@@ -6,8 +6,8 @@ import GamesPageStore from "../../stores/gamesPage";
 import AdBanner from "../ad/adBanner";
 import Selector from "../selector";
 import GameRow, {useStyles as useGameRowStyles} from "./components/gameRow";
-import {useRouter} from "next/dist/client/router";
 import SmallGameCard from "../smallGameCard";
+import {getQueryParams} from "../../lib/getQueryParams";
 
 const useStyles = createUseStyles({
   authContainer: {
@@ -28,7 +28,7 @@ const useStyles = createUseStyles({
 })
 
 const Games = props => {
-  const router = useRouter();
+  const query = getQueryParams();
   const store = GamesPageStore.useContainer();
   const auth = AuthenticationStore.useContainer();
   const s = useStyles();
@@ -38,10 +38,14 @@ const Games = props => {
   const showSortDropdown = getFlag('gameCustomSortDropdown', false) && !store.infiniteGamesGrid;
 
   useEffect(() => {
-    if (router.query.keyword)
-      store.setQuery(router.query.keyword);
+    if (query.keyword)
+      store.setQuery(query.keyword);
 
-  }, [router.query]);
+    store.loadGames({
+      query: query.keyword,
+      genreFilter: store.genreFilter,
+    });
+  }, [store.genreFilter]);
 
   // if (!store.sorts || !store.games || !store.icons) return null;
   return <div className={'row ' + (auth.isAuthenticated ? s.authContainer : '')}>

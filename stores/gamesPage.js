@@ -140,7 +140,7 @@ const GamesPageStore = createContainer(() => {
     });
   }
 
-  useEffect(() => {
+  const loadGames = ({query, genreFilter}) => {
     if (query) {
       // lookup
       setSorts(null);
@@ -181,8 +181,7 @@ const GamesPageStore = createContainer(() => {
         loadIcons(universeIds);
       })
     }
-  }, [genreFilter, query]);
-
+  }
   return {
     sorts,
     games,
@@ -196,6 +195,8 @@ const GamesPageStore = createContainer(() => {
     genreFilter,
     setGenreFilter,
     selectorSorts,
+
+    loadGames,
   }
 });
 
