@@ -89,7 +89,6 @@ const GameRow = props => {
   }, []);
   useEffect(() => {
     if (!rowRef.current) {
-      console.log('no rowRef, ignore');
       return
     }
     // width = 170px
@@ -99,7 +98,6 @@ const GameRow = props => {
     let offsetNotRounded = (windowWidth - 80) / 170;
     let newLimit = Math.floor(offsetNotRounded);
 
-    console.log('useable limit', newLimit);
     setLimit(newLimit);
     if (offsetNotRounded !== newLimit) {
       setOffsetComp(1);
