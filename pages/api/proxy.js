@@ -9,6 +9,11 @@ const UrlUtilities = (() => {
       return baseDomainParsed.domain + '.' + baseDomainParsed.topLevelDomains.join('.');
     } else if (baseDomainParsed.type === ParseResultType.Ip) {
       return baseDomainParsed.hostname;
+    }else if (baseDomainParsed.type === ParseResultType.Reserved) {
+      if (baseDomainParsed.hostname === 'localhost') {
+        return 'localhost';
+      }
+      throw new Error('The only allowed reserved domain type is localhost, got ' + baseDomainParsed.hostname);
     } else {
       throw new Error('Unsupported domain type: ' + baseDomainParsed.type);
     }
@@ -42,7 +47,7 @@ const actualHandler = async (req, res) => {
     }
     const authHeaderValue = getConfig().serverRuntimeConfig.backend.authorization;
     if (typeof authHeaderValue === 'string')
-      requestHeaders[config.serverRuntimeConfig.backend.authorizationHeader || 'authorization'] = authHeaderValue;
+      requestHeaders[getConfig().serverRuntimeConfig.backend.authorizationHeader || 'authorization'] = authHeaderValue;
 
     // TODO: whitelisted headers might be safer...
     for (const key in req.headers) {
