@@ -9,7 +9,7 @@ import {
   getFollowings,
   getFollowingsCount,
   getFriendRequestCount, getFriendRequests,
-  getFriends
+  getFriends, unfollowUser, unfriendUser
 } from "../../services/friends";
 import { getUserInfo } from "../../services/users";
 import AuthenticationStore from "../../stores/authentication";
@@ -20,6 +20,7 @@ import useCardStyles from "../userProfile/styles/card";
 import UserFriendsStore from "./stores/userFriendsStore";
 import Paging from "../pagination2016";
 import Link from "../link";
+import Dropdown2016 from "../dropdown2016";
 
 const useStyles = createUseStyles({
   title: {
@@ -209,23 +210,57 @@ const UserFriends = props => {
     <div className='row mt-2'>
       {
         arrayToUse && arrayToUse.map(v => {
-          return <div className={'col-6 col-lg-4 mb-4'} key={v.id}>
+          const canRemoveUser = (tab === 'Friends' || tab === 'Followings') && v.isDeleted && store.userId === auth.userId;
+
+          return <div className={'col-12 col-md-6 col-lg-4 mb-4'} key={v.id}>
             <div className={s.friendCardWrapper}>
               <div className={'card ' + s.friendCard}>
-                <Link href={`/users/${v.id}/profile`}>
-                  <a>
                     <div className='row p-2'>
                       <div className='col-4'>
                         <div className={s.imageWrapper}>
-                          <PlayerImage id={v.id} name={v.name} />
+                          <Link href={`/users/${v.id}/profile`}>
+                            <a>
+                              <PlayerImage id={v.id} name={v.name} />
+                            </a>
+                          </Link>
                         </div>
                       </div>
                       <div className='col-8'>
-                        <p className={'mb-0 font-size-18 ' + s.username}>{v.name}</p>
+                        <div className='d-inline-block'>
+                          <p className={'mb-0 font-size-18 ' + s.username}>
+                            <Link href={`/users/${v.id}/profile`}>
+                              <a className='text-dark'>
+                                {v.name}
+                              </a>
+                            </Link>
+                          </p>
+                        </div>
+                        {
+                          canRemoveUser ? <div className='d-inline-block float-end font-size-30 text-dark'>
+                            <Dropdown2016 options={[
+                              {
+                                name: tab === 'Friends' ? 'Remove' : 'Unfollow',
+                                onClick: e => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+
+                                  if (tab === 'Friends') {
+                                    unfriendUser({userId: v.id}).then(() => {
+                                      window.location.reload();
+                                    });
+                                  }else{
+                                    // remove follower
+                                    unfollowUser({userId: v.id}).then(() => {
+                                      window.location.reload();
+                                    })
+                                  }
+                                },
+                              },
+                            ]} />
+                          </div> : null
+                        }
                       </div>
                     </div>
-                  </a>
-                </Link>
               </div>
               {
                 tab === 'Friend Requests' ? <div className={s.manageRequestCard}>
