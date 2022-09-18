@@ -17,9 +17,9 @@ import MainWrapper from '../components/mainWrapper';
 import GlobalAlert from '../components/globalAlert';
 import ThumbnailStore from "../stores/thumbnailStore";
 import getFlag from "../lib/getFlag";
+import Chat from "../components/chat";
 
-// @ts-ignore
-if (process.browser) {
+if (typeof window !== 'undefined') {
   console.log(String.raw`
       _______      _________      _____       ______     _
      / _____ \    |____ ____|    / ___ \     | ____ \   | |
@@ -75,6 +75,7 @@ function RobloxApp({ Component, pageProps }) {
         {getFlag('clientSideRenderingEnabled', false) ? <NextNProgress options={{showSpinner: false}} color='#fff' height={2} /> : null}
         <ThumbnailStore.Provider>
           <Component {...pageProps} />
+          <Chat />
         </ThumbnailStore.Provider>
       </MainWrapper>
       <Footer/>
