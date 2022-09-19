@@ -4,8 +4,8 @@ import chatStore from "../chatStore";
 
 const ChatEntry = props => {
   const store = chatStore.useContainer();
-  const {user, conversationId, latestMessage} = props;
-  const isUnread = latestMessage ? !latestMessage.read : true;
+  const {user, conversationId, latestMessage, hasUnread} = props;
+  const isUnread = hasUnread;
 
   const onClick = e => {
     e.preventDefault();
@@ -34,7 +34,9 @@ const ChatEntry = props => {
       <p className={styles.chatUsername}>{user.username}</p>
       <p className={styles.chatMessage + ' text-truncate ' + (isUnread ? styles.chatMessageUnread : '')}>
         {
-          latestMessage ? latestMessage.content : <span>&emsp;</span>
+          user.isTyping ? <span className='fst-italic'>Typing...</span> : (
+            latestMessage ? latestMessage.content : <span>&emsp;</span>
+          )
         }
       </p>
     </div>

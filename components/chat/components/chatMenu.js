@@ -4,6 +4,7 @@ import chatStore from "../chatStore";
 import ChatEntry from "./chatEntry";
 import {getUserConversations} from "../../../services/chat";
 import authentication from "../../../stores/authentication";
+import dayjs from "dayjs";
 
 const ChatMenuClosed = props => {
   const store = chatStore.useContainer();
@@ -32,12 +33,15 @@ const ChatMenuOpen = props => {
     </div>
     <div className={styles.chatMenuBody}>
       {
-        store.conversations ? store.conversations.filter(v => v.conversationType === 'OneToOneConversation').map(v => {
+        store.conversations ? store.conversations.sort((a,b) => {
+          return (a.latest && b.latest) ? (dayjs(a.latest.sent).isAfter(dayjs(b.latest.sent)) ? -1 : 1) : 0;
+        }).filter(v => v.conversationType === 'OneToOneConversation').map(v => {
           const other = v.participants.find(o => o.targetId !== auth.userId);
           return <ChatEntry key={v.id} user={{
             id: other.targetId,
             username: other.name,
-          }} conversationId={v.id} latestMessage={v.latest || null} />
+            isTyping: other.isTyping||false,
+          }} conversationId={v.id} latestMessage={v.latest || null} hasUnread={v.hasUnreadMessages} />
         }) : null
       }
       {
@@ -48,7 +52,8 @@ const ChatMenuOpen = props => {
           return <ChatEntry user={{
             id: v.id,
             username: v.name,
-          }} conversationId={null} latestMessage={null} key={v.id} />
+            isTyping: false,
+          }} conversationId={null} latestMessage={null} key={v.id} hasUnread={false} />
         }) : null
       }
     </div>

@@ -1,10 +1,11 @@
 import styles from "./chatMenu.module.css";
 import chatStore from "../chatStore";
-import {useEffect, useReducer, useRef, useState} from "react";
+import {memo, useEffect, useReducer, useRef, useState} from "react";
 import {getMessages, markAsRead, sendMessage, startOneToOneConversation} from "../../../services/chat";
 import dayjs from "dayjs";
 import authentication from "../../../stores/authentication";
-
+const useSignalCoreForRealTimeChat = getFlag('useSignalCoreForRealTimeChat', false);
+const ChatInputMemo = memo(props => <ChatInput {...props} />);
 /**
  *
  * @param {{id: string, sent: string, read: boolean, messageType: string, senderTargetId: number, content: string}[]} chat
@@ -74,12 +75,14 @@ const GenerateLayoutFromMessageHistory = (chat) => {
     });
   });
 
+  if (chat.length < 100) {
     final.push({
       type: 'date',
       data: {
-        label: dayjs().format('MMM DD, YYYY'),
+        label: dayjs(chat[0].sent).format('MMM DD, YYYY'),
       },
     });
+  }
 
   return final.reverse();
 }
@@ -87,6 +90,8 @@ const GenerateLayoutFromMessageHistory = (chat) => {
 import historyStyles from './conversationEntry.module.css';
 import entryStyles from './chatEntry.module.css';
 import PlayerHeadshot from "../../playerHeadshot";
+import getFlag from "../../../lib/getFlag";
+import ChatInput from "./chatInput";
 const ChatHistory = props => {
   const auth = authentication.useContainer();
   if (props.messageLayout) {
@@ -149,7 +154,6 @@ const Conversation = props => {
   const myIndex = props.index;
   const {user, conversationId} = props;
   const [locked, setLocked] = useState(false);
-  const inputRef = useRef(null);
 
   const [messages, setMessages] = useReducer((prev,action) => {
     if (action.action === 'MULTI_ADD') {
@@ -158,7 +162,10 @@ const Conversation = props => {
         return !previous.find(x => x.id === v.id);
       });
       if (toAdd.length === 0) return prev;
-      return action.data;
+      for (const item of previous) {
+        toAdd.push(item);
+      }
+      return toAdd;
     }
     if (action.action === 'ADD_ONE') {
       if (!prev)
@@ -168,7 +175,36 @@ const Conversation = props => {
     if (action.action === 'RESET') return null;
     return prev;
   }, null);
+  useEffect(() => {
+    const myConvo = store.conversations.filter(v => v.id === conversationId)[0];
+    if (!myConvo || !conversationId)
+      return;
+
+    if (myConvo.hasUnreadMessages) {
+      store.dispatchConversations({
+        action: 'MARK_AS_READ',
+        conversationId,
+      });
+    }
+    if (messages && myConvo.latest && useSignalCoreForRealTimeChat) {
+      const messageExists = messages.find(a => a.id === myConvo.latest.id);
+      if (!messageExists) {
+        setMessages({
+          action: 'MULTI_ADD',
+          data: [myConvo.latest],
+        });
+          markAsRead({
+            conversationId: conversationId,
+            endMessageId: myConvo.latest.id,
+          }).then().catch(e => {
+            // uh-oh
+          })
+
+      }
+    }
+  }, [store.conversations, messages]);
   const timer = useRef(null);
+
   useEffect(() => {
     if (timer.current) {
       clearInterval(timer.current);
@@ -200,17 +236,21 @@ const Conversation = props => {
         }
       });
     }
-    timer.current = setInterval(() => {
-      loadMessages();
-    }, 2 * 1000);
+    if (!useSignalCoreForRealTimeChat) {
+      timer.current = setInterval(() => {
+        loadMessages();
+      }, 2 * 1000);
+    }
     loadMessages();
     return () => {
-      clearInterval(timer.current);
+      if (!useSignalCoreForRealTimeChat) {
+        clearInterval(timer.current);
+      }
       timer.current = null;
     }
   }, [user, conversationId]);
 
-  const addCreatedMessage = msg => {
+  const addCreatedMessage = (msg, conversationIdOverride) => {
     const newMsg = {
       id: msg.messageId,
       sent: msg.sent,
@@ -218,6 +258,20 @@ const Conversation = props => {
       messageType: 'PlainText',
       senderTargetId: auth.userId,
     };
+    store.dispatchConversations({
+      action: 'MULTI_ADD_LATEST_MESSAGES',
+      data: [
+        {
+          conversationId: conversationIdOverride || conversationId,
+          chatMessages: [
+            {
+              ...newMsg,
+              read: true,
+            }
+          ],
+        }
+      ],
+    });
     setMessages({
       action: 'ADD_ONE',
       data: newMsg,
@@ -226,6 +280,7 @@ const Conversation = props => {
   const chatHistoryRef = useRef(null);
   useEffect(() => {
     chatHistoryRef.current.scrollTop =  chatHistoryRef.current.scrollHeight;
+    chatHistoryRef.current.focus();
   });
 
   return <div className={styles.chatMenu} style={{right: 30 + ((myIndex+1) * 260)}}>
@@ -248,53 +303,7 @@ const Conversation = props => {
       <div className={styles.chatMessageHistory} ref={chatHistoryRef}>
         {messages ? <ChatHistory messageLayout={GenerateLayoutFromMessageHistory(messages)} /> : null}
       </div>
-      <input ref={inputRef} disabled={locked} type='text' className={styles.chatMessageBox} placeholder='Send a message' onKeyDown={e => {
-        if (e.key === 'Enter') {
-          setLocked(true);
-          const message = e.currentTarget.value;
-          if (conversationId === null) {
-            if (!message || message.length < 3 || message.length > 255)
-              return; // Invalid message
-
-            // We have to create a conversation, THEN send the message
-            startOneToOneConversation({
-              userId: user.id,
-            }).then(d => {
-              sendMessage({
-                conversationId: d.conversation.id,
-                message: message,
-              }).then((msg) => {
-                addCreatedMessage(msg);
-                // Update the ID
-                store.selectedConversation.find(a => a.user.id === user.id).conversationId = d.conversation.id;
-                store.setSelectedConversation([...store.selectedConversation]);
-              }).catch(e => {
-                setLocked(false);
-                // todo: feedback
-                console.error('[error] could not send message',e);
-              })
-            }).catch(e => {
-              // todo: feedback
-              setLocked(false);
-              console.error('[error] could not create conversation',e);
-            })
-          }else{
-            // Just send the message like normal
-            sendMessage({
-              conversationId: conversationId,
-              message: message,
-            }).then((msg) => {
-              addCreatedMessage(msg);
-              inputRef.current.value = '';
-              setLocked(false);
-            }).catch(e => {
-              //todo: feedback
-              setLocked(false);
-              console.error('[error] could not send message', e);
-            })
-          }
-        }
-      }} />
+      <ChatInputMemo conversationId={conversationId} locked={locked} setLocked={setLocked} addCreatedMessage={addCreatedMessage} user={user} />
     </div>
   </div>
 }

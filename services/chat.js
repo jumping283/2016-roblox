@@ -48,7 +48,7 @@ export const startOneToOneConversation = async ({userId}) => {
 }
 
 export const updateTypingStatus = async ({conversationId, isTyping}) => {
-  return await request('POST', '/v2/update-user-typing-status', {
+  return await request('POST', getFullUrl('chat', '/v2/update-user-typing-status'), {
     isTyping: isTyping,
     conversationId,
   });
