@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const configPath = path.join(__dirname, '../config.json');
 
 const main = () => {
@@ -9,7 +10,9 @@ const main = () => {
   }
   fs.writeFileSync(configPath, JSON.stringify({
     "serverRuntimeConfig": {
-      "backend": {}
+      backend: {
+        csrfKey: crypto.randomBytes(64).toString('base64'),
+      }
     },
     "publicRuntimeConfig": {
       "backend": {
