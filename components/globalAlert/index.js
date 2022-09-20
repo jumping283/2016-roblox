@@ -51,6 +51,8 @@ const GlobalAlert = props => {
       msg.CreatedAt = Date.now();
       sessionStorage.setItem(alertStorageKey, JSON.stringify(msg));
       setAlert(msg);
+    }).catch(e => {
+      console.error('[error] could not fetch global alert:',e);
     })
   }, []);
 

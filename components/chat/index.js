@@ -10,6 +10,8 @@ const Chat = props => {
       if (d.chatEnabled) {
         setEnabled(true);
       }
+    }).catch(e => {
+      console.error('[error] error fetching chat settings:',e);
     })
   }, []);
 
