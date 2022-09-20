@@ -35,6 +35,9 @@ const Favorite = props => {
     if (auth.userId) {
       getIsFavorited({assetId, userId: auth.userId}).then(data => {
         setIsFavorited(!!data);
+      }).catch(e => {
+        // undefined/null response causes axios to incorrectly return network error :)
+        setIsFavorited(false);
       })
     }
   }, [props.favoriteCount, props.assetId, auth.userId]);
