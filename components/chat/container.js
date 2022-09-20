@@ -28,6 +28,72 @@ const ChatContainer = props => {
   const conversationUpdate = useRef(null);
   const typingEndRefs = useRef({});
 
+  const setTyping = (conversationId, userId, isTyping) => {
+    store.dispatchConversations({
+      action: 'SET_TYPING_STATUS',
+      conversationId: conversationId,
+      userId: userId,
+      isTyping: isTyping,
+    });
+  }
+  const getTypingKey = (msg) => `${msg.conversationId}_${msg.userId}`;
+  const removeTypingEndRefIfExists = (k) => {
+    if (typingEndRefs.current[k]) {
+      clearTimeout(typingEndRefs.current[k]);
+      typingEndRefs.current[k] = null;
+    }
+  }
+
+  const onChatTyping = msg => {
+    console.log('[info] typing for',msg);
+    setTyping(msg.conversationId, msg.userId, true);
+    const k = getTypingKey(msg);
+    removeTypingEndRefIfExists(k);
+    typingEndRefs.current[k] = setTimeout(() => {
+      typingEndRefs.current[k] = null;
+      setTyping(msg.conversationId, msg.userId, false);
+    }, msg.endsAt - Date.now());
+  }
+
+  const onChatConversationAdded = msg => {
+    store.dispatchConversations({
+      action: 'MULTI_ADD',
+      data: [data.conversation],
+    });
+    multiGetLatestMessages({
+      conversationIds: [msg.id],
+    }).then(data => {
+      store.dispatchConversations({
+        action: 'MULTI_ADD_LATEST_MESSAGES',
+        data: data,
+      });
+    })
+  }
+
+  const onChatMessageReceived = msg => {
+    console.log('[info] signalr ChatMessageReceived', msg);
+    const k = getTypingKey(msg);
+    removeTypingEndRefIfExists(k);
+    setTyping(msg.conversationId, msg.userId, false);
+    store.dispatchConversations({
+      action: 'MULTI_ADD_LATEST_MESSAGES',
+      data: [
+        {
+          conversationId: msg.conversationId,
+          chatMessages: [
+            {
+              id: msg.id,
+              content: msg.message,
+              sent: msg.sent,
+              senderTargetId: msg.userId,
+              read : false, // todo: ?
+            }
+          ],
+        },
+      ],
+    });
+  }
+
   useEffect(() => {
     if (useSignalCoreForRealTimeChat) {
       if (conversationUpdate.current) {
@@ -38,85 +104,13 @@ const ChatContainer = props => {
         }
       }
       console.log('[info] signalr creating connection');
-      let connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chat")
-        .build();
-
-      connection.on('ChatTyping', data => {
-        let msg = JSON.parse(data);
-        console.log('[info] typing for',msg);
-        store.dispatchConversations({
-          action: 'SET_TYPING_STATUS',
-          conversationId: msg.conversationId,
-          userId: msg.userId,
-          isTyping: true,
-        });
-        const k = `${msg.conversationId}_${msg.userId}`;
-        if (typingEndRefs.current[k]) {
-          clearTimeout(typingEndRefs.current[k]);
-        }
-        typingEndRefs.current[k] = setTimeout(() => {
-          typingEndRefs.current[k] = null;
-          store.dispatchConversations({
-            action: 'SET_TYPING_STATUS',
-            conversationId: msg.conversationId,
-            userId: msg.userId,
-            isTyping: false,
-          });
-        }, msg.endsAt - Date.now());
-      });
-      connection.on('ChatConversationAdded', data => {
-        let msg = JSON.parse(data);
-        store.dispatchConversations({
-          action: 'MULTI_ADD',
-          data: [data.conversation],
-        });
-        multiGetLatestMessages({
-          conversationIds: [msg.id],
-        }).then(data => {
-          store.dispatchConversations({
-            action: 'MULTI_ADD_LATEST_MESSAGES',
-            data: data,
-          });
-        })
-      });
-
-      connection.on("ChatMessageReceived", data => {
-        let msg = JSON.parse(data);
-        const k = `${msg.conversationId}_${msg.userId}`;
-        if (typingEndRefs.current[k]) {
-          clearTimeout(typingEndRefs.current[k]);
-          typingEndRefs.current[k] = null;
-        }
-        console.log('signalr ChatMessageReceived', msg);
-        store.dispatchConversations({
-          action: 'SET_TYPING_STATUS',
-          conversationId: msg.conversationId,
-          userId: msg.userId,
-          isTyping: false,
-        });
-        store.dispatchConversations({
-          action: 'MULTI_ADD_LATEST_MESSAGES',
-          data: [
-            {
-              conversationId: msg.conversationId,
-              chatMessages: [
-                {
-                  id: msg.id,
-                  content: msg.message,
-                  sent: msg.sent,
-                  senderTargetId: msg.userId,
-                  read : false, // todo: ?
-                }
-              ],
-            },
-          ],
-        });
-      });
+      const connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+      connection.on('ChatTyping', data => onChatTyping(JSON.parse(data)));
+      connection.on('ChatConversationAdded', data => onChatConversationAdded(JSON.parse(data)));
+      connection.on("ChatMessageReceived", data => onChatMessageReceived(JSON.parse(data)));
 
       let pingTimer;
-      connection.start()
-        .then(() => {
+      connection.start().then(() => {
           console.log('[info] signalr connection ready');
           pingTimer = setInterval(() => {
             connection.invoke("ListenForMessages").then((r) => {
