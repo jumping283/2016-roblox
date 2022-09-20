@@ -2,6 +2,8 @@ import React from "react";
 import { createUseStyles } from "react-jss";
 import LoginModalStore from "../../../stores/loginModal";
 import LoginModal from "../../loginModal";
+import getFlag from "../../../lib/getFlag";
+import {useRouter} from "next/dist/client/router";
 
 const useLoginAreaStyles = createUseStyles({
   text: {
@@ -28,6 +30,7 @@ const useLoginAreaStyles = createUseStyles({
 });
 
 const LoginArea = props => {
+  const Router = useRouter();
   const s = useLoginAreaStyles();
   const loginModalStore = LoginModalStore.useContainer();
 
@@ -45,6 +48,14 @@ const LoginArea = props => {
           <p className={s.text}>
             <a className={s.link} onClick={(e) => {
               e.preventDefault();
+              if (getFlag('requireLoginThroughCookie', true)) {
+                if (getFlag('clientSideRenderingEnabled', false)) {
+                  Router.push('/login');
+                }else{
+                  window.location.href = '/login';
+                }
+                return;
+              }
               loginModalStore.setOpen(!loginModalStore.open);
             }}>
               Login
