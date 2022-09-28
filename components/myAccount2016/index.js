@@ -8,6 +8,7 @@ import ModalHandler from "./components/modalHandler";
 import PrivacySettings from "./components/privacySettings";
 import Tabs from "./components/tabs";
 import MyAccountStore from "./stores/myAccountStore";
+import Security from "./components/security";
 
 const useStyles = createUseStyles({
   settingsRow: {
@@ -43,8 +44,9 @@ const MyAccount = props => {
         <Tabs></Tabs>
       </div>
       <div className='col-12'>
-        {store.tab === 'Account Info' && <AccountInfo></AccountInfo>}
-        {store.tab === 'Privacy' && <PrivacySettings></PrivacySettings>}
+        {store.tab === 'Account Info' ? <AccountInfo/> : null}
+        {store.tab === 'Security' ? <Security /> : null}
+        {store.tab === 'Privacy' ? <PrivacySettings/> : null}
       </div>
     </div>
   </div>
