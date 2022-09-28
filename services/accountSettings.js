@@ -9,7 +9,7 @@ export const getMyEmail = () => {
 }
 
 export const getInventoryPrivacy = () => {
-  return request('GET', getFullUrl('accountsettings', '/v1/inventory-privacy')).then(d => d.data.inventoryPrivacy);
+  return request('GET', getFullUrl('accountsettings', '/v1/inventory-privacy')).then(d => d.data);
 }
 
 export const setInventoryPrivacy = ({ newPrivacy }) => {
